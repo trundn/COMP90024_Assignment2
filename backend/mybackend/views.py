@@ -2,7 +2,7 @@ from .models import Article
 from .serializers import ArticleSerializer
 from rest_framework.response import Response
 from rest_framework import viewsets
-from couchdb import Server
+from .daos import TwitterDAO
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -11,12 +11,11 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 
 class TwitterViewSet(viewsets.ViewSet):
-    couch = Server('http://admin:admin@localhost:5984')
-    tweetdb = couch['tweet']
+    twitterDAO = TwitterDAO()
 
     def list(self, request):
-        response = self.tweetdb.list('_design/top-10-tweet', '_view/top-10-tweet')
-        return Response(response[1])
+        all_tweets = self.twitterDAO.get_all_tweets()
+        return Response(all_tweets)
 
     def post(self, request):
         return True
