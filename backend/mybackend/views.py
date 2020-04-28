@@ -12,8 +12,17 @@ from rest_framework.views import APIView
 from rest_framework import generics
 from rest_framework import mixins
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+
+
+class TwitterViewSet(viewsets.ViewSet):
+    def list(self, request):
+        return Response([1, 2, 3, 4, 5])
+
+    def retrieve(self, request, pk=None):
+        return Response({"id": 1, "text": "tweeter"})
