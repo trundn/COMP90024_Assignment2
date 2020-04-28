@@ -1,0 +1,36 @@
+{
+    "track": [
+        "covid",
+        "COVID",
+        "covid19",
+        "COVID19",
+        "covid-19",
+        "COVID-19",
+        "corona",
+        "CORONA",
+        "coronavirus",
+        "CORONAVIRUS",
+        "sarscov2",
+        "SARSCOV2",
+        "pandemic",
+        "PANDEMIC",
+        "epidemic",
+        "EPIDEMIC"
+    ],
+    "locations": [
+        113.338953078,
+        -43.6345972634,
+        153.569469029,
+        -10.6681857235
+    ],
+    "users": [
+        "ScottMorrisonMP",
+        "DanielAndrewsMP",
+        "GladysB",
+        "AnnastaciaMP",
+        "MarkMcGowanMP"
+    ],
+    "languages": [
+        "en"
+    ]
+}
