@@ -1,18 +1,8 @@
-from django.shortcuts import render
-from django.views.decorators.csrf import csrf_exempt
-
 from .models import Article
 from .serializers import ArticleSerializer
-from rest_framework.parsers import JSONParser
-from django.http import JsonResponse, HttpResponse
-from rest_framework.decorators import api_view
 from rest_framework.response import Response
-from rest_framework import status
-from rest_framework.views import APIView
-from rest_framework import generics
-from rest_framework import mixins
 from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
+from couchdb import Server
 
 
 class ArticleViewSet(viewsets.ModelViewSet):
@@ -21,8 +11,15 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
 
 class TwitterViewSet(viewsets.ViewSet):
+    couch = Server('http://admin:admin@localhost:5984')
+    tweetdb = couch['tweet']
+
     def list(self, request):
-        return Response([1, 2, 3, 4, 5])
+        response = self.tweetdb.list('_design/top-10-tweet', '_view/top-10-tweet')
+        return Response(response[1])
+
+    def post(self, request):
+        return True
 
     def retrieve(self, request, pk=None):
-        return Response({"id": 1, "text": "tweeter"})
+        return True
