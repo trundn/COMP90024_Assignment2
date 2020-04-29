@@ -3,7 +3,7 @@ import threading
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import constants;
+import constants
 
 class SearchingAPIThread(threading.Thread):
     def __init__(self, tweepy_api, config_loader):

@@ -7,7 +7,7 @@ import threading
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import constants;
+import constants
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):

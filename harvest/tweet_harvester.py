@@ -11,7 +11,7 @@ from tweepy_streaming import StreamingAPIThread
 # Thread for performing tweepy searching API
 from tweepy_searching import SearchingAPIThread
 # The harvest constant definitions
-import constants;
+import constants
 
 def print_usage():
   print ('Usage is: tweet_harvester.py -a <the authentication configuration file> -f <the tweet filter configuration file>')
