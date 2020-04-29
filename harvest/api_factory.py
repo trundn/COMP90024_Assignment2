@@ -6,7 +6,8 @@ class APIFactory(object):
         self.config_loader = config_loader
 
     def create_api(self):
-        if not (self.config_loader.api_key and self.config_loader.api_secret_key and self.config_loader.access_token and self.config_loader.access_token_secret):
+        if not (self.config_loader.api_key and self.config_loader.api_secret_key
+                    and self.config_loader.access_token and self.config_loader.access_token_secret):
             raise RuntimeError("The authentication keys are missing.")
 
         # Creating the authentication object
