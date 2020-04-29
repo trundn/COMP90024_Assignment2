@@ -2,15 +2,16 @@
 import os
 # Library for command line argument parsing
 import sys, getopt
+# Using class for loading all needed configurations
+from config_loader import ConfigurationLoader
+# Using class for creating Tweepy API
+from api_factory import APIFactory;
 # Thread for performing tweepy streaming API
 from tweepy_streaming import StreamingAPIThread
 # Thread for performing tweepy searching API
 from tweepy_searching import SearchingAPIThread
-
-CMD_LINE_DEFINED_ARGUMENTS = "ha:f:"
-HELP_ARGUMENT = "-h"
-AUTHEN_CONFIG_ARGUMENT = "-a"
-FILTER_CONFIG_ARGUMENT = "-f"
+# The harvest constant definitions
+import constants;
 
 def print_usage():
   print ('Usage is: tweet_harvester.py -a <the authentication configuration file> -f <the tweet filter configuration file>')
@@ -22,7 +23,7 @@ def parse_arguments(argv):
 
     # Parse command line arguments
     try:
-        opts, args = getopt.getopt(argv, CMD_LINE_DEFINED_ARGUMENTS)
+        opts, args = getopt.getopt(argv, constants.CMD_LINE_DEFINED_ARGUMENTS)
     except getopt.GetoptError as error:
         print("Failed to parse comand line arguments. Error: %s" %error)
         print_usage()
@@ -30,12 +31,12 @@ def parse_arguments(argv):
         
     # Extract argument values
     for opt, arg in opts:
-        if opt == HELP_ARGUMENT:
+        if opt == constants.HELP_ARGUMENT:
             print_usage()
             sys.exit()
-        if opt in (AUTHEN_CONFIG_ARGUMENT):
+        if opt in (constants.AUTHEN_CONFIG_ARGUMENT):
             authen_config_path = arg
-        elif opt in (FILTER_CONFIG_ARGUMENT):
+        elif opt in (constants.FILTER_CONFIG_ARGUMENT):
             filter_config_path = arg
 
     # Return all arguments
@@ -45,12 +46,21 @@ def main(args):
     # Parse command line arguments to get the authentication and filter configuration files
     authen_config_path, filter_config_path = parse_arguments(args)
 
+    # Instantiate the configuration loader
+    config_loader = ConfigurationLoader(authen_config_path, filter_config_path)
+    config_loader.load_authentication_config()
+    config_loader.load_filter_config()
+
+    # Create tweepy API
+    api_factory = APIFactory(config_loader)
+    tweepy_api = api_factory.create_api()
+
     # Start tweeter streaming API thread
-    streaming = StreamingAPIThread(authen_config_path, filter_config_path)
+    streaming = StreamingAPIThread(tweepy_api, config_loader)
     streaming.start()
 
     # Start tweeter searching API thread
-    searching = SearchingAPIThread(authen_config_path, filter_config_path)
+    searching = SearchingAPIThread(tweepy_api, config_loader)
     searching.start()
 
 # Run the actual program

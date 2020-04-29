@@ -14,44 +14,45 @@ JSON_LANGUAGES_PROP = "languages"
 JSON_TRACK_PROP = "track"
 JSON_USERS_PROP = "users"
 
-def load_authentication_config(file_path):
-    api_key = ""
-    api_secret_key = ""
-    access_token = ""
-    access_token_secret = ""
+class ConfigurationLoader(object):
+    def __init__(self, authen_config_path, filter_config_path):
+        self.authen_config_path = authen_config_path
+        self.filter_config_path = filter_config_path
 
-    if os.path.exists(file_path):
-        with open(file_path) as fstream:
-            try:
-                config_content = json.loads(fstream.read())
-                api_key = config_content[JSON_API_KEY_PROP]
-                api_secret_key = config_content[JSON_API_SECRET_KEY_PROP]
-                access_token = config_content[JSON_ACCESS_TOKEN_PROP]
-                access_token_secret = config_content[JSON_ACCESS_TOKEN_SECRET]
-            except Exception as exception:
-                print("Error occurred during loading the authentication configuration file. Exception: %s" %exception)
-    else:
-        print("The authentication configuration file does not exist. Path: %s", file_path)
+        self.api_key = ""
+        self.api_secret_key = ""
+        self.access_token = ""
+        self.access_token_secret = ""
 
-    return api_key, api_secret_key, access_token, access_token_secret
+        self.locations = []
+        self.languages = []
+        self.track = []
+        self.users = []
 
-def load_filter_config(file_path):
-        locations = []
-        languages = []
-        track = []
-        users = []
-
-        if os.path.exists(file_path):
-            with open(file_path) as fstream:
+    def load_authentication_config(self):
+        if os.path.exists(self.authen_config_path):
+            with open(self.authen_config_path) as fstream:
                 try:
                     config_content = json.loads(fstream.read())
-                    track = config_content[JSON_TRACK_PROP]
-                    locations = config_content[JSON_LOCATIONS_PROP]
-                    users = config_content[JSON_USERS_PROP]
-                    languages = config_content[JSON_LANGUAGES_PROP]
+                    self.api_key = config_content[JSON_API_KEY_PROP]
+                    self.api_secret_key = config_content[JSON_API_SECRET_KEY_PROP]
+                    self.access_token = config_content[JSON_ACCESS_TOKEN_PROP]
+                    self.access_token_secret = config_content[JSON_ACCESS_TOKEN_SECRET]
                 except Exception as exception:
-                    print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
+                    print("Error occurred during loading the authentication configuration file. Exception: %s" %exception)
         else:
-            print("The authentication configuration file does not exist. Path: %s", file_path)
+            print("The authentication configuration file does not exist. Path: %s", self.authen_config_path)
 
-        return track, locations, users, languages
+    def load_filter_config(self):
+            if os.path.exists(self.filter_config_path):
+                with open(self.filter_config_path) as fstream:
+                    try:
+                        config_content = json.loads(fstream.read())
+                        self.track = config_content[JSON_TRACK_PROP]
+                        self.locations = config_content[JSON_LOCATIONS_PROP]
+                        self.users = config_content[JSON_USERS_PROP]
+                        self.languages = config_content[JSON_LANGUAGES_PROP]
+                    except Exception as exception:
+                        print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
+            else:
+                print("The authentication configuration file does not exist. Path: %s", file_path)

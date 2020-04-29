@@ -1,0 +1,8 @@
+# Definition of Constants
+CMD_LINE_DEFINED_ARGUMENTS = "ha:f:"
+HELP_ARGUMENT = "-h"
+AUTHEN_CONFIG_ARGUMENT = "-a"
+FILTER_CONFIG_ARGUMENT = "-f"
+
+TWEET_COUNT_PER_REQ = 200;
+TWEET_MODE = "extended"

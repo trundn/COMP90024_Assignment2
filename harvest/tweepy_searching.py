@@ -2,30 +2,18 @@
 import threading
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
-# Utility for creating tweepy API
-import api_factory
-# Utility for loading the configuration files
-import config_loader
-
-# Definition of Constants
-TWEET_COUNT_PER_REQ = 200;
+# The harvest constant definitions
+import constants;
 
 class SearchingAPIThread(threading.Thread):
-    def __init__(self, authen_config_path, filter_config_path):
+    def __init__(self, tweepy_api, config_loader):
         threading.Thread.__init__(self)
-        self.authen_config_path = authen_config_path
-        self.filter_config_path = filter_config_path
+        self.tweepy_api = tweepy_api
+        self.config_loader = config_loader
 
     def run(self):
-        # Load the tweet filter configuration file
-        track, locations, users, languages = config_loader.load_filter_config(
-            self.filter_config_path)
-
-        # Create tweepy API
-        api = api_factory.create_api(self.authen_config_path)
-
         while(True):
-            for user_id in users:
-                results  = api.user_timeline(user_id, count = TWEET_COUNT_PER_REQ)
+            for user_id in self.config_loader.users:
+                results  = self.tweepy_api.user_timeline(user_id, count = constants.TWEET_COUNT_PER_REQ)
                 for tweet in results:
                     print(tweet._json)
