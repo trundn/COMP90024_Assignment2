@@ -10,10 +10,13 @@ class TwitterViewSet(viewsets.ViewSet):
         all_tweets = self.twitterDAO.list()
         return Response(all_tweets)
 
-    def post(self, request):
+    def create(self, request):
         result = self.twitterDAO.create(request.data)
         return Response(result)
 
     def retrieve(self, request, pk=None):
         details = self.twitterDAO.retrieve(pk)
         return Response(details)
+
+    def update(self, request, pk=None):
+        return Response("Hasn't implemented!")

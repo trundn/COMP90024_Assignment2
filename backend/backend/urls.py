@@ -3,5 +3,5 @@ from django.urls import path, include
 
 urlpatterns = [
     path('', admin.site.urls),
-    path('twitter/', include('mybackend.urls'))
+    path('twitter/', include('twitter.urls'))
 ]
