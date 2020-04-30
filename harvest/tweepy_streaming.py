@@ -6,13 +6,8 @@ import sys
 import threading
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
-# Utility for creating tweepy API
-import api_factory
-# Utility for loading the configuration files
-import config_loader
-
-# Definition of Constants
-TWEET_MODE = "extended"
+# The harvest constant definitions
+import constants
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):
@@ -24,22 +19,17 @@ class StreamListener(tweepy.StreamListener):
         sys.exit()
 
 class StreamingAPIThread(threading.Thread):
-    def __init__(self, authen_config_path, filter_config_path):
+    def __init__(self, tweepy_api, config_loader):
         threading.Thread.__init__(self)
-        self.authen_config_path = authen_config_path
-        self.filter_config_path = filter_config_path
+        self.tweepy_api = tweepy_api
+        self.config_loader = config_loader
 
     def run(self):
         # Instantiate the stream listener
         listener = StreamListener()
 
-        # Load the tweet filter configuration file
-        track, locations, users, languages = config_loader.load_filter_config(
-            self.filter_config_path)
-
-        # Create tweepy API
-        api = api_factory.create_api(self.authen_config_path)
-
         # Streaming and filtering tweet data
-        stream = tweepy.Stream(auth = api.auth, listener = listener, tweet_mode = TWEET_MODE)
-        stream.filter(track = track, locations = locations, languages = languages)
+        stream = tweepy.Stream(auth = self.tweepy_api.auth,
+            listener = listener, tweet_mode = constants.TWEET_MODE)
+        stream.filter(track = self.config_loader.track,
+            locations = self.config_loader.locations, languages = self.config_loader.languages)
