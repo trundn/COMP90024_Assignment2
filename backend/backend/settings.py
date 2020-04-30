@@ -115,3 +115,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
+
+COUCH_SERVER_URL = 'http://admin:admin@localhost:5984'
+COUCH_DATABASE_NAME = 'tweet'
