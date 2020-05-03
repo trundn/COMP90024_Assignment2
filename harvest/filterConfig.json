@@ -18,8 +18,7 @@
         "Flattenthecurve",
         "Flatten-the-curve",
         "WorldHealthOrganisation",
-        "WHO",
-        "mask"
+        "WHO"
     ],
     "locations": [
         113.338953078,
@@ -28,11 +27,15 @@
         -10.6681857235
     ],
     "users": [
+        // politicians in AU
         "ScottMorrisonMP",
         "DanielAndrewsMP",
         "GladysB",
         "AnnastaciaMP",
-        "MarkMcGowanMP"
+        "MarkMcGowanMP",
+        // health organizations 
+        "WHO",
+        "healthgovau"
     ],
     "languages": [
         "en"
