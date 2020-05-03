@@ -1,21 +1,25 @@
 {
     "track": [
         "covid",
-        "COVID",
         "covid19",
-        "COVID19",
         "covid-19",
-        "COVID-19",
         "corona",
-        "CORONA",
         "coronavirus",
-        "CORONAVIRUS",
         "sarscov2",
-        "SARSCOV2",
+        "SARS-CoV-2",
         "pandemic",
-        "PANDEMIC",
         "epidemic",
-        "EPIDEMIC"
+        "quarantine",
+        "self-quarantine",
+        "isolation",
+        "self-isolation",
+        "socialdistancing",
+        "social-distancing",
+        "Flattenthecurve",
+        "Flatten-the-curve",
+        "WorldHealthOrganisation",
+        "WHO",
+        "mask"
     ],
     "locations": [
         113.338953078,
