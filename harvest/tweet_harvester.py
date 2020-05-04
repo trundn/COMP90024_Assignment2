@@ -57,12 +57,12 @@ def main(args):
     tweepy_api = api_factory.create_api()
 
     # Start tweeter streaming API thread
-    #streaming = StreamingAPIThread(tweepy_api, config_loader)
-    #streaming.start()
+    streaming = StreamingAPIThread(tweepy_api, config_loader)
+    streaming.start()
 
     # Start tweeter searching API thread
-    searching = SearchingAPIThread(tweepy_api, config_loader)
-    searching.start()
+    #searching = SearchingAPIThread(tweepy_api, config_loader)
+    #searching.start()
 
 # Run the actual program
 if __name__ == "__main__":

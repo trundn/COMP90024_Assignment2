@@ -8,12 +8,15 @@ import tweepy
 import constants
 # Provides the utility functions
 from helper import Helper
+# Uility to write tweet data to CounchDB
+from tweet_writer import TweetWriter
 
 class SearchingAPIThread(threading.Thread):
     def __init__(self, tweepy_api, config_loader):
         threading.Thread.__init__(self)
         self.tweepy_api = tweepy_api
         self.config_loader = config_loader
+        self.writer = TweetWriter()
 
     def run(self):
         helper = Helper()
@@ -22,6 +25,8 @@ class SearchingAPIThread(threading.Thread):
         for user_id in self.config_loader.users:
             # Get all posible user tweets (max: 3200 tweets for each uer)
             all_tweets = helper.get_all_tweets(self.tweepy_api, user_id)
+            # Write all tweets to counchdb
+            self.writer.write_to_counchdb(all_tweets)
             # Sleep 2 seconds
             time.sleep(constants.TWO_SECONDS)
 
@@ -30,5 +35,5 @@ class SearchingAPIThread(threading.Thread):
             for follower in helper.get_followers(self.tweepy_api, user_id):
                 if (constants.AUSTRALIA_COUNTRY_NAME in follower.location.lower()):
                     all_followers_tweets = helper.get_all_tweets(self.tweepy_api, follower.screen_name)
-                    for tweet in all_followers_tweets:
-                        print(tweet.text)
+                    # Write all tweets to counchdb
+                    self.writer.write_to_counchdb(all_followers_tweets)

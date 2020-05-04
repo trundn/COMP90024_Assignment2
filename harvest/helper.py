@@ -17,6 +17,27 @@ class Helper(object):
 
         return result
 
+    def extract_coordinates(self, tweet):
+        source = ""
+        coordinates = []
+
+        if (tweet is not None):
+            if ((tweet.geo is not None) and (tweet.geo.coordinates is not None)):
+                source = constants.GEO
+                coordinates = tweet.geo.coordinates
+            elif ((tweet.coordinates is not None) and (tweet.coordinates.coordinates is not None)):
+                source = constants.COORDINATES
+                coordinates = [tweet.coordinates.coordinates[1], tweet.coordinates.coordinates[0]]
+            elif ((tweet.place is not None) and (tweet.place.bounding_box is not None) and (tweet.place.bounding_box.coordinates is not None)):
+                source = constants.PLACE
+                tmp_coordinates = tweet.place.bounding_box.coordinates[0]
+                latitude = (tmp_coordinates[0][1] + tmp_coordinates[1][1]) / 2
+                longitude =(tmp_coordinates[0][0] + tmp_coordinates[2][0]) / 2
+                coordinates = [latitude, longitude]
+
+        return source, coordinates
+
+
     def get_followers(self, tweepy_api, user_name, max_count):
         # Initialize a list to hold all followers
         followers = []

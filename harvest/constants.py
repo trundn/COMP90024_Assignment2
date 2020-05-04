@@ -22,4 +22,7 @@ TWEET_MODE = "extended"
 TWO_SECONDS = 2
 ONE_MINUTE = 60
 
+GEO = "geo"
+PLACE = "place"
+COORDINATES = "coordinates"
 AUSTRALIA_COUNTRY_NAME = "australia"

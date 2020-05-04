@@ -10,6 +10,8 @@ import tweepy
 import constants
 # Provides the utility functions
 from helper import Helper
+# Uility to write tweet data to CounchDB
+from tweet_writer import TweetWriter
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):
@@ -18,13 +20,17 @@ class StreamListener(tweepy.StreamListener):
         self.tweepy_api = tweepy_api
         self.config_loader = config_loader
         self.helper = Helper()
+        self.writer = TweetWriter()
 
     def on_status(self, status):
-        if (helper.is_track_match(status.text, self.config_loader.tracks)):
-            print("")
+        # Write current tweet to counchdb
+        self.writer.write_to_counchdb([status])
 
         # Try to query time line for this user
         all_tweets = helper.get_all_tweets(self.tweepy_api, status.screen_name)
+        
+        # Write all tweets to counchdb
+        self.writer.write_to_counchdb(all_tweets)
 
     def on_error(self, status_code):
         print("Encountered streaming error (", status_code, ")")
@@ -38,7 +44,7 @@ class StreamingAPIThread(threading.Thread):
 
     def run(self):
         # Instantiate the stream listener
-        listener = StreamListener(self.config_loader)
+        listener = StreamListener(self.tweepy_api, self.config_loader)
 
         # Streaming and filtering tweet data
         stream = tweepy.Stream(auth = self.tweepy_api.auth,
