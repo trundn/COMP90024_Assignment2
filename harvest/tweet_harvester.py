@@ -61,8 +61,8 @@ def main(args):
     streaming.start()
 
     # Start tweeter searching API thread
-    #searching = SearchingAPIThread(tweepy_api, config_loader)
-    #searching.start()
+    searching = SearchingAPIThread(tweepy_api, config_loader)
+    searching.start()
 
 # Run the actual program
 if __name__ == "__main__":
