@@ -26,7 +26,7 @@ class SearchingAPIThread(threading.Thread):
             # Get all posible user tweets (max: 3200 tweets for each uer)
             all_tweets = helper.get_all_tweets(self.tweepy_api, user_id)
             # Write all tweets to counchdb
-            self.writer.write_to_counchdb(all_tweets)
+            self.writer.write_to_counchdb(all_tweets, self.config_loader)
             # Sleep 2 seconds
             time.sleep(constants.TWO_SECONDS)
 
@@ -36,4 +36,4 @@ class SearchingAPIThread(threading.Thread):
                 if (constants.AUSTRALIA_COUNTRY_NAME in follower.location.lower()):
                     all_followers_tweets = helper.get_all_tweets(self.tweepy_api, follower.screen_name)
                     # Write all tweets to counchdb
-                    self.writer.write_to_counchdb(all_followers_tweets)
+                    self.writer.write_to_counchdb(all_followers_tweets, self.config_loader)

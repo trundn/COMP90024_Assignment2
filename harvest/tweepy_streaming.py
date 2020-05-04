@@ -24,13 +24,13 @@ class StreamListener(tweepy.StreamListener):
 
     def on_status(self, status):
         # Write current tweet to counchdb
-        self.writer.write_to_counchdb([status])
+        self.writer.write_to_counchdb([status], self.config_loader)
 
         # Try to query time line for this user
         all_tweets = helper.get_all_tweets(self.tweepy_api, status.screen_name)
         
         # Write all tweets to counchdb
-        self.writer.write_to_counchdb(all_tweets)
+        self.writer.write_to_counchdb(all_tweets, self.config_loader)
 
     def on_error(self, status_code):
         print("Encountered streaming error (", status_code, ")")
