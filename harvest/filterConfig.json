@@ -1,4 +1,23 @@
 {
+    "streaming": {
+        "locations": [
+            113.338953078,
+            -43.6345972634,
+            153.569469029,
+            -10.6681857235
+        ]
+    },
+    "searching": {
+        "users": [
+            "ScottMorrisonMP",
+            "DanielAndrewsMP",
+            "GladysB",
+            "AnnastaciaMP",
+            "MarkMcGowanMP",
+            "WHO",
+            "healthgovau"
+        ]
+    },
     "track": [
         "covid",
         "covid19",
@@ -15,29 +34,9 @@
         "self-isolation",
         "socialdistancing",
         "social-distancing",
-        "Flattenthecurve",
-        "Flatten-the-curve",
-        "WorldHealthOrganisation",
-        "WHO"
-    ],
-    "locations": [
-        113.338953078,
-        -43.6345972634,
-        153.569469029,
-        -10.6681857235
-    ],
-    "users": [
-        // politicians in AU
-        "ScottMorrisonMP",
-        "DanielAndrewsMP",
-        "GladysB",
-        "AnnastaciaMP",
-        "MarkMcGowanMP",
-        // health organizations 
-        "WHO",
-        "healthgovau"
-    ],
-    "languages": [
-        "en"
+        "flattenthecurve",
+        "flatten-the-curve",
+        "worldhealthorganisation",
+        "who"
     ]
 }

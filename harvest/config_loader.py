@@ -39,10 +39,9 @@ class ConfigurationLoader(object):
                 with open(self.filter_config_path) as fstream:
                     try:
                         config_content = json.loads(fstream.read())
+                        self.locations = config_content[constants.JSON_STREAMING_SECTION_PROP][constants.JSON_LOCATIONS_PROP]
+                        self.users = config_content[constants.JSON_SEARCHING_SECTION_PROP][constants.JSON_USERS_PROP]
                         self.track = config_content[constants.JSON_TRACK_PROP]
-                        self.locations = config_content[constants.JSON_LOCATIONS_PROP]
-                        self.users = config_content[constants.JSON_USERS_PROP]
-                        self.languages = config_content[constants.JSON_LANGUAGES_PROP]
                     except Exception as exception:
                         print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
             else:

@@ -8,11 +8,23 @@ import threading
 import tweepy
 # The harvest constant definitions
 import constants
+# Provides the utility functions
+from helper import Helper
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):
+    def __init__(self, tweepy_api, config_loader):
+        super(StreamListener, self).__init__()
+        self.tweepy_api = tweepy_api
+        self.config_loader = config_loader
+        self.helper = Helper()
+
     def on_status(self, status):
-        print(status._json)
+        if (helper.is_track_match(status.text, self.config_loader.tracks)):
+            print("")
+
+        # Try to query time line for this user
+        all_tweets = helper.get_all_tweets(self.tweepy_api, status.screen_name)
 
     def on_error(self, status_code):
         print("Encountered streaming error (", status_code, ")")
@@ -26,10 +38,9 @@ class StreamingAPIThread(threading.Thread):
 
     def run(self):
         # Instantiate the stream listener
-        listener = StreamListener()
+        listener = StreamListener(self.config_loader)
 
         # Streaming and filtering tweet data
         stream = tweepy.Stream(auth = self.tweepy_api.auth,
             listener = listener, tweet_mode = constants.TWEET_MODE)
-        stream.filter(track = self.config_loader.track,
-            locations = self.config_loader.locations, languages = self.config_loader.languages)
+        stream.filter(locations = self.config_loader.locations)

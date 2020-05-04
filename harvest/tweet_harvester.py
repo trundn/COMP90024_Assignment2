@@ -14,7 +14,8 @@ from tweepy_searching import SearchingAPIThread
 import constants
 
 def print_usage():
-  print ('Usage is: tweet_harvester.py -a <the authentication configuration file> -f <the tweet filter configuration file>')
+    print('Usage is: tweet_harvester.py -a <the authentication configuration file>')
+    print('                             -f <the tweet filter configuration file>')
 
 def parse_arguments(argv):
     # Initialise local variables
@@ -28,7 +29,7 @@ def parse_arguments(argv):
         print("Failed to parse comand line arguments. Error: %s" %error)
         print_usage()
         sys.exit(2)
-        
+
     # Extract argument values
     for opt, arg in opts:
         if opt == constants.HELP_ARGUMENT:
@@ -56,8 +57,8 @@ def main(args):
     tweepy_api = api_factory.create_api()
 
     # Start tweeter streaming API thread
-    streaming = StreamingAPIThread(tweepy_api, config_loader)
-    streaming.start()
+    #streaming = StreamingAPIThread(tweepy_api, config_loader)
+    #streaming.start()
 
     # Start tweeter searching API thread
     searching = SearchingAPIThread(tweepy_api, config_loader)
