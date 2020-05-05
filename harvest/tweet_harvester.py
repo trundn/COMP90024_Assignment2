@@ -4,8 +4,6 @@ import os
 import sys, getopt
 # Using class for loading all needed configurations
 from config_loader import ConfigurationLoader
-# Using class for creating Tweepy API
-from api_factory import APIFactory;
 # Thread for performing tweepy streaming API
 from tweepy_streaming import StreamingAPIThread
 # Thread for performing tweepy searching API
@@ -52,17 +50,13 @@ def main(args):
     config_loader.load_authentication_config()
     config_loader.load_filter_config()
 
-    # Create tweepy API
-    api_factory = APIFactory(config_loader)
-    tweepy_api = api_factory.create_api()
-
     # Start tweeter streaming API thread
-    streaming = StreamingAPIThread(tweepy_api, config_loader)
-    streaming.start()
+    #streaming = StreamingAPIThread(config_loader)
+    #streaming.start()
 
     # Start tweeter searching API thread
-    searching = SearchingAPIThread(tweepy_api, config_loader)
-    searching.start()
+    #searching = SearchingAPIThread(config_loader)
+    #searching.start()
 
 # Run the actual program
 if __name__ == "__main__":

@@ -2,21 +2,17 @@
 import tweepy
 
 class APIFactory(object):
-    def __init__(self, config_loader):
-        self.config_loader = config_loader
-
-    def create_api(self):
-        if not (self.config_loader.api_key and self.config_loader.api_secret_key
-                    and self.config_loader.access_token and self.config_loader.access_token_secret):
+    def create_api(self, api_key, api_secret_key, access_token, access_token_secret):
+        if not (api_key and api_secret_key and access_token and access_token_secret):
             raise RuntimeError("The authentication keys are missing.")
 
         # Creating the authentication object
         print("Creating OAuth user authentication.")
-        auth = tweepy.OAuthHandler(self.config_loader.api_key, self.config_loader.api_secret_key)
+        auth = tweepy.OAuthHandler(api_key, api_secret_key)
 
         if (auth):
             # Setting your access token and secret
-            auth.set_access_token(self.config_loader.access_token, self.config_loader.access_token_secret)
+            auth.set_access_token(access_token, access_token_secret)
             
             # Creating the API object while passing in auth information
             print("Creating Tweepy API from OAuth user authentication.")

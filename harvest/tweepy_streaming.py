@@ -8,6 +8,8 @@ import threading
 import tweepy
 # The harvest constant definitions
 import constants
+# Using class for creating Tweepy API
+from api_factory import APIFactory
 # Provides the utility functions
 from helper import Helper
 # Uility to write tweet data to CounchDB
@@ -37,16 +39,27 @@ class StreamListener(tweepy.StreamListener):
         sys.exit()
 
 class StreamingAPIThread(threading.Thread):
-    def __init__(self, tweepy_api, config_loader):
+    def __init__(self, config_loader):
         threading.Thread.__init__(self)
-        self.tweepy_api = tweepy_api
+        self.tweepy_api = None
         self.config_loader = config_loader
 
     def run(self):
+        # Create tweepy API
+        api_factory = APIFactory()
+        self.tweepy_api = api_factory.create_api(self.config_loader.api_key,
+                                self.config_loader.api_secret_key,
+                                self.config_loader.access_token,
+                                self.config_loader.access_token_secret)
+
         # Instantiate the stream listener
         listener = StreamListener(self.tweepy_api, self.config_loader)
 
         # Streaming and filtering tweet data
         stream = tweepy.Stream(auth = self.tweepy_api.auth,
             listener = listener, tweet_mode = constants.TWEET_MODE)
-        stream.filter(locations = self.config_loader.locations)
+
+        # Filer tweets based on configured locations
+        locations = self.config_loader.get_streaming_locations()
+        if (locations is not None):
+            stream.filter(locations = locations)
