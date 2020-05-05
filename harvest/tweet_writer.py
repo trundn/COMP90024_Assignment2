@@ -4,7 +4,9 @@ import threading
 from harvest.helper import Helper
 # Utility for working with CouchDB
 from harvest.couchdb_connection import CouchDBConnection
+# Manage all runnable jobs
 from harvest.job_executor import JobExecutor
+# Reponsible for writer tweets to CouchDB
 from harvest.writer_job import WriterJob
 
 class TweetWriter(object):
