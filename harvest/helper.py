@@ -5,7 +5,7 @@ import csv
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import constants
+import harvest.constants
 
 class Helper(object):
     def is_track_match(self, tweet_text, tracks):
@@ -23,13 +23,13 @@ class Helper(object):
 
         if (tweet is not None):
             if ((tweet.geo is not None) and (tweet.geo.coordinates is not None)):
-                source = constants.GEO
+                source = harvest.constants.GEO
                 coordinates = tweet.geo.coordinates
             elif ((tweet.coordinates is not None) and (tweet.coordinates.coordinates is not None)):
-                source = constants.COORDINATES
+                source = harvest.constants.COORDINATES
                 coordinates = [tweet.coordinates.coordinates[1], tweet.coordinates.coordinates[0]]
             elif ((tweet.place is not None) and (tweet.place.bounding_box is not None) and (tweet.place.bounding_box.coordinates is not None)):
-                source = constants.PLACE
+                source = harvest.constants.PLACE
                 tmp_coordinates = tweet.place.bounding_box.coordinates[0]
                 latitude = (tmp_coordinates[0][1] + tmp_coordinates[1][1]) / 2
                 longitude =(tmp_coordinates[0][0] + tmp_coordinates[2][0]) / 2
@@ -45,7 +45,7 @@ class Helper(object):
         for page in tweepy.Cursor(tweepy_api.followers,
                             screen_name = user_name,
                             wait_on_rate_limit = True,
-                            count = constants.LIMIT_COUNT_PER_REQ).pages():
+                            count = harvest.constants.LIMIT_COUNT_PER_REQ).pages():
             
             try:
                 # Put all new follower into final follower list
@@ -57,10 +57,10 @@ class Helper(object):
             except tweepy.TweepError as ex:
                 print("Going to sleep:", ex)
                 # Sleep 60 seconds to avoid rate limit issue
-                time.sleep(constants.ONE_MINUTE)
+                time.sleep(harvest.constants.ONE_MINUTE)
 
             # Sleep 60 seconds to avoid rate limit issue
-            time.sleep(constants.ONE_MINUTE)
+            time.sleep(harvest.constants.ONE_MINUTE)
 
         return followers
 
@@ -71,7 +71,7 @@ class Helper(object):
         try:
             # Make initial request for most recent tweets
             new_tweets = tweepy_api.user_timeline(screen_name = screen_name,
-                count = constants.LIMIT_COUNT_PER_REQ)
+                count = harvest.constants.LIMIT_COUNT_PER_REQ)
             
             # Put all new tweets into final tweets list
             alltweets.extend(new_tweets)
@@ -82,11 +82,11 @@ class Helper(object):
                 
                 # Keep grabbing tweets until there are no tweets left to grab
                 while len(new_tweets) > 0:
-                    time.sleep(constants.TWO_SECONDS)
+                    time.sleep(harvest.constants.TWO_SECONDS)
                     
                     # All subsiquent requests use the max_id param to prevent duplicates
                     new_tweets = tweepy_api.user_timeline(screen_name = screen_name,
-                        count = constants.LIMIT_COUNT_PER_REQ, max_id = oldest)
+                        count = harvest.constants.LIMIT_COUNT_PER_REQ, max_id = oldest)
                     
                     # Put all new tweets into final tweets list
                     alltweets.extend(new_tweets)

@@ -2,15 +2,15 @@ import time
 # Useful in threaded programming when information must be exchanged safely between multiple threads
 from Queue import Queue
 # Provide a common protocol for objects that wish to execute code while they are active
-from runnable import Runnable
+from harvest.runnable import Runnable
 # Reponsible for executing queued runnable jobs
-from worker import Worker
+from harvest.worker import Worker
 # Useful in thread-safe increase and decrease integer value
-from atomic_integer import AtomicInteger
+from harvest.atomic_integer import AtomicInteger
 # Useful in thread-safe get and set boolean value
-from atomic_boolean import AtomicBoolean
+from harvest.atomic_boolean import AtomicBoolean
 # The harvest constant definitions
-import constants
+import harvest.constants
 
 class JobExecutor(object):
     def __init__(self, min_thread_count, max_thread_count, max_queue_size):
@@ -94,6 +94,6 @@ class JobExecutor(object):
                 return
 
             # Sleep 1 second before checking thread alive status again
-            time.sleep(constants.ONE_SECOND)
+            time.sleep(harvest.constants.ONE_SECOND)
 
         raise RuntimeError("Unable to terminate the thread pool job exectuor within the specified timeout [{}] ms.".format(timeout))

@@ -1,5 +1,5 @@
 # Useful in thread-safe get and set boolean value
-from atomic_boolean import AtomicBoolean
+from harvest.atomic_boolean import AtomicBoolean
 
 class Runnable(object):
     def __init__(self):

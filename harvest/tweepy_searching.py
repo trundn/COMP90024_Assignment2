@@ -7,20 +7,20 @@ import time
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import constants
+import harvest.constants
 # Using class for creating Tweepy API
-from api_factory import APIFactory
+from harvest.api_factory import APIFactory
 # Provides the utility functions
-from helper import Helper
+from harvest.helper import Helper
 # Uility to write tweet data to CounchDB
-from tweet_writer import TweetWriter
+from harvest.tweet_writer import TweetWriter
 
 class SearchingAPIThread(threading.Thread):
     def __init__(self, config_loader):
         threading.Thread.__init__(self)
         self.tweepy_api = None
         self.config_loader = config_loader
-        self.writer = TweetWriter()
+        self.writer = TweetWriter(self.config_loader)
 
     def run(self):
         comm = MPI.COMM_WORLD
@@ -42,12 +42,12 @@ class SearchingAPIThread(threading.Thread):
                 # Write all tweets to counchdb
                 self.writer.write_to_counchdb(all_tweets, self.config_loader)
                 # Sleep 2 seconds
-                time.sleep(constants.TWO_SECONDS)
+                time.sleep(harvest.constants.TWO_SECONDS)
 
             # Query time line for all followers
             for user_id in users:
                 for follower in helper.get_followers(self.tweepy_api, user_id, -1):
-                    if (constants.AUSTRALIA_COUNTRY_NAME in follower.location.lower()):
+                    if (harvest.constants.AUSTRALIA_COUNTRY_NAME in follower.location.lower()):
                         all_followers_tweets = helper.get_all_tweets(self.tweepy_api, follower.screen_name)
                         # Write all tweets to counchdb
                         self.writer.write_to_counchdb(all_followers_tweets, self.config_loader)

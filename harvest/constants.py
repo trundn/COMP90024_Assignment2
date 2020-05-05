@@ -1,8 +1,14 @@
 # Definition of Constants
-CMD_LINE_DEFINED_ARGUMENTS = "ha:f:"
+CMD_LINE_DEFINED_ARGUMENTS = "ha:f:m:"
 HELP_ARGUMENT = "-h"
 AUTHEN_CONFIG_ARGUMENT = "-a"
 FILTER_CONFIG_ARGUMENT = "-f"
+HARVEST_MODE_ARGUMENT = "-m"
+
+ALL_HARVEST_MODE = "all"
+STREAM_HARVEST_MODE = "stream"
+SEARCH_HARVEST_MODE = "search"
+TWEETID_HARVEST_MODE = "tweetid"
 
 JSON_API_KEY_PROP = "api_key"
 JSON_API_SECRET_KEY_PROP = "api_secret_key"
@@ -18,6 +24,14 @@ JSON_LOCATIONS_PROP = "locations"
 JSON_LANGUAGES_PROP = "languages"
 JSON_TRACK_PROP = "track"
 JSON_USERS_PROP = "users"
+
+JSON_COUCHDB_SECTION_PROP = "couchdb"
+JSON_USERNAME_PROP = "username"
+JSON_PASSWORD_PROP = "password"
+JSON_HOST_PROP = "host"
+JSON_PORT_PROP = "port"
+
+TWEETS_DATABASE = "tweets"
 
 LIMIT_COUNT_PER_REQ = 200;
 TWEET_MODE = "extended"

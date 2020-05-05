@@ -5,9 +5,9 @@ import sys
 # Useful in threaded programming when information must be exchanged safely between multiple threads
 from Queue import Queue
 # Provide a common protocol for objects that wish to execute code while they are active
-from runnable import Runnable
+from harvest.runnable import Runnable
 # Useful in thread-safe get and set boolean value
-from atomic_boolean import AtomicBoolean
+from harvest.atomic_boolean import AtomicBoolean
 
 class Worker(threading.Thread):
     def __init__(self, is_stopped, queue):

@@ -1,19 +1,21 @@
+# Constructs higher-level threading interfaces on top of the lower level _thread module
+import threading
 # Provides the utility functions
-from helper import Helper
+from harvest.helper import Helper
+# Utility for working with CouchDB
+from harvest.couchdb_connection import CouchDBConnection
+from harvest.job_executor import JobExecutor
+from harvest.writer_job import WriterJob
 
 class TweetWriter(object):
-    def write_to_counchdb(self, all_tweets, config_loader):
+    def __init__(self, config_loader):
+        self.config_loader = config_loader
+        self.lock = threading.Lock()
+        self.database_connection = CouchDBConnection(
+            self.config_loader.couchdb_connection_string, self.lock)
+        self.threadpool_job_executor = JobExecutor(-1, 50, 50000)
+
+    def write_to_counchdb(self, all_tweets):
         if (all_tweets is not None):
-            helper = Helper()
-
-            for tweet in all_tweets:
-                if (helper.is_track_match(tweet.text, config_loader.tracks)):
-                    source, coordinates = helper.extract_coordinates(tweet)
-
-                    if (coordinates is not None):
-
-                        filter_data = {'_id' : tweet.id_str, 'created_at' : tweet.created_at,\
-                                'text' : tweet.text, 'user' : tweet.user, 'geo' : tweet.geo,\
-                                'coordinates' : tweet.coordinates, 'place' : tweet.place,\
-                                'calculated_coordinates' : coordinates, 'coordinates_source' : source,\
-                                'raw_data' : tweet._json}
+            job = WriterJob(all_tweets, self.database_connection)
+            self.threadpool_job_executor.queue(job)

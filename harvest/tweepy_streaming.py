@@ -7,13 +7,13 @@ import threading
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import constants
+import harvest.constants
 # Using class for creating Tweepy API
-from api_factory import APIFactory
+from harvest.api_factory import APIFactory
 # Provides the utility functions
-from helper import Helper
+from harvest.helper import Helper
 # Uility to write tweet data to CounchDB
-from tweet_writer import TweetWriter
+from harvest.tweet_writer import TweetWriter
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):
@@ -22,7 +22,7 @@ class StreamListener(tweepy.StreamListener):
         self.tweepy_api = tweepy_api
         self.config_loader = config_loader
         self.helper = Helper()
-        self.writer = TweetWriter()
+        self.writer = TweetWriter(self.config_loader)
 
     def on_status(self, status):
         # Write current tweet to counchdb
@@ -57,7 +57,7 @@ class StreamingAPIThread(threading.Thread):
 
         # Streaming and filtering tweet data
         stream = tweepy.Stream(auth = self.tweepy_api.auth,
-            listener = listener, tweet_mode = constants.TWEET_MODE)
+            listener = listener, tweet_mode = harvest.constants.TWEET_MODE)
 
         # Filer tweets based on configured locations
         locations = self.config_loader.get_streaming_locations()

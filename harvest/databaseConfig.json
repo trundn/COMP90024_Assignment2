@@ -1,0 +1,8 @@
+{
+    "couchdb": {
+        "username": "",
+        "password": "",
+        "host": "",
+        "port": ""
+    }
+}

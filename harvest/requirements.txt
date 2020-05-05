@@ -2,3 +2,4 @@ tweepy
 nltk
 json
 pandas
+couchdb
