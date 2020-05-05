@@ -51,12 +51,12 @@ def main(args):
     config_loader.load_filter_config()
 
     # Start tweeter streaming API thread
-    #streaming = StreamingAPIThread(config_loader)
-    #streaming.start()
+    streaming = StreamingAPIThread(config_loader)
+    streaming.start()
 
     # Start tweeter searching API thread
-    #searching = SearchingAPIThread(config_loader)
-    #searching.start()
+    searching = SearchingAPIThread(config_loader)
+    searching.start()
 
 # Run the actual program
 if __name__ == "__main__":
