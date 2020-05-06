@@ -78,12 +78,10 @@ class ConfigurationLoader(object):
 
     def get_searching_users(self, processor_id, processor_size):
         groupped_users = []
-        print(processor_size)
 
         if (self.searching is not None):
             user_list = self.searching[constants.JSON_USERS_PROP]
             for i, user in enumerate(user_list):
-                print(i)
                 if (i % processor_size == processor_id):
                     groupped_users.append(user)
 
