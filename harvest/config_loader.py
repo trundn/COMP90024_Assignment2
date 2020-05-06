@@ -36,7 +36,7 @@ class ConfigurationLoader(object):
                 except Exception as exception:
                     print("Error occurred during loading the authentication configuration file. Exception: %s" %exception)
         else:
-            print("The authentication configuration file does not exist. Path: %s", self.authen_config_path)
+            print(f"The authentication configuration file does not exist. Path: {self.authen_config_path}")
 
     def load_filter_config(self):
             if os.path.exists(self.filter_config_path):
@@ -49,7 +49,7 @@ class ConfigurationLoader(object):
                     except Exception as exception:
                         print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
             else:
-                print("The filter configuration file does not exist. Path: %s", self.filter_config_path)
+                print(f"The filter configuration file does not exist. Path: {self.filter_config_path}")
 
     def load_couchdb_config(self):
         if os.path.exists(self.database_config_path):
@@ -66,7 +66,7 @@ class ConfigurationLoader(object):
                     except Exception as exception:
                         print("Error occurred during loading the tweet database configuration file. Exception: %s" %exception)
         else:
-            print("The database configuration file does not exist. Path: %s", self.database_config_path)
+            print(f"The database configuration file does not exist. Path: {self.database_config_path}")
     
     def get_streaming_locations(self):
         locations = []
