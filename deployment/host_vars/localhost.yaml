@@ -7,12 +7,20 @@ network: qh2-uom-internal
 volumes:
   - vol_name: db-cluster-1
     vol_size: 80
+    device: /dev/vdb
+    mountpoint: /data
   - vol_name: db-cluster-2
     vol_size: 80
+    device: /dev/vdb
+    mountpoint: /data
   - vol_name: db-cluster-3
     vol_size: 80
+    device: /dev/vdb
+    mountpoint: /data
   - vol_name: app-volume
     vol_size: 10
+    device: /dev/vdb
+    mountpoint: /data
 
 # Variables for security groups
 security_groups:
