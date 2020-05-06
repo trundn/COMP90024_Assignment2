@@ -12,13 +12,21 @@ class WriterJob(Runnable):
         helper = Helper()
 
         for tweet in self.all_tweets:
-            if (helper.is_track_match(tweet.text, self.config_loader.tracks)):
+            
+            # Extract full text
+            if (tweet["doc"]["truncated"] == True):
+                tweet_text = data_json["doc"]["extended_tweet"]["full_text"]
+            else:
+                tweet_text = data_json["doc"]["text"]
+
+            if (helper.is_track_match(tweet_text, self.config_loader.tracks)):
                 source, coordinates = helper.extract_coordinates(tweet)
+                emotions = helper.extract_emotions(tweet_text)                
 
                 if (coordinates is not None):
                     filter_data = {'_id' : tweet.id_str, 'created_at' : tweet.created_at,\
-                                'text' : tweet.text, 'user' : tweet.user, 'geo' : tweet.geo,\
+                                'text' : tweet_text, 'user' : tweet.user, 'geo' : tweet.geo,\
                                 'coordinates' : tweet.coordinates, 'place' : tweet.place,\
                                 'calculated_coordinates' : coordinates, 'coordinates_source' : source,\
-                                'raw_data' : tweet._json}
+                                'emotions': emotions, 'raw_data' : tweet._json}
                     self.db_connection.write_tweet(filter_data)
