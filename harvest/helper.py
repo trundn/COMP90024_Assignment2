@@ -10,6 +10,7 @@ import constants
 import nltk
 nltk.download("vader_lexicon")
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
+from nltk.tokenize import RegexpTokenizer
 
 class Helper(object):
     def is_track_match(self, tweet_text, track):
@@ -121,3 +122,31 @@ class Helper(object):
         # Get emotion scores e.g.: {'neg': 0.047, 'neu': 0.849, 'pos': 0.104, 'compound': 0.3565}
         emotions = sia.polarity_scores(tweet_text)
         return emotions
+    
+    def extract_word_count(self, tweet_text):
+        tokenizer = RegexpTokenizer(r'\w+')
+        words_list = tokenizer.tokenize(tweet_text.lower())
+        
+        # Count Tweet words length
+        word_count = len(words_list)
+        
+        # Initial pronoun count
+        pronoun_count = {"fps_cnt":0, "fpp_cnt":0, "sp_cnt":0, "tp_cnt":0}
+
+        # Count each pronoun
+        for w in words_list:
+            for pron in constants.FIRST_PERSON_SINGULAR:
+                if w == pron:
+                    pronoun_count["fps_cnt"] += 1
+            for pron in constants.FIRST_PERSON_PLURAL:
+                if w == pron:
+                    pronoun_count["fpp_cnt"] += 1
+            for pron in constants.SECOND_PERSON_PRONOUN:
+                if w == pron:
+                    pronoun_count["sp_cnt"] += 1
+            for pron in constants.THIRD_PERSON_PRONOUN:
+                if w == pron:
+                    pronoun_count["tp_cnt"] += 1
+        
+        return word_count, pronoun_count
+

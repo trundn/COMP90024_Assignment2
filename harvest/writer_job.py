@@ -19,6 +19,7 @@ class WriterJob(Runnable):
             if (self.helper.is_track_match(full_text.lower(), self.config_loader.track)):
                 source, coordinates = self.helper.extract_coordinates(tweet)
                 emotions = self.helper.extract_emotions(full_text)
+                word_count, pronoun_count = self.helper.extract_word_count(full_text)
 
                 converted_datetime = ""
                 if tweet.created_at != None:
@@ -29,6 +30,8 @@ class WriterJob(Runnable):
                                 'text' : full_text, 'user' : tweet.user.screen_name, 'geo' : tweet.geo,\
                                 'coordinates' : tweet.coordinates,\
                                 'calculated_coordinates' : coordinates, 'coordinates_source' : source,\
-                                'emotions': emotions, 'raw_data' : tweet._json}
+                                'emotions': emotions, \
+                                'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
+                                'raw_data' : tweet._json}
                     print(filter_data)
                     self.db_connection.write_tweet(filter_data)
