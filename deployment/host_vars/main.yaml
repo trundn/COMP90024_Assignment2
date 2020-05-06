@@ -8,7 +8,7 @@ volumes:
     vol_size: 80
   - vol_name: db-cluster-3
     vol_size: 80
-  - vol_name: app
+  - vol_name: app-volume
     vol_size: 10
 
 security_groups:
@@ -23,4 +23,19 @@ security_groups:
     protocol: tcp
     port_range_min: 80
     port_range_max: 80
-    remote_ip_prefix: 0.0.0.0/0
+    remote_ip_prefix: 172.0.0.0/0
+
+
+instances:
+  - name: db-instance-1
+    volumes: db-cluster-1
+  - name: db-instance-2
+    volumes: db-cluster-2
+  - name: db-instance-3
+    volumes: db-cluster-3
+  - name: app-instance
+    volumes: app-volume
+
+instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166
+instance_key_name: mayank-sharma-key
+instance_flavor: uom.mse.2c9g
