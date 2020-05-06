@@ -12,8 +12,7 @@
 
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ==" crossorigin=""/>
     <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew==" crossorigin=""></script>
-
-
+	<script type="text/javascript" src="melbourne-suburb-polygon.json"></script>
 	
 </head>
 <body>
@@ -23,7 +22,7 @@
 <div id="mapid" style="width: 1400px; height: 1000px;"></div>
 <script>
 
-    var mymap = L.map('mapid').setView([-37.798, 144.96], 15);
+    var mymap = L.map('mapid').setView([-37.797781, 144.961681], 14);
 
 	L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 		maxZoom: 18,
@@ -35,15 +34,31 @@
 		zoomOffset: -1
 	}).addTo(mymap);
 
+	var vicpolygon = vicpolygon;
+	
+	
+	L.geoJSON(vicpolygon).addTo(mymap);
 
 
-	L.polygon([
-        [-37.793067, 144.959106],
-        [-37.79241, 144.96196],
-        [-37.793609, 144.964471],
-        [-37.800375, 144.96387],
-        [-37.799764, 144.958098]
-	]).addTo(mymap).bindPopup("I am a polygon.");
+	var unimelbIcon = L.icon({
+    iconUrl: 'unimelbIcon.png',
+
+    iconSize:     [50, 50], // size of the icon
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+	popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+	});
+	L.marker([-37.796831, 144.961424], {icon: unimelbIcon}).addTo(mymap);
+
+
+	//Unimelb Polygon
+	// L.polygon([
+    //     [-37.793067, 144.959106],
+    //     [-37.79241, 144.96196],
+    //     [-37.793609, 144.964471],
+    //     [-37.800375, 144.96387],
+    //     [-37.799764, 144.958098]
+	// ]).addTo(mymap).bindPopup("I am a polygon.");
+	
 
 	var popup = L.popup();
 
