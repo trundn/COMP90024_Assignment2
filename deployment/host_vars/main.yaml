@@ -1,6 +1,9 @@
+---
+# Common variables
 availability_zone: melbourne-qh2-uom
 network: qh2-uom-internal
 
+# Variables for volumes
 volumes:
   - vol_name: db-cluster-1
     vol_size: 80
@@ -11,6 +14,7 @@ volumes:
   - vol_name: app-volume
     vol_size: 10
 
+# Variables for security groups
 security_groups:
   - name: group45_ssh
     description: "Security group for SSH access for group45"
@@ -25,7 +29,7 @@ security_groups:
     port_range_max: 80
     remote_ip_prefix: 172.0.0.0/0
 
-
+# Variables for instances
 instances:
   - name: db-instance-1
     volumes: db-cluster-1
@@ -39,3 +43,6 @@ instances:
 instance_image: 45225edb-66d8-4fd0-bf41-132a31a18166
 instance_key_name: mayank-sharma-key
 instance_flavor: uom.mse.2c9g
+
+# Variables for images
+image_facts: []
