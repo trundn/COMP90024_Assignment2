@@ -46,3 +46,4 @@ instance_flavor: uom.mse.2c9g
 
 # Variables for images
 image_facts: []
+instance_facts: []
