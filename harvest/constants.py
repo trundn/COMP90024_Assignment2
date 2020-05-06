@@ -31,6 +31,9 @@ JSON_PASSWORD_PROP = "password"
 JSON_HOST_PROP = "host"
 JSON_PORT_PROP = "port"
 
+JSON_RETWEETED_STATUS_PROP = "retweeted_status"
+JSON_FULL_TEXT_PROP = "full_text"
+
 TWEETS_DATABASE = "tweets"
 
 LIMIT_COUNT_PER_REQ = 200;

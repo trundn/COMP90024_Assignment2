@@ -5,7 +5,7 @@ import csv
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-
+import harvest.constants
 # Sentimental anaylsis for extracting positve, negative, neutral, compound emotion
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 
@@ -99,6 +99,23 @@ class Helper(object):
             print(ex)
 
         return alltweets
+
+    def extract_full_text(self, tweet):
+        full_text = ""
+
+        # Check if retweet
+        if hasattr(tweet, harvest.constants.JSON_RETWEETED_STATUS_PROP):
+            try:
+                full_text = tweet.retweeted_status.extended_tweet[harvest.constants.JSON_FULL_TEXT_PROP]
+            except AttributeError:
+                full_text = tweet.retweeted_status.text
+        else:
+            try:
+                full_text = tweet.extended_tweet[harvest.constants.JSON_FULL_TEXT_PROP]
+            except AttributeError:
+                full_text = tweet.text
+
+        return full_text
 
     def extract_emotions(self, tweet_text):
         # A SentimentIntensityAnalyzer

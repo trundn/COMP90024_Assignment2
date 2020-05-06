@@ -14,18 +14,15 @@ class WriterJob(Runnable):
         for tweet in self.all_tweets:
             
             # Extract full text
-            if (tweet["doc"]["truncated"] == True):
-                tweet_text = data_json["doc"]["extended_tweet"]["full_text"]
-            else:
-                tweet_text = data_json["doc"]["text"]
+            full_text = helper.extract_full_text(tweet)
 
-            if (helper.is_track_match(tweet_text, self.config_loader.tracks)):
+            if (helper.is_track_match(full_text, self.config_loader.tracks)):
                 source, coordinates = helper.extract_coordinates(tweet)
-                emotions = helper.extract_emotions(tweet_text)                
+                emotions = helper.extract_emotions(full_text)
 
                 if (coordinates is not None):
                     filter_data = {'_id' : tweet.id_str, 'created_at' : tweet.created_at,\
-                                'text' : tweet_text, 'user' : tweet.user, 'geo' : tweet.geo,\
+                                'text' : full_text, 'user' : tweet.user, 'geo' : tweet.geo,\
                                 'coordinates' : tweet.coordinates, 'place' : tweet.place,\
                                 'calculated_coordinates' : coordinates, 'coordinates_source' : source,\
                                 'emotions': emotions, 'raw_data' : tweet._json}
