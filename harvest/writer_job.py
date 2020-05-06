@@ -2,6 +2,7 @@
 from helper import Helper
 # Provide a common protocol for objects that wish to execute code while they are active
 from runnable import Runnable
+from datetime import datetime
 
 class WriterJob(Runnable):
     def __init__(self, all_tweets, db_connection, config_loader):
@@ -19,10 +20,14 @@ class WriterJob(Runnable):
                 source, coordinates = self.helper.extract_coordinates(tweet)
                 emotions = self.helper.extract_emotions(full_text)
 
-                if (coordinates is not None):
-                    filter_data = {'_id' : tweet.id_str, 'created_at' : tweet.created_at.isoformat(),\
+                converted_datetime = ""
+                if tweet.created_at != None:
+                    converted_datetime = tweet.created_at.strftime('%Y-%m-%d %H:%M:%S%z')
+                
+                if (coordinates):
+                    filter_data = {'_id' : tweet.id_str, 'created_at' : converted_datetime,\
                                 'text' : full_text, 'user' : tweet.user.screen_name, 'geo' : tweet.geo,\
-                                'coordinates' : tweet.coordinates, 'place' : tweet.place,\
+                                'coordinates' : tweet.coordinates,\
                                 'calculated_coordinates' : coordinates, 'coordinates_source' : source,\
                                 'emotions': emotions, 'raw_data' : tweet._json}
                     print(filter_data)
