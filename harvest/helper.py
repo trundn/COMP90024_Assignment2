@@ -5,7 +5,9 @@ import csv
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import harvest.constants
+
+# Sentimental anaylsis for extracting positve, negative, neutral, compound emotion
+from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 
 class Helper(object):
     def is_track_match(self, tweet_text, tracks):
@@ -97,3 +99,10 @@ class Helper(object):
             print(ex)
 
         return alltweets
+
+    def extract_emotions(self, tweet_text):
+        # A SentimentIntensityAnalyzer
+        sia = SIA()
+        # Get emotion scores e.g.: {'neg': 0.047, 'neu': 0.849, 'pos': 0.104, 'compound': 0.3565}
+        emotions = sia.polarity_scores(tweet_text)
+        return emotions
