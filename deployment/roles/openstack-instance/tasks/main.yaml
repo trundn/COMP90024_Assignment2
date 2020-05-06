@@ -1,5 +1,4 @@
 ---
----
 # Create an instance on NeCTAR
 - name: Create an instance
   os_server:
@@ -36,14 +35,14 @@
 # Strong IP addresses that are dynamically created
 - name: Get instances names and IPaddress
   set_fact:
-    instance_facts: "{{ instance_facts + [ {'name': item.item.name, 'address': item.openstack.public_v4} ] }}"
+    instance_facts: "{{ instance_facts|default([]) + [ {'name': item.item.name, 'address': item.openstack.public_v4} ] }}"
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
 - name: Writing Inventory file
   copy:
     content: |
-      "[all:vars]
+      [all:vars]
       ansible_python_interpreter=/usr/bin/python3
       ansible_user=ubuntu
       ansible_ssh_private_key_file=~/.ssh/mayank-sharma-key.pem
@@ -67,15 +66,15 @@
       [appInstance:children]
       app-instance
       
-      "
-    dest: "../../hosts.ini"
+      
+    dest: "/media/mayankshar21/New Volume/university/COMP90024/Project/COMP90024_Assignment2/deployment/hosts.ini"
 
 - name: Add dynamically created IP addresses to inventory
   lineinfile:
     line: |
-      "[{{ item.name }}]
-      {{ item.address }}"
-    dest: "../../hosts.ini"
+      [{{ item.name }}]
+      {{ item.address }}
+    dest: "/media/mayankshar21/New Volume/university/COMP90024/Project/COMP90024_Assignment2/deployment/hosts.ini"
   loop: '{{ instance_facts }}' 
 
 
