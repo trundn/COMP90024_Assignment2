@@ -25,9 +25,11 @@ class SearchingAPIThread(threading.Thread):
     def run(self):
         comm = MPI.COMM_WORLD
         rank = comm.Get_rank()
+        processor_size = comm.Get_size()
+
         helper = Helper()
 
-        users = self.config_loader.get_searching_users(rank)
+        users = self.config_loader.get_searching_users(rank, processor_size)
         api_key, api_secret_key, access_token, access_token_secret = self.config_loader.get_searching_authen(rank)
 
         api_factory = APIFactory()
@@ -40,7 +42,7 @@ class SearchingAPIThread(threading.Thread):
                 # Get all posible user tweets (max: 3200 tweets for each uer)
                 all_tweets = helper.get_all_tweets(self.tweepy_api, user_id)
                 # Write all tweets to counchdb
-                self.writer.write_to_counchdb(all_tweets,)
+                self.writer.write_to_counchdb(all_tweets)
                 # Sleep 2 seconds
                 time.sleep(constants.TWO_SECONDS)
 

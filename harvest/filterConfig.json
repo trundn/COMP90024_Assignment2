@@ -8,48 +8,39 @@
         ]
     },
     "searching": {
-        "politicians": {
-            "processor0": {
-                "users": [
-                    "ScottMorrisonMP",
-                    "DanielAndrewsMP",
-                    "GladysB"
-                ],
-                "authen": {
-                    "api_key": "Tlq2IBLkARdXDcSQNvIJY1SBZ",
-                    "api_secret_key": "snhD9YyXP3VBGmxlfSnib3VQTxODoSs5LjP7jUpfz9n9nQPXHm",
-                    "access_token": "1251695031536152576-0rLYKDgrIjcTvKk4brLxfWLa9Y5xJS",
-                    "access_token_secret": "wXiW68DK2mW5LQtSwi0fGDf6rKVBAxQtbVOgxaGQRg5uK"
-                }
+        "users": [
+            "ScottMorrisonMP",
+            "DanielAndrewsMP",
+            "GladysB",
+            "AnnastaciaMP",
+            "MarkMcGowanMP",
+            "WHO",
+            "healthgovau"
+        ],
+        "authens": {
+            "account0": {
+                "api_key": "Tlq2IBLkARdXDcSQNvIJY1SBZ",
+                "api_secret_key": "snhD9YyXP3VBGmxlfSnib3VQTxODoSs5LjP7jUpfz9n9nQPXHm",
+                "access_token": "1251695031536152576-0rLYKDgrIjcTvKk4brLxfWLa9Y5xJS",
+                "access_token_secret": "wXiW68DK2mW5LQtSwi0fGDf6rKVBAxQtbVOgxaGQRg5uK"
             },
-            "processor1": {
-                "users": [
-                    "AnnastaciaMP",
-                    "MarkMcGowanMP",
-                    "WHO",
-                    "healthgovau"
-                ],
-                "authen": {
-                    "api_key": "QTG8KTq0nh1lE2Bw59yJa4Ljs",
-                    "api_secret_key": "VIpZRU7IERgtr5W2FZPTSypgB936e7J3MooCGynwHy70U8y6R1",
-                    "access_token": "1251428608700104704-bqVOrytxBZwlqBaXE3KAMH8nKJxi21",
-                    "access_token_secret": "lgTbq57F5gCWcBsAUVFfEioVWeVVeASgXVa6iybENRQhq"
-                }
+            "account1": {
+                "api_key": "QTG8KTq0nh1lE2Bw59yJa4Ljs",
+                "api_secret_key": "VIpZRU7IERgtr5W2FZPTSypgB936e7J3MooCGynwHy70U8y6R1",
+                "access_token": "1251428608700104704-bqVOrytxBZwlqBaXE3KAMH8nKJxi21",
+                "access_token_secret": "lgTbq57F5gCWcBsAUVFfEioVWeVVeASgXVa6iybENRQhq"
             }
         },
         "tweetids": {
-            "processor0": {
-                "folders": [],
-                "authen": {
+            "folders": [],
+            "authens": {
+                "account0": {
                     "api_key": "Ukm0uKHhYzhOeH6R7VFCPFOmL",
                     "api_secret_key": "rJGKgxEN7kwsI4CwllOCC2Urzt2HoPeQbUo5At1FA66p2pZAM6",
                     "access_token": "289723494-MqUy2zEFqONg267Ofr6nJOK3PvjCMt2POhZkWru9",
                     "access_token_secret": "XwdvbGTSSKd3nFo2uCi0fUA5EzGKo4cQopCiG1APTlwy1"
-                }
-            },
-            "processor1": {
-                "folders": [],
-                "authen": {
+                },
+                "account1": {
                     "api_key": "uPki0iVAfizNaHoL0r9qRX1X0",
                     "api_secret_key": "AV0tKMgvqyYx8kghElpb35bWhYKkKhK7OsPcRbiKf3qF7l6vPo",
                     "access_token": "1252656509516832768-raeSbyRDI4f2cXW9q2pJqdouGk4DpI",

@@ -76,17 +76,18 @@ class ConfigurationLoader(object):
 
         return locations
 
-    def get_searching_users(self, processor_id):
-        users = []
+    def get_searching_users(self, processor_id, processor_size):
+        groupped_users = []
+        print(processor_size)
 
         if (self.searching is not None):
-            politicians = self.searching[constants.JSON_POLITICIANS_PROP]
-            if (politicians is not None):
-                processor = politicians["processor{}".format(processor_id)]
-                if (processor is not None):
-                    users = processor[constants.JSON_USERS_PROP]
+            user_list = self.searching[constants.JSON_USERS_PROP]
+            for i, user in enumerate(user_list):
+                print(i)
+                if (i % processor_size == processor_id):
+                    groupped_users.append(user)
 
-        return users
+        return groupped_users
 
     def get_searching_authen(self, processor_id):
         # Initialise with common authentication keys
@@ -97,13 +98,13 @@ class ConfigurationLoader(object):
 
         # Extract the authentication keys from specified processor
         if (self.searching is not None):
-            politicians = self.searching[constants.JSON_POLITICIANS_PROP]
-            if (politicians is not None):
-                processor = politicians["processor{}".format(processor_id)]
-                if (processor is not None):
-                    api_key = processor[constants.JSON_AUTHEN_PROP][constants.JSON_API_KEY_PROP]
-                    api_secret_key = processor[constants.JSON_AUTHEN_PROP][constants.JSON_API_SECRET_KEY_PROP]
-                    access_token = processor[constants.JSON_AUTHEN_PROP][constants.JSON_ACCESS_TOKEN_PROP]
-                    access_token_secret = processor[constants.JSON_AUTHEN_PROP][constants.JSON_ACCESS_TOKEN_SECRET]
+            authens = self.searching[constants.JSON_AUTHENS_PROP]
+            if (authens is not None):
+                account = authens["account{}".format(processor_id)]
+                if (account is not None):
+                    api_key = account[constants.JSON_API_KEY_PROP]
+                    api_secret_key = account[constants.JSON_API_SECRET_KEY_PROP]
+                    access_token = account[constants.JSON_ACCESS_TOKEN_PROP]
+                    access_token_secret = account[constants.JSON_ACCESS_TOKEN_SECRET]
 
         return api_key, api_secret_key, access_token, access_token_secret
