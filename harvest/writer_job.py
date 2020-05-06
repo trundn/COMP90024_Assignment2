@@ -16,7 +16,7 @@ class WriterJob(Runnable):
             # Extract full text
             full_text = self.helper.extract_full_text(tweet)
 
-            if (self.helper.is_track_match(full_text, self.config_loader.track)):
+            if (self.helper.is_track_match(full_text.lower(), self.config_loader.track)):
                 source, coordinates = self.helper.extract_coordinates(tweet)
                 emotions = self.helper.extract_emotions(full_text)
 

@@ -82,7 +82,7 @@ class ConfigurationLoader(object):
         if (self.searching is not None):
             politicians = self.searching[constants.JSON_POLITICIANS_PROP]
             if (politicians is not None):
-                processor = politicians["processor".format(processor_id)]
+                processor = politicians["processor{}".format(processor_id)]
                 if (processor is not None):
                     users = processor[constants.JSON_USERS_PROP]
 
@@ -99,7 +99,7 @@ class ConfigurationLoader(object):
         if (self.searching is not None):
             politicians = self.searching[constants.JSON_POLITICIANS_PROP]
             if (politicians is not None):
-                processor = politicians["processor".format(processor_id)]
+                processor = politicians["processor{}".format(processor_id)]
                 if (processor is not None):
                     api_key = processor[constants.JSON_AUTHEN_PROP][constants.JSON_API_KEY_PROP]
                     api_secret_key = processor[constants.JSON_AUTHEN_PROP][constants.JSON_API_SECRET_KEY_PROP]
