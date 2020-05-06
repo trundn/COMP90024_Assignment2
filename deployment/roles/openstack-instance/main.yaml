@@ -11,7 +11,7 @@
     network: '{{ network }}'
     security_groups: '{{ sg_names }}'
     volumes: '{{ item.volumes }}'
-    auto_floating_ip: yes # Public ip address
+    auto_floating_ip: yes 
     wait: yes # Wait until instances are created otherwise it will fail the next module
     timeout: 600
     state: present # To create VM, to delete use absent
@@ -33,10 +33,51 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# Setting image_facts as empty list (default([]))
-- name: Get instances names and Ids
+# Strong IP addresses that are dynamically created
+- name: Get instances names and IPaddress
   set_fact:
-    image_facts: "{{ image_facts + [ {'name': item.name, 'id': item.id} ] }}"
-  loop: '{{ image_result.openstack_image }}'
-  when: item.name is defined
+    instance_facts: "{{ instance_facts + [ {'name': item.item.name, 'address': item.openstack.public_v4} ] }}"
+  loop: '{{ os_instance.results }}'
+  when: item.openstack is defined
+
+- name: Writing Inventory file
+  copy:
+    content: |
+      "[all:vars]
+      ansible_python_interpreter=/usr/bin/python3
+      ansible_user=ubuntu
+      ansible_ssh_private_key_file=~/.ssh/mayank-sharma-key.pem
+      #ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+
+      [allInstances:children]
+      appInstance
+      dbInstances
+
+      [dbInstances:children]
+      masterInstance
+      slaveInstances
+
+      [masterInstance:children]
+      db-instance-1
+
+      [slaveInstances:children]
+      db-instance-2
+      db-instance-3
+
+      [appInstance:children]
+      app-instance
+      
+      "
+    dest: "../../hosts.ini"
+
+- name: Add dynamically created IP addresses to inventory
+  lineinfile:
+    line: |
+      "[{{ item.name }}]
+      {{ item.address }}"
+    dest: "../../hosts.ini"
+  loop: '{{ instance_facts }}' 
+
+
+
 
