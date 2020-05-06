@@ -44,7 +44,6 @@ def parse_arguments(argv):
             database_config_path = arg
         elif opt in (constants.HARVEST_MODE_ARGUMENT):
             harvest_mode = arg.lower()
-            print(harvest_mode)
             if (harvest_mode != constants.ALL_HARVEST_MODE and 
                 harvest_mode != constants.STREAM_HARVEST_MODE and
                 harvest_mode != constants.SEARCH_HARVEST_MODE):

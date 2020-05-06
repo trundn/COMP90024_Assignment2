@@ -33,5 +33,5 @@ class WriterJob(Runnable):
                                 'emotions': emotions, \
                                 'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
                                 'raw_data' : tweet._json}
-                    print(filter_data)
+                    print(f"{tweet.id_str}    {emotions}    {word_count}    {pronoun_count}")
                     self.db_connection.write_tweet(filter_data)
