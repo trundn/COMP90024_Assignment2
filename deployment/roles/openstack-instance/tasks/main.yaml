@@ -41,12 +41,12 @@
 
 - name: Writing Inventory file
   copy:
-    content: |
+    content: |+
       [all:vars]
       ansible_python_interpreter=/usr/bin/python3
       ansible_user=ubuntu
       ansible_ssh_private_key_file=~/.ssh/mayank-sharma-key.pem
-      #ansible_ssh_common_args='-o StrictHostKeyChecking=no'
+      ansible_ssh_common_args='-o StrictHostKeyChecking=no'
 
       [allInstances:children]
       appInstance
@@ -65,7 +65,6 @@
 
       [appInstance:children]
       app-instance
-      
       
     dest: "/media/mayankshar21/New Volume/university/COMP90024/Project/COMP90024_Assignment2/deployment/hosts.ini"
 
