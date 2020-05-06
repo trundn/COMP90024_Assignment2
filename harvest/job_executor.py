@@ -1,16 +1,16 @@
 import time
 # Useful in threaded programming when information must be exchanged safely between multiple threads
-from Queue import Queue
+from queue import *
 # Provide a common protocol for objects that wish to execute code while they are active
-from harvest.runnable import Runnable
+from runnable import Runnable
 # Reponsible for executing queued runnable jobs
-from harvest.worker import Worker
+from worker import Worker
 # Useful in thread-safe increase and decrease integer value
-from harvest.atomic_integer import AtomicInteger
+from atomic_integer import AtomicInteger
 # Useful in thread-safe get and set boolean value
-from harvest.atomic_boolean import AtomicBoolean
+from atomic_boolean import AtomicBoolean
 # The harvest constant definitions
-import harvest.constants
+import constants
 
 class JobExecutor(object):
     def __init__(self, min_thread_count, max_thread_count, max_queue_size):
@@ -42,14 +42,14 @@ class JobExecutor(object):
         return worker
 
     def add_thread_if_under_max(self):
-        if ((self.max_thread_count) == -1 or (self.current_thread_count.get() < self.max_thread_count)):
+        if ((self.max_thread_count == -1) or (self.current_thread_count.get() < self.max_thread_count)):
             worker = self.add_thread()
             worker.start()
 
     def queue(self, runnable):
         if (isinstance(runnable, Runnable)):
             if (not self.is_stopped.get()):
-                self.queue.put(runnable)
+                self.job_queue.put(runnable)
                 self.add_thread_if_under_max()
             else:
                 raise RuntimeError("Thread pool job executor is being terminated. Cannot queue a new runnable task.")
@@ -57,7 +57,7 @@ class JobExecutor(object):
             raise RuntimeError("The to be queued job should be Runnable instance.")
     
     def terminate(self):
-        self.queue.clear()
+        self.job_queue.clear()
         self.stop()
 
     def stop(self):
@@ -94,6 +94,6 @@ class JobExecutor(object):
                 return
 
             # Sleep 1 second before checking thread alive status again
-            time.sleep(harvest.constants.ONE_SECOND)
+            time.sleep(constants.ONE_SECOND)
 
         raise RuntimeError("Unable to terminate the thread pool job exectuor within the specified timeout [{}] ms.".format(timeout))

@@ -5,16 +5,18 @@ import csv
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
-import harvest.constants
+import constants
 # Sentimental anaylsis for extracting positve, negative, neutral, compound emotion
+import nltk
+nltk.download("vader_lexicon")
 from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 
 class Helper(object):
-    def is_track_match(self, tweet_text, tracks):
+    def is_track_match(self, tweet_text, track):
         result = False
 
         if (tweet_text):
-            if any(key_word in tweet_text for key_word in tracks):
+            if any(key_word in tweet_text for key_word in track):
                 result = True
 
         return result
@@ -25,13 +27,13 @@ class Helper(object):
 
         if (tweet is not None):
             if ((tweet.geo is not None) and (tweet.geo.coordinates is not None)):
-                source = harvest.constants.GEO
+                source = constants.GEO
                 coordinates = tweet.geo.coordinates
             elif ((tweet.coordinates is not None) and (tweet.coordinates.coordinates is not None)):
-                source = harvest.constants.COORDINATES
+                source = constants.COORDINATES
                 coordinates = [tweet.coordinates.coordinates[1], tweet.coordinates.coordinates[0]]
             elif ((tweet.place is not None) and (tweet.place.bounding_box is not None) and (tweet.place.bounding_box.coordinates is not None)):
-                source = harvest.constants.PLACE
+                source = constants.PLACE
                 tmp_coordinates = tweet.place.bounding_box.coordinates[0]
                 latitude = (tmp_coordinates[0][1] + tmp_coordinates[1][1]) / 2
                 longitude =(tmp_coordinates[0][0] + tmp_coordinates[2][0]) / 2
@@ -47,7 +49,7 @@ class Helper(object):
         for page in tweepy.Cursor(tweepy_api.followers,
                             screen_name = user_name,
                             wait_on_rate_limit = True,
-                            count = harvest.constants.LIMIT_COUNT_PER_REQ).pages():
+                            count = constants.LIMIT_COUNT_PER_REQ).pages():
             
             try:
                 # Put all new follower into final follower list
@@ -59,10 +61,10 @@ class Helper(object):
             except tweepy.TweepError as ex:
                 print("Going to sleep:", ex)
                 # Sleep 60 seconds to avoid rate limit issue
-                time.sleep(harvest.constants.ONE_MINUTE)
+                time.sleep(constants.ONE_MINUTE)
 
             # Sleep 60 seconds to avoid rate limit issue
-            time.sleep(harvest.constants.ONE_MINUTE)
+            time.sleep(constants.ONE_MINUTE)
 
         return followers
 
@@ -73,7 +75,7 @@ class Helper(object):
         try:
             # Make initial request for most recent tweets
             new_tweets = tweepy_api.user_timeline(screen_name = screen_name,
-                count = harvest.constants.LIMIT_COUNT_PER_REQ)
+                count = constants.LIMIT_COUNT_PER_REQ, tweet_mode = constants.TWEET_MODE)
             
             # Put all new tweets into final tweets list
             alltweets.extend(new_tweets)
@@ -84,11 +86,11 @@ class Helper(object):
                 
                 # Keep grabbing tweets until there are no tweets left to grab
                 while len(new_tweets) > 0:
-                    time.sleep(harvest.constants.TWO_SECONDS)
+                    time.sleep(constants.TWO_SECONDS)
                     
                     # All subsiquent requests use the max_id param to prevent duplicates
                     new_tweets = tweepy_api.user_timeline(screen_name = screen_name,
-                        count = harvest.constants.LIMIT_COUNT_PER_REQ, max_id = oldest)
+                        count = constants.LIMIT_COUNT_PER_REQ, max_id = oldest, tweet_mode = constants.TWEET_MODE)
                     
                     # Put all new tweets into final tweets list
                     alltweets.extend(new_tweets)
@@ -103,18 +105,14 @@ class Helper(object):
     def extract_full_text(self, tweet):
         full_text = ""
 
-        # Check if retweet
-        if hasattr(tweet, harvest.constants.JSON_RETWEETED_STATUS_PROP):
+        try:
+            full_text = tweet.retweeted_status.extended_tweet[constants.JSON_FULL_TEXT_PROP]
+        except:
             try:
-                full_text = tweet.retweeted_status.extended_tweet[harvest.constants.JSON_FULL_TEXT_PROP]
-            except AttributeError:
-                full_text = tweet.retweeted_status.text
-        else:
-            try:
-                full_text = tweet.extended_tweet[harvest.constants.JSON_FULL_TEXT_PROP]
-            except AttributeError:
+                full_text = tweet.full_text
+            except:
                 full_text = tweet.text
-
+        
         return full_text
 
     def extract_emotions(self, tweet_text):

@@ -1,7 +1,7 @@
 # Library for working with CouchDB
 import couchdb
 # The harvest constant definitions
-import harvest.constants
+import constants
 
 class CouchDBConnection(object):
     def __init__(self, connection_string, lock):
@@ -10,10 +10,10 @@ class CouchDBConnection(object):
         self.server = couchdb.Server(self.connection_string)
 
     def init_database(self):
-        if harvest.constants.TWEETS_DATABASE in self.server:
-            self.database = self.server[harvest.constants.TWEETS_DATABASE]
+        if constants.TWEETS_DATABASE in self.server:
+            self.database = self.server[constants.TWEETS_DATABASE]
         else:
-            self.database = self.server.create(harvest.constants.TWEETS_DATABASE)
+            self.database = self.server.create(constants.TWEETS_DATABASE)
 
     def write_tweet(self, tweet_content):
         if ((tweet_content is not None) and isinstance(tweet_content, dict)):

@@ -1,13 +1,13 @@
 # Constructs higher-level threading interfaces on top of the lower level _thread module
 import threading
 # Provides the utility functions
-from harvest.helper import Helper
+from helper import Helper
 # Utility for working with CouchDB
-from harvest.couchdb_connection import CouchDBConnection
+from couchdb_connection import CouchDBConnection
 # Manage all runnable jobs
-from harvest.job_executor import JobExecutor
+from job_executor import JobExecutor
 # Reponsible for writer tweets to CouchDB
-from harvest.writer_job import WriterJob
+from writer_job import WriterJob
 
 class TweetWriter(object):
     def __init__(self, config_loader):
@@ -20,5 +20,5 @@ class TweetWriter(object):
 
     def write_to_counchdb(self, all_tweets):
         if (all_tweets is not None):
-            job = WriterJob(all_tweets, self.database_connection)
+            job = WriterJob(all_tweets, self.database_connection, self.config_loader)
             self.threadpool_job_executor.queue(job)

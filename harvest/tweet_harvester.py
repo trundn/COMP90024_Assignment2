@@ -3,13 +3,13 @@ import os
 # Library for command line argument parsing
 import sys, getopt
 # Using class for loading all needed configurations
-from harvest.config_loader import ConfigurationLoader
+from config_loader import ConfigurationLoader
 # Thread for performing tweepy streaming API
-from harvest.tweepy_streaming import StreamingAPIThread
+from tweepy_streaming import StreamingAPIThread
 # Thread for performing tweepy searching API
-from harvest.tweepy_searching import SearchingAPIThread
+from tweepy_searching import SearchingAPIThread
 # The harvest constant definitions
-import harvest.constants
+import constants
 
 def print_usage():
     print('Usage is: tweet_harvester.py -a <the authentication configuration file>')
@@ -20,11 +20,12 @@ def parse_arguments(argv):
     # Initialise local variables
     authen_config_path = ""
     filter_config_path = ""
+    database_config_path = ""
     harvest_mode = ""
 
     # Parse command line arguments
     try:
-        opts, args = getopt.getopt(argv, harvest.constants.CMD_LINE_DEFINED_ARGUMENTS)
+        opts, args = getopt.getopt(argv, constants.CMD_LINE_DEFINED_ARGUMENTS)
     except getopt.GetoptError as error:
         print("Failed to parse comand line arguments. Error: %s" %error)
         print_usage()
@@ -32,43 +33,46 @@ def parse_arguments(argv):
 
     # Extract argument values
     for opt, arg in opts:
-        if opt == harvest.constants.HELP_ARGUMENT:
+        if opt == constants.HELP_ARGUMENT:
             print_usage()
             sys.exit()
-        if opt in (harvest.constants.AUTHEN_CONFIG_ARGUMENT):
+        if opt in (constants.AUTHEN_CONFIG_ARGUMENT):
             authen_config_path = arg
-        elif opt in (harvest.constants.FILTER_CONFIG_ARGUMENT):
+        elif opt in (constants.FILTER_CONFIG_ARGUMENT):
             filter_config_path = arg
-        elif opt in (harvest.constants.HARVEST_MODE_ARGUMENT):
+        elif opt in (constants.DATABASE_CONFIG_ARGUMENT):
+            database_config_path = arg
+        elif opt in (constants.HARVEST_MODE_ARGUMENT):
             harvest_mode = arg.lower()
-            if (harvest_mode != harvest.constants.ALL_HARVEST_MODE or 
-                harvest_mode != harvest.constants.STREAM_HARVEST_MODE or
-                harvest_mode != harvest.constants.SEARCH_HARVEST_MODE):
+            print(harvest_mode)
+            if (harvest_mode != constants.ALL_HARVEST_MODE and 
+                harvest_mode != constants.STREAM_HARVEST_MODE and
+                harvest_mode != constants.SEARCH_HARVEST_MODE):
                 print_usage()
                 sys.exit()
 
     # Return all arguments
-    return authen_config_path, filter_config_path, harvest_mode
+    return authen_config_path, filter_config_path, database_config_path, harvest_mode
 
 def main(args):
     # Parse command line arguments to get the authentication and filter configuration files
-    authen_config_path, filter_config_path, harvest_mode = parse_arguments(args)
+    authen_config_path, filter_config_path, database_config_path, harvest_mode = parse_arguments(args)
 
     # Instantiate the configuration loader
-    config_loader = ConfigurationLoader(authen_config_path, filter_config_path)
+    config_loader = ConfigurationLoader(authen_config_path, filter_config_path, database_config_path)
     config_loader.load_authentication_config()
     config_loader.load_filter_config()
     config_loader.load_couchdb_config()
 
     # Start tweeter streaming API thread
-    if (harvest_mode == harvest.constants.ALL_HARVEST_MODE or
-        harvest_mode == harvest.constants.STREAM_HARVEST_MODE):
+    if (harvest_mode == constants.ALL_HARVEST_MODE or
+        harvest_mode == constants.STREAM_HARVEST_MODE):
         streaming = StreamingAPIThread(config_loader)
         streaming.start()
 
     # Start tweeter searching API thread
-    if (harvest_mode == harvest.constants.ALL_HARVEST_MODE or
-        harvest_mode == harvest.constants.SEARCH_HARVEST_MODE):
+    if (harvest_mode == constants.ALL_HARVEST_MODE or
+        harvest_mode == constants.SEARCH_HARVEST_MODE):
         searching = SearchingAPIThread(config_loader)
         searching.start()
 
