@@ -1,0 +1,31 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.3/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/topojson/1.6.9/topojson.min.js"></script>
+<script src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/164292/datamaps.all.min.js"></script>
+<div id="mapArea">
+  <div id="selectedStates">
+    <div id="usa-map" style="width: 600px; height: 300px">rent</div>
+  </div>
+  <script>
+	   map = new Datamap({
+		element: document.getElementById('usa-map'),
+		scope: 'australia',
+		done: function(datamap) {
+			datamap.svg.selectAll('.datamaps-subunit').on('click', function(geography) {
+			console.log(geography.id + " : " + geography.properties.name);
+
+			//var data = {};
+			//data[geography.id] = "green";
+			//map.updateChoropleth(data);
+			
+				var el = document.querySelector("." + geography.id);
+			
+			
+
+			});
+		}
+ });
+
+ map.labels();
+  </script>
+
+</div>
