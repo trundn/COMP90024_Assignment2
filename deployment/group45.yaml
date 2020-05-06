@@ -1,3 +1,4 @@
+---
 - hosts: localhost
   vars_files:
     - host_vars/main.yaml
@@ -9,4 +10,3 @@
     - role: openstack-volume
     - role: openstack-security-group
     - role: openstack-instance
-    
