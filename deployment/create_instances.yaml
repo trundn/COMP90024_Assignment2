@@ -9,3 +9,9 @@
     - role: volume
     - role: security-group
     - role: instance
+    - role: attach-volume
+
+- hosts: allInstances
+
+  roles:
+    - role: proxy
