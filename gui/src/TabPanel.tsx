@@ -35,11 +35,12 @@ function TabPanel(props: TabPanelProps) {
             hidden={value !== index}
             id={`scrollable-force-tabpanel-${index}`}
             aria-labelledby={`scrollable-force-tab-${index}`}
-            {...other}
-        >
+            {...other}>
             {value === index && (
-                <Box p={50}>
-                    <Typography>{children}</Typography>
+                <Box p={1}>
+                    <div className={"container"}>
+                        <Typography>{children}</Typography>
+                    </div>
                 </Box>
             )}
         </div>
