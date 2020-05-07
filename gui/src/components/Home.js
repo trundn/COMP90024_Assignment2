@@ -1,8 +1,8 @@
 import React from "react";
-import {Map, TileLayer, Popup, Marker} from 'react-leaflet';
+import {Map, TileLayer, Popup, Marker} from "react-leaflet";
 
-class Home extends React.Component<{}, { lat: number, lng: number, zoom: number }> {
-    constructor(props: any) {
+export default class Home extends React.Component {
+    constructor(props) {
         super(props)
         this.state = {
             lat: 51.505,
@@ -12,7 +12,7 @@ class Home extends React.Component<{}, { lat: number, lng: number, zoom: number 
     }
 
     render() {
-        const position: [number, number] = [this.state.lat, this.state.lng];
+        const position = [this.state.lat, this.state.lng];
         return (
             <Map center={position} zoom={this.state.zoom}>
                 <TileLayer
@@ -27,5 +27,3 @@ class Home extends React.Component<{}, { lat: number, lng: number, zoom: number 
         );
     }
 }
-
-export default Home
