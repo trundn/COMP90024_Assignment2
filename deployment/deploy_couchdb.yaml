@@ -1,0 +1,6 @@
+---
+- hosts: allInstances
+  vars_files:
+    - host_vars/remote.yaml
+  gather_facts: true
+
