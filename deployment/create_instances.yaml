@@ -22,6 +22,6 @@
     ansible_ssh_common_args: '-o StrictHostKeyChecking=no' 
   
   roles:
-    
     - role: proxy
     - role: attach-volume
+    - role: instance-environment

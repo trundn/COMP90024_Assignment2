@@ -1,6 +1,25 @@
 ---
-- hosts: allInstances
+- hosts: dbInstance3
   vars_files:
     - host_vars/remote.yaml
   gather_facts: true
 
+  roles: 
+    - role: couchdb-slave2
+
+- hosts: dbInstance2
+  vars_files:
+    - host_vars/remote.yaml
+  gather_facts: true
+
+  roles: 
+    - role: couchdb-slave1
+
+
+- hosts: dbInstance1
+  vars_files:
+    - host_vars/remote.yaml
+  gather_facts: true
+
+  roles: 
+    - role: couchdb-master

@@ -1,0 +1,12 @@
+# Run couchdb-master setup
+---
+- name: Copy bash file to master instance
+  become: yes
+  copy:
+    src: ./master.sh
+    dest: ~/
+    mode: '0755'
+
+- name: Run script
+  become: yes
+  script: ~/master.sh
