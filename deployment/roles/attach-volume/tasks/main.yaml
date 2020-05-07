@@ -1,6 +1,12 @@
 ---
+- name: Install xfsprogs
+  become: yes
+  apt:
+    name: xfsprogs
+    state: latest
+    update_cache: yes
+
 - name: Format volume
-  tags: 'volumes'
   become: yes
   filesystem:
     fstype: xfs
@@ -9,7 +15,6 @@
   loop: "{{ volumes }}"
 
 - name: Checking and registering folders
-  tags: 'volumes'
   become: yes
   stat:
     path: "{{ item.mountpoint }}"
@@ -17,7 +22,6 @@
   loop: "{{ volumes }}"
 
 - name: Create directory
-  tags: 'volumes'
   become: yes
   file:
     path: "{{ item.item.mountpoint }}"
@@ -27,7 +31,6 @@
   loop: "{{ directory_stats.results }}"
 
 - name: Attach volume to instance
-  tags: 'volumes'
   become: yes
   mount:
     path: "{{ item.mountpoint }}"
