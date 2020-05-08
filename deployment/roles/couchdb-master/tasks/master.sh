@@ -22,20 +22,18 @@ docker pull ibmcom/couchdb3:${VERSION}
 
 # Create Docker containers (stops and removes the current ones if existing):
 
-for node in "${nodes[@]}" 
-  do
-    if [ ! -z $(docker ps --all --filter "name=couchdb${node}" --quiet) ] 
+
+    if [ ! -z $(docker ps --all --filter "name=couchdb${masternode}" --quiet) ] 
        then
-         docker stop $(docker ps --all --filter "name=couchdb${node}" --quiet) 
-         docker rm $(docker ps --all --filter "name=couchdb${node}" --quiet)
+         docker stop $(docker ps --all --filter "name=couchdb${masternode}" --quiet) 
+         docker rm $(docker ps --all --filter "name=couchdb${masternode}" --quiet)
     fi 
-done
 
     docker create\
       --name couchdb${masternode}\
       --env COUCHDB_USER=${user}\
       --env COUCHDB_PASSWORD=${pass}\
-      --env NODENAME=couchdb@${node}\
+      --env NODENAME=couchdb@${masternode}\
       --env COUCHDB_SECRET=${cookie}\
       --env ERL_FLAGS="-setcookie \"${cookie}\" -name \"couchdb@${masternode}\""\
       ibmcom/couchdb3:${VERSION}
