@@ -6,6 +6,13 @@ FILTER_CONFIG_ARGUMENT = "-f"
 DATABASE_CONFIG_ARGUMENT = "-d"
 HARVEST_MODE_ARGUMENT = "-m"
 
+CMD_LINE_MIGRATION_ARGUMENTS = "hj:f:d:"
+DATA_CONFIG_ARGUMENT = "-j"
+
+UTF8_ENCODING = "utf8"
+JSON_NEW_LINE_STRING = ",\n"
+
+
 ALL_HARVEST_MODE = "all"
 STREAM_HARVEST_MODE = "stream"
 SEARCH_HARVEST_MODE = "search"
@@ -32,11 +39,14 @@ JSON_PASSWORD_PROP = "password"
 JSON_HOST_PROP = "host"
 JSON_PORT_PROP = "port"
 
+JSON_DOCUMENT = "doc"
+JSON_TRUNCATED_PROP = "truncated"
+JSON_EXTENDED_TWEET_PROP = "extended_tweet"
 JSON_RETWEETED_STATUS_PROP = "retweeted_status"
 JSON_FULL_TEXT_PROP = "full_text"
+JSON_TEXT_PROP = "text"
 
 TWEETS_DATABASE = "tweets"
-
 LIMIT_COUNT_PER_REQ = 200;
 TWEET_MODE = "extended"
 
@@ -47,6 +57,7 @@ ONE_MINUTE = 60
 GEO = "geo"
 PLACE = "place"
 COORDINATES = "coordinates"
+BOUNDING_BOX = "bounding_box"
 AUSTRALIA_COUNTRY_NAME = "australia"
 
 FIRST_PERSON_SINGULAR = ["i", "me", "my", "mine", "myself"]

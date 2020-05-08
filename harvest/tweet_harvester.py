@@ -14,6 +14,7 @@ import constants
 def print_usage():
     print('Usage is: tweet_harvester.py -a <the authentication configuration file>')
     print('                             -f <the tweet filter configuration file>')
+    print('                             -d <the database configuration file>')
     print('                             -m <the harvest mode: all, stream, search>')
 
 def parse_arguments(argv):

@@ -16,9 +16,13 @@ class Helper(object):
     def is_track_match(self, tweet_text, track):
         result = False
 
-        if (tweet_text):
-            if any(key_word in tweet_text for key_word in track):
-                result = True
+        if (track):
+            if (tweet_text):
+                if any(key_word in tweet_text for key_word in track):
+                    result = True
+        else:
+            # No need to apply any text filters
+            result = True
 
         return result
 
