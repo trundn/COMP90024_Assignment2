@@ -4,10 +4,9 @@
   become: yes
   copy:
     src: ./slave2.sh
-    dest: ~/
+    dest: /home/ubuntu/
     mode: '0755'
     
 - name: Run script
   become: yes
-  script: 
-    remote_src: ~/slave2.sh
+  shell: ./slave2.sh
