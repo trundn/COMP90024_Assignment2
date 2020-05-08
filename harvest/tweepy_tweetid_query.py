@@ -22,13 +22,12 @@ from helper import Helper
 from tweet_writer import TweetWriter
 
 class TweetIdQueryThread(threading.Thread):
-    def __init__(self, config_loader):
+    def __init__(self, config_loader, writer):
         threading.Thread.__init__(self)
+        self.writer = writer
         self.tweepy_api = None
         self.config_loader = config_loader
         self.helper = Helper()
-        self.writer = TweetWriter(self.config_loader)
-
     
     def get_tweet_status(self, all_tweet_ids):
         all_tweets = []

@@ -17,12 +17,12 @@ from tweet_writer import TweetWriter
 
 # Override tweepy.StreamListener to add logic to on_status
 class StreamListener(tweepy.StreamListener):
-    def __init__(self, tweepy_api, config_loader):
+    def __init__(self, tweepy_api, config_loader, writer):
         super(StreamListener, self).__init__()
+        self.writer = writer
         self.tweepy_api = tweepy_api
         self.config_loader = config_loader
         self.helper = Helper()
-        self.writer = TweetWriter(self.config_loader)
 
     def on_status(self, status):
         # Write current tweet to counchdb
@@ -39,9 +39,10 @@ class StreamListener(tweepy.StreamListener):
         sys.exit()
 
 class StreamingAPIThread(threading.Thread):
-    def __init__(self, config_loader):
+    def __init__(self, config_loader, writer):
         threading.Thread.__init__(self)
         self.tweepy_api = None
+        self.writer = writer
         self.config_loader = config_loader
 
     def run(self):

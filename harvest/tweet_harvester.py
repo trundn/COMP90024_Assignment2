@@ -10,6 +10,8 @@ from tweepy_streaming import StreamingAPIThread
 from tweepy_searching import SearchingAPIThread
 # Thread for performing tweetid get status API
 from tweepy_tweetid_query import TweetIdQueryThread
+# Uility to write tweet data to CounchDB
+from tweet_writer import TweetWriter
 # The harvest constant definitions
 import constants
 
@@ -67,22 +69,25 @@ def main(args):
     config_loader.load_filter_config()
     config_loader.load_couchdb_config()
 
+    # Instantiate tweet writer
+    writer = TweetWriter(config_loader)
+
     # Start tweeter streaming API thread
     if (harvest_mode == constants.ALL_HARVEST_MODE or
         harvest_mode == constants.STREAM_HARVEST_MODE):
-        streaming = StreamingAPIThread(config_loader)
+        streaming = StreamingAPIThread(config_loader, writer)
         streaming.start()
 
     # Start tweeter searching API thread
     if (harvest_mode == constants.ALL_HARVEST_MODE or
         harvest_mode == constants.SEARCH_HARVEST_MODE):
-        searching = SearchingAPIThread(config_loader)
+        searching = SearchingAPIThread(config_loader, writer)
         searching.start()
 
     # Start tweetid querying thread
     if (harvest_mode == constants.ALL_HARVEST_MODE or
         harvest_mode == constants.TWEETID_HARVEST_MODE):
-        querying = TweetIdQueryThread(config_loader)
+        querying = TweetIdQueryThread(config_loader, writer)
         querying.start()
 
 # Run the actual program

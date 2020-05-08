@@ -16,11 +16,11 @@ from helper import Helper
 from tweet_writer import TweetWriter
 
 class SearchingAPIThread(threading.Thread):
-    def __init__(self, config_loader):
+    def __init__(self, config_loader, writer):
         threading.Thread.__init__(self)
+        self.writer = writer
         self.tweepy_api = None
         self.config_loader = config_loader
-        self.writer = TweetWriter(self.config_loader)
 
     def run(self):
         comm = MPI.COMM_WORLD
