@@ -5,16 +5,13 @@
 # Set node IP addresses, electing the first as "master node"
 # and admin credentials (make sure you have no other Docker containers running):
 
-export declare -a nodes=(172.26.133.31 172.26.132.175 172.26.134.18)
-export masternode=172.26.133.31
+export declare -a nodes=(172.26.134.18 172.26.132.175 172.26.133.31)
+export masternode=172.26.134.18
 export declare -a othernodes=`echo ${nodes[@]} | sed s/${masternode}//`
-export size=${#nodes[@]}
+export size=1
 export user=couchdb
 export pass=password
 export VERSION='3.0.0'
-export cookie='a192aeb9904e6590849337933b000c99'
-export uuid='a192aeb9904e6590849337933b001159'
-
 
 
 docker pull ibmcom/couchdb3:${VERSION}
@@ -22,31 +19,25 @@ docker pull ibmcom/couchdb3:${VERSION}
 
 # Create Docker containers (stops and removes the current ones if existing):
 
-
-    if [ ! -z $(docker ps --all --filter "name=couchdb${masternode}" --quiet) ] 
-       then
-         docker stop $(docker ps --all --filter "name=couchdb${masternode}" --quiet) 
-         docker rm $(docker ps --all --filter "name=couchdb${masternode}" --quiet)
-    fi 
-
-    docker create\
-      --name couchdb${masternode}\
-      --env COUCHDB_USER=${user}\
-      --env COUCHDB_PASSWORD=${pass}\
-      --env NODENAME=couchdb@${masternode}\
-      --env COUCHDB_SECRET=${cookie}\
-      --env ERL_FLAGS="-setcookie \"${cookie}\" -name \"couchdb@${masternode}\""\
-      ibmcom/couchdb3:${VERSION}
+docker create\
+  --name couchdb${masternode}\
+  --env COUCHDB_USER=${user}\
+  --env COUCHDB_PASSWORD=${pass}\
+  --env NODENAME=couchdb@${masternode}\
+  ibmcom/couchdb3:${VERSION}
 
 
 # Put in conts the Docker container IDs:
 
 declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
 
+docker exec "couchdb${masternode}" bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
+
+docker exec "couchdb${masternode}" bash -c "echo \"-name couchdb@${masternode}\" >> /opt/couchdb/etc/vm.args"
 
 # Start the containers (and wait a bit while they boot):
 
-for cont in "${conts[@]}"; do docker start ${cont}; done
+docker start "couchdb${masternode}"
 
 
 

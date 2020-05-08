@@ -6,7 +6,8 @@
     src: ./master.sh
     dest: ~/
     mode: '0755'
-
+    
 - name: Run script
   become: yes
-  script: ~/master.sh
+  script: 
+    remote_src: ~/master.sh

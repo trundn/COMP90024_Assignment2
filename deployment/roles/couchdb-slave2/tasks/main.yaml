@@ -1,0 +1,13 @@
+# Run couchdb-slave2 setup
+---
+- name: Copy bash file to slave2 instance
+  become: yes
+  copy:
+    src: ./slave2.sh
+    dest: ~/
+    mode: '0755'
+    
+- name: Run script
+  become: yes
+  script: 
+    remote_src: ~/slave2.sh
