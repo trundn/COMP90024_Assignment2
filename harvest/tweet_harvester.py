@@ -8,6 +8,8 @@ from config_loader import ConfigurationLoader
 from tweepy_streaming import StreamingAPIThread
 # Thread for performing tweepy searching API
 from tweepy_searching import SearchingAPIThread
+# Thread for performing tweetid get status API
+from tweepy_tweetid_query import TweetIdQueryThread
 # The harvest constant definitions
 import constants
 
@@ -15,7 +17,7 @@ def print_usage():
     print('Usage is: tweet_harvester.py -a <the authentication configuration file>')
     print('                             -f <the tweet filter configuration file>')
     print('                             -d <the database configuration file>')
-    print('                             -m <the harvest mode: all, stream, search>')
+    print('                             -m <the harvest mode: all, stream, search, tweetid>')
 
 def parse_arguments(argv):
     # Initialise local variables
@@ -47,7 +49,8 @@ def parse_arguments(argv):
             harvest_mode = arg.lower()
             if (harvest_mode != constants.ALL_HARVEST_MODE and 
                 harvest_mode != constants.STREAM_HARVEST_MODE and
-                harvest_mode != constants.SEARCH_HARVEST_MODE):
+                harvest_mode != constants.SEARCH_HARVEST_MODE and
+                harvest_mode != constants.TWEETID_HARVEST_MODE):
                 print_usage()
                 sys.exit()
 
@@ -75,6 +78,12 @@ def main(args):
         harvest_mode == constants.SEARCH_HARVEST_MODE):
         searching = SearchingAPIThread(config_loader)
         searching.start()
+
+    # Start tweetid querying thread
+    if (harvest_mode == constants.ALL_HARVEST_MODE or
+        harvest_mode == constants.TWEETID_HARVEST_MODE):
+        querying = TweetIdQueryThread(config_loader)
+        querying.start()
 
 # Run the actual program
 if __name__ == "__main__":

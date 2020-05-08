@@ -25,7 +25,7 @@ class StreamListener(tweepy.StreamListener):
         self.writer = TweetWriter(self.config_loader)
 
     def on_status(self, status):
-        #Write current tweet to counchdb
+        # Write current tweet to counchdb
         self.writer.write_to_counchdb([status])
 
         # Try to query time line for this user

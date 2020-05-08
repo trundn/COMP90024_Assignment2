@@ -78,7 +78,7 @@ def process_twitter_data(rank, processor_size,
                                 else:
                                     tweet_text = tweet_doc[constants.JSON_TEXT_PROP]
 
-                                if (helper.is_track_match(tweet_text.lower(), track)):
+                                if (helper.is_match(tweet_text.lower(), track)):
                                     # Extract coordinator
                                     source = ""
                                     coordinates = []

@@ -13,12 +13,12 @@ from nltk.sentiment.vader import SentimentIntensityAnalyzer as SIA
 from nltk.tokenize import RegexpTokenizer
 
 class Helper(object):
-    def is_track_match(self, tweet_text, track):
+    def is_match(self, text, filers):
         result = False
 
-        if (track):
-            if (tweet_text):
-                if any(key_word in tweet_text for key_word in track):
+        if (filers):
+            if (text):
+                if any(key_word in text for key_word in filers):
                     result = True
         else:
             # No need to apply any text filters

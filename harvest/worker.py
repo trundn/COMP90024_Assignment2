@@ -1,6 +1,6 @@
 # Constructs higher-level threading interfaces on top of the lower level _thread module
 import threading
-# import module sys to get the type of exception
+# Import module sys to get the type of exception
 import sys
 # Provides a standard interface to extract, format and print stack traces 
 import traceback

@@ -18,6 +18,7 @@ class ConfigurationLoader(object):
 
         self.track = []
         self.users = []
+        self.user_location_filters = []
 
         self.streaming = {}
         self.searching = {}
@@ -46,6 +47,7 @@ class ConfigurationLoader(object):
                         self.streaming = config_content[constants.JSON_STREAMING_SECTION_PROP]
                         self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
                         self.track = config_content[constants.JSON_TRACK_PROP]
+                        self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
                     except Exception as exception:
                         print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
             else:
@@ -75,6 +77,30 @@ class ConfigurationLoader(object):
             locations = self.streaming[constants.JSON_LOCATIONS_PROP]
 
         return locations
+
+    def get_tweeid_dataset(self, processor_id, processor_size):
+        groupped_dataset = []
+        all_sub_folders = []
+
+        if (self.searching is not None):
+            tweetids = self.searching[constants.JSON_TWEET_IDS_SECTION]
+            if (tweetids):
+                folders = tweetids[constants.JSON_FOLDERS_PROP]
+                if (folders):
+                    for configured_folder in folders:
+                        if os.path.isdir(configured_folder):
+                            all_sub_folders.append(configured_folder)
+                            for sub_folder in sorted(os.listdir(configured_folder)):
+                                sub_data_folder = os.path.join(configured_folder, sub_folder)
+                                if os.path.isdir(sub_data_folder):
+                                    all_sub_folders.append(sub_data_folder)
+                    
+                    if(all_sub_folders):
+                        for i, folder in enumerate(all_sub_folders):
+                            if (i % processor_size == processor_id):
+                                groupped_dataset.append(folder)
+
+        return groupped_dataset
 
     def get_searching_users(self, processor_id, processor_size):
         groupped_users = []

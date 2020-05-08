@@ -49,7 +49,7 @@ class SearchingAPIThread(threading.Thread):
             # Query time line for all followers
             for user_id in users:
                 for follower in helper.get_followers(self.tweepy_api, user_id, -1):
-                    if (constants.AUSTRALIA_COUNTRY_NAME in follower.location.lower()):
+                    if (helper.is_match(follower.location.lower(), self.config_loader.user_location_filters)):
                         all_followers_tweets = helper.get_all_tweets(self.tweepy_api, follower.screen_name)
                         # Write all tweets to counchdb
                         self.writer.write_to_counchdb(all_followers_tweets)

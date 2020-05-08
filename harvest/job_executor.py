@@ -1,3 +1,4 @@
+# Provides various time-related functions
 import time
 # Useful in threaded programming when information must be exchanged safely between multiple threads
 from queue import *
@@ -74,6 +75,17 @@ class JobExecutor(object):
     def force_interrupt(self):
         for thread in self.thread_list:
             thread.kill()
+
+    def is_any_thread_alive(self):
+        result = False
+
+        # Check thread alive statuses
+        for thread in self.thread_list:
+            if (thread.is_alive() is True):
+                result = True
+                break
+
+        return result
 
     def wait_for_termination(self, timeout):
         if (not self.is_stopped.get()):

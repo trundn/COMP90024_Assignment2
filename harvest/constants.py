@@ -25,13 +25,15 @@ JSON_ACCESS_TOKEN_SECRET = "access_token_secret"
 
 JSON_STREAMING_SECTION_PROP = "streaming"
 JSON_SEARCHING_SECTION_PROP = "searching"
-JSON_POLITICIANS_PROP = "politicians"
+JSON_TWEET_IDS_SECTION = "tweetids"
+JSON_FOLDERS_PROP = "folders"
 JSON_PROCESSOR_PROP = "processor"
 JSON_AUTHENS_PROP = "authens"
 JSON_LOCATIONS_PROP = "locations"
 JSON_LANGUAGES_PROP = "languages"
 JSON_TRACK_PROP = "track"
 JSON_USERS_PROP = "users"
+JSON_USER_LOCATION_FILTERS_PROP = "user_location_filers"
 
 JSON_COUCHDB_SECTION_PROP = "couchdb"
 JSON_USERNAME_PROP = "username"
@@ -46,8 +48,10 @@ JSON_RETWEETED_STATUS_PROP = "retweeted_status"
 JSON_FULL_TEXT_PROP = "full_text"
 JSON_TEXT_PROP = "text"
 
+TWEET_ID_COLUMN = "tweet_id"
+TAB_CHAR = "\t"
 TWEETS_DATABASE = "tweets"
-LIMIT_COUNT_PER_REQ = 200;
+LIMIT_COUNT_PER_REQ = 200
 TWEET_MODE = "extended"
 
 ONE_SECOND = 1
