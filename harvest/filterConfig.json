@@ -33,8 +33,7 @@
         },
         "tweetids": {
             "folders": [
-                "dataset/2020-03-22",
-                "dataset/2020-03-23"
+                "dataset"
             ],
             "authens": {
                 "account0": {
