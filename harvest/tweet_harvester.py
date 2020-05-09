@@ -12,8 +12,6 @@ from tweepy_searching import SearchingAPIThread
 from tweepy_tweetid_query import TweetIdQueryThread
 # Uility to write tweet data to CounchDB
 from tweet_writer import TweetWriter
-# Manage all runnable jobs
-from job_executor import JobExecutor
 # The harvest constant definitions
 import constants
 
@@ -89,8 +87,7 @@ def main(args):
     # Start tweetid querying thread
     if (harvest_mode == constants.ALL_HARVEST_MODE or
         harvest_mode == constants.TWEETID_HARVEST_MODE):
-        threadpool_job_executor = JobExecutor(-1, 100, 2000)
-        querying = TweetIdQueryThread(config_loader, writer, threadpool_job_executor)
+        querying = TweetIdQueryThread(config_loader, writer)
         querying.start()
 
 # Run the actual program

@@ -12,18 +12,20 @@ import tweepy
 from api_factory import APIFactory
 # Uility to write tweet data to CounchDB
 from tweet_writer import TweetWriter
+# Manage all runnable jobs
+from job_executor import JobExecutor
 # Responsible for processing tweet id dataset
 from tweetid_process_job import TweetIdProcessJob
 # The harvest constant definitions
 import constants
 
 class TweetIdQueryThread(threading.Thread):
-    def __init__(self, config_loader, writer, threadpool_job_executor):
+    def __init__(self, config_loader, writer):
         threading.Thread.__init__(self)
         self.writer = writer
         self.tweepy_api = None
         self.config_loader = config_loader
-        self.threadpool_job_executor = threadpool_job_executor
+        self.threadpool_job_executor = JobExecutor(-1, 100, 2000)
 
     def run(self):
         comm = MPI.COMM_WORLD
