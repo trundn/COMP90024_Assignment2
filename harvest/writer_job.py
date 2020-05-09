@@ -1,3 +1,7 @@
+# Import module sys to get the type of exception
+import sys
+# Provides a standard interface to extract, format and print stack traces 
+import traceback
 # Provides the utility functions
 from helper import Helper
 # Provide a common protocol for objects that wish to execute code while they are active
@@ -14,26 +18,30 @@ class WriterJob(Runnable):
 
     def run(self):
         for tweet in self.all_tweets:
-            # Extract full text
-            full_text = self.helper.extract_full_text(tweet)
+            try:
+                # Extract full text
+                full_text = self.helper.extract_full_text(tweet)
 
-            if (self.helper.is_match(full_text.lower(), self.config_loader.track)):
-                source, coordinates = self.helper.extract_coordinates(tweet)
+                if (self.helper.is_match(full_text.lower(), self.config_loader.track)):
+                    source, coordinates = self.helper.extract_coordinates(tweet)
 
-                if (coordinates):
-                    emotions = self.helper.extract_emotions(full_text)
-                    word_count, pronoun_count = self.helper.extract_word_count(full_text)
+                    if (coordinates):
+                        emotions = self.helper.extract_emotions(full_text)
+                        word_count, pronoun_count = self.helper.extract_word_count(full_text)
 
-                    converted_datetime = ""
-                    if tweet.created_at != None:
-                        converted_datetime = tweet.created_at.strftime('%Y-%m-%d %H:%M:%S%z')
+                        converted_datetime = ""
+                        if tweet.created_at != None:
+                            converted_datetime = tweet.created_at.strftime('%Y-%m-%d %H:%M:%S%z')
 
-                    filter_data = {'_id' : tweet.id_str, 'created_at' : converted_datetime,\
-                                'text' : full_text, 'user' : tweet.user.screen_name, \
-                                'calculated_coordinates' : coordinates, \
-                                'coordinates_source' : source, 'emotions': emotions, \
-                                'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
-                                'raw_data' : tweet._json}
-                    
-                    print(f"{tweet.id_str}    {emotions}    {word_count}    {pronoun_count}")
-                    self.db_connection.write_tweet(filter_data)
+                        filter_data = {'_id' : tweet.id_str, 'created_at' : converted_datetime,\
+                                    'text' : full_text, 'user' : tweet.user.screen_name, \
+                                    'calculated_coordinates' : coordinates, \
+                                    'coordinates_source' : source, 'emotions': emotions, \
+                                    'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
+                                    'raw_data' : tweet._json}
+                        
+                        print(f"{tweet.id_str}    {emotions}    {word_count}    {pronoun_count}")
+                        self.db_connection.write_tweet(filter_data)
+            except:
+                print("Exception", sys.exc_info()[0], "occurred.")
+                traceback.print_exc(file = sys.stdout)

@@ -31,13 +31,24 @@ class Helper(object):
         coordinates = []
 
         if (tweet is not None):
-            if ((tweet.geo is not None) and (tweet.geo.coordinates is not None)):
+            if ((tweet.geo is not None) \
+                and hasattr(tweet.geo, constants.COORDINATES) \
+                and (tweet.geo.coordinates is not None)):
+
                 source = constants.GEO
                 coordinates = tweet.geo.coordinates
-            elif ((tweet.coordinates is not None) and (tweet.coordinates.coordinates is not None)):
+            elif ((tweet.coordinates is not None) \
+                and hasattr(tweet.coordinates, constants.COORDINATES) \
+                and (tweet.coordinates.coordinates is not None)):
+
                 source = constants.COORDINATES
                 coordinates = [tweet.coordinates.coordinates[1], tweet.coordinates.coordinates[0]]
-            elif ((tweet.place is not None) and (tweet.place.bounding_box is not None) and (tweet.place.bounding_box.coordinates is not None)):
+            elif ((tweet.place is not None) \
+                and hasattr(tweet.place, constants.BOUNDING_BOX) \
+                and (tweet.place.bounding_box is not None) \
+                and hasattr(tweet.place.bounding_box, constants.COORDINATES) \
+                and (tweet.place.bounding_box.coordinates is not None)):
+
                 source = constants.PLACE
                 tmp_coordinates = tweet.place.bounding_box.coordinates[0]
                 latitude = (tmp_coordinates[0][1] + tmp_coordinates[1][1]) / 2
