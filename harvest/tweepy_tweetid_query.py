@@ -25,7 +25,7 @@ class TweetIdQueryThread(threading.Thread):
         self.writer = writer
         self.tweepy_api = None
         self.config_loader = config_loader
-        self.threadpool_job_executor = JobExecutor(-1, 100, 2000)
+        self.threadpool_job_executor = JobExecutor(-1, 2, 2000)
 
     def run(self):
         comm = MPI.COMM_WORLD

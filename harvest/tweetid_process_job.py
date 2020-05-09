@@ -1,3 +1,5 @@
+# Provides various time-related functions
+import time
 # Import module sys to get the type of exception
 import sys
 # Using library for system dependent functionalities
@@ -31,6 +33,8 @@ class TweetIdProcessJob(Runnable):
                 all_tweets = []
                 # Catch the last group if it is less than 100 tweets
                 last_index = min((i + 1) * 100, tweet_count)
+                # Sleep 2 seconds to avoid rate limit issue
+                time.sleep(constants.TWO_SECONDS)
                 full_tweets = self.tweepy_api.statuses_lookup(tweet_ids[i * 100 : last_index])
                 
                 # Check if tweet is in configured user filter locations
