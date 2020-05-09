@@ -48,3 +48,5 @@ class TweetIdQueryThread(threading.Thread):
              # Sleep 1 second before checking thread alive status again
             time.sleep(constants.ONE_SECOND)
 
+        print("Finished harvesting from tweetid datasets.")
+
