@@ -74,3 +74,4 @@ class TweetIdProcessJob(Runnable):
                     print("The data set of tweetid does not exist. Path: %s", data_path)
         except:
             print("Exception", sys.exc_info()[0], "occurred.")
+            traceback.print_exc(file = sys.stdout)
