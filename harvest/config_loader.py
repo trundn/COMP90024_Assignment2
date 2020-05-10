@@ -90,10 +90,13 @@ class ConfigurationLoader(object):
                     for configured_folder in folders:
                         if os.path.isdir(configured_folder):
                             all_sub_folders.append(configured_folder)
-                            for sub_folder in sorted(os.listdir(configured_folder)):
-                                sub_data_folder = os.path.join(configured_folder, sub_folder)
-                                if os.path.isdir(sub_data_folder):
-                                    all_sub_folders.append(sub_data_folder)
+                            for sub_folder in sorted(os.walk(configured_folder)):
+                                for i in range(len(sub_folder[1]),1):
+                                    # sub_folder_path =  os.path.join(sub_folder[0],sub_folder[i])
+                                    # sub_data_folder = os.path.join(configured_folder, sub_folder[i])
+                                    # print(sub_folder[i])
+                                    if os.path.isdir(sub_folder[i]):
+                                        all_sub_folders.append(sub_folder[i])
                     
                     if(all_sub_folders):
                         for i, folder in enumerate(all_sub_folders):
