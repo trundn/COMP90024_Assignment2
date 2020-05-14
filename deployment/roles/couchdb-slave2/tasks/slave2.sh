@@ -11,16 +11,17 @@ export user=couchdb
 export pass=password
 export VERSION='3.0.0'
 
-docker rmi -f ibmcom/couchdb3:${VERSION}
-docker pull ibmcom/couchdb3:${VERSION}
-
-# Create Docker containers (stops and removes the current ones if existing):
 
 if [ ! -z $(docker ps --all --filter "name=couchdb${slavenode}" --quiet) ] 
   then
     docker stop $(docker ps --all --filter "name=couchdb${slavenode}" --quiet) 
     docker rm $(docker ps --all --filter "name=couchdb${slavenode}" --quiet)
-fi 
+fi
+
+docker rmi -f ibmcom/couchdb3:${VERSION}
+docker pull ibmcom/couchdb3:${VERSION}
+
+# Create Docker containers (stops and removes the current ones if existing): 
 
 docker create\
   --name couchdb${slavenode}\
@@ -36,9 +37,7 @@ declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${si
 
 docker exec "couchdb${slavenode}" bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
 
-
 docker exec "couchdb${slavenode}" bash -c "echo \"-name couchdb@${slavenode}\" >> /opt/couchdb/etc/vm.args"
-
 
 # Start the containers (and wait a bit while they boot):
 

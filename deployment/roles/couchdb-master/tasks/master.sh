@@ -13,17 +13,16 @@ export user=couchdb
 export pass=password
 export VERSION='3.0.0'
 
-docker rmi -f ibmcom/couchdb3:${VERSION}
-docker pull ibmcom/couchdb3:${VERSION}
-
-
-# Create Docker containers (stops and removes the current ones if existing):
-
 if [ ! -z $(docker ps --all --filter "name=couchdb${masternode}" --quiet) ] 
   then
     docker stop $(docker ps --all --filter "name=couchdb${masternode}" --quiet) 
     docker rm $(docker ps --all --filter "name=couchdb${masternode}" --quiet)
-fi 
+fi
+
+docker rmi -f ibmcom/couchdb3:${VERSION}
+docker pull ibmcom/couchdb3:${VERSION}
+
+# Create Docker containers (stops and removes the current ones if existing):
 
 docker create\
   --name couchdb${masternode}\

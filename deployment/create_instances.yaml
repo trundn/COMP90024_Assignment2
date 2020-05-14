@@ -24,4 +24,3 @@
   roles:
     - role: proxy
     - role: attach-volume
-    - role: instance-environment
