@@ -27,7 +27,7 @@ docker create\
   --name couchdb${slavenode}\
   --env COUCHDB_USER=${user}\
   --env COUCHDB_PASSWORD=${pass}\
-  --env NODENAME=couchdb@${slavenode}\
+  --env NODENAME=couchdb${slavenode}\
   ibmcom/couchdb3:${VERSION}
 
 

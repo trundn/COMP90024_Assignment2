@@ -34,7 +34,7 @@ docker create\
 
 # Put in conts the Docker container IDs:
 
-declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`)
+declare -a conts=(`docker ps --all | grep couchdb | cut -f1 -d' ' | xargs -n${size} -d'\n'`) # need to change
 
 docker exec "couchdb${masternode}" bash -c "echo \"-setcookie couchdb_cluster\" >> /opt/couchdb/etc/vm.args"
 
@@ -43,7 +43,6 @@ docker exec "couchdb${masternode}" bash -c "echo \"-name couchdb@${masternode}\"
 # Start the containers (and wait a bit while they boot):
 
 docker start "couchdb${masternode}"
-
 
 
 # Set up the CouchDB cluster:
