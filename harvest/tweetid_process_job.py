@@ -4,6 +4,8 @@ import time
 import sys
 # Using library for system dependent functionalities
 import os
+# Implements some useful functions on pathnames
+from pathlib import Path
 # Provides a standard interface to extract, format and print stack traces 
 import traceback
 # Data manipulation tool.
@@ -16,8 +18,6 @@ from helper import Helper
 from tweet_writer import TweetWriter
 # The harvest constant definitions
 import constants
-
-from pathlib import Path
 
 class TweetIdProcessJob(Runnable):
     def __init__(self, tweepy_api, config_loader, writer, dataset_folder):
@@ -64,20 +64,15 @@ class TweetIdProcessJob(Runnable):
 
     def run(self):
         try:
-            # filenames = os.walk(self.dataset_folder)
             for pth, dirs, files in os.walk(self.dataset_folder):
                 for file_name in files:
                     data_folder = Path(self.dataset_folder)
                     data_path = data_folder / file_name
 
-            # for filename in filenames:
-                # data_frame = None
-                # data_path = os.path.join(self.dataset_folder, filename)
                     if os.path.exists(data_path):
+                        print(f"Querying tweets from {data_path}")
                         data_frame = pd.read_csv(data_path, delimiter = constants.TAB_CHAR, engine='c')
                         self.lookup_tweets(data_frame[constants.TWEET_ID_COLUMN].values.tolist())
-                    else:
-                        print("The data set of tweetid does not exist. Path: %s", data_path)
         except:
             print("Exception", sys.exc_info()[0], "occurred.")
             traceback.print_exc(file = sys.stdout)
