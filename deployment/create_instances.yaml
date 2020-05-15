@@ -9,6 +9,7 @@
     - role: volume
     - role: security-group
     - role: instance
+    - role: remote-security-group
 
 - hosts: allInstances
   vars_files:

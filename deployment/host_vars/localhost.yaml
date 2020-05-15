@@ -36,12 +36,15 @@ security_groups:
     port_range_min: 80
     port_range_max: 80
     remote_ip_prefix: 0.0.0.0/0
+
+# Variables for remote security groups
+remote_security_groups:
   - name: group45_tcp_connections
-    description: "Security group for HTTP communication"
+    description: "Security group for VM communication"
     protocol: tcp
     port_range_min: 500
     port_range_max: 50000
-    remote_ip_prefix: 0.0.0.0/0
+    remote_group: group45_tcp_connections
     
 # Variables for instances
 instances:
