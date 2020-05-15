@@ -54,7 +54,7 @@ class StreamingAPIThread(threading.Thread):
                                 self.config_loader.access_token_secret)
 
         # Instantiate the stream listener
-        listener = StreamListener(self.tweepy_api, self.config_loader)
+        listener = StreamListener(self.tweepy_api, self.config_loader, self.writer)
 
         # Streaming and filtering tweet data
         stream = tweepy.Stream(auth = self.tweepy_api.auth,
