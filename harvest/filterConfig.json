@@ -100,6 +100,7 @@
     },
     "track": [
         "covid",
+        "covidsafe",
         "covid19",
         "covid-19",
         "corona",
