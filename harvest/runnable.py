@@ -3,6 +3,7 @@ from atomic_boolean import AtomicBoolean
 
 class Runnable(object):
     def __init__(self):
+        self.handled_thread_name = ""
         self.is_cancelled = AtomicBoolean(False)
 
     def run(self):

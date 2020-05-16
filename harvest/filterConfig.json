@@ -30,23 +30,70 @@
                 "access_token": "1251428608700104704-bqVOrytxBZwlqBaXE3KAMH8nKJxi21",
                 "access_token_secret": "lgTbq57F5gCWcBsAUVFfEioVWeVVeASgXVa6iybENRQhq"
             }
-        },
-        "tweetids": {
-            "folders": [
-                "dataset"
+        }
+    },
+    "tweetids": {
+        "folders": [
+            "dataset"
+        ],
+        "executors": {
+            "num_thread_per_process": 3,
+            "thread_names_rank_0": [
+                "tweetid_thread_1_rank_0",
+                "tweetid_thread_2_rank_0",
+                "tweetid_thread_3_rank_0"
             ],
-            "authens": {
+            "thread_names_rank_1": [
+                "tweetid_thread_1_rank_1",
+                "tweetid_thread_2_rank_1",
+                "tweetid_thread_3_rank_1"
+            ]
+        },
+        "authens": {
+            "rank_0": {
                 "account0": {
+                    "thread_owner": "tweetid_thread_1_rank_0",
                     "api_key": "Ukm0uKHhYzhOeH6R7VFCPFOmL",
                     "api_secret_key": "rJGKgxEN7kwsI4CwllOCC2Urzt2HoPeQbUo5At1FA66p2pZAM6",
                     "access_token": "289723494-MqUy2zEFqONg267Ofr6nJOK3PvjCMt2POhZkWru9",
                     "access_token_secret": "XwdvbGTSSKd3nFo2uCi0fUA5EzGKo4cQopCiG1APTlwy1"
                 },
                 "account1": {
+                    "thread_owner": "tweetid_thread_2_rank_0",
                     "api_key": "uPki0iVAfizNaHoL0r9qRX1X0",
                     "api_secret_key": "AV0tKMgvqyYx8kghElpb35bWhYKkKhK7OsPcRbiKf3qF7l6vPo",
                     "access_token": "1252656509516832768-raeSbyRDI4f2cXW9q2pJqdouGk4DpI",
                     "access_token_secret": "TDT9KyMHdLgASbYE18qSGq8qlwYqVd1kAbVUrjdP2PJhI"
+                },
+                "account2": {
+                    "thread_owner": "tweetid_thread_3_rank_0",
+                    "api_key": "cTNcLv7wmvNDkAp0VCEN7177o",
+                    "api_secret_key": "WL8e84hiPOhnaHtyfo9ODV6tG7ItMTBDgLCK8xiQW3Zgtos8wT",
+                    "access_token": "1261471242629963777-nksuJzppGGl9jjPG2ahmxAB6WXcAO5",
+                    "access_token_secret": "QLO8yW2uCih4jGZwbEegRS2xN4yACpLU2jbCQIlG5mAAP"
+                }
+            },
+            "rank_1": {
+                "account0": {
+                    "thread_owner": "tweetid_thread_1_rank_1",
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
+                },
+                "account1": {
+                    "thread_owner": "tweetid_thread_2_rank_1",
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
+                },
+                "account2": {
+                    "thread_owner": "tweetid_thread_3_rank_1",
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 }
             }
         }
@@ -58,17 +105,22 @@
         "corona",
         "coronavirus",
         "sarscov2",
+        "sars cov2",
         "sars-cov-2",
         "pandemic",
         "epidemic",
         "quarantine",
         "self-quarantine",
+        "self quarantine",
         "isolation",
         "self-isolation",
+        "self isolation",
         "socialdistancing",
+        "social distancing",
         "social-distancing",
         "flattenthecurve",
         "flatten-the-curve",
+        "flatten the curve",
         "worldhealthorganisation"
     ],
     "user_location_filers": [

@@ -23,9 +23,7 @@ class TweetIdQueryThread(threading.Thread):
     def __init__(self, config_loader, writer):
         threading.Thread.__init__(self)
         self.writer = writer
-        self.tweepy_api = None
         self.config_loader = config_loader
-        self.threadpool_job_executor = JobExecutor(-1, 2, 2000)
 
     def run(self):
         comm = MPI.COMM_WORLD
@@ -35,13 +33,28 @@ class TweetIdQueryThread(threading.Thread):
         dataset_folders = self.config_loader.get_tweeid_dataset(rank, processor_size)
         api_key, api_secret_key, access_token, access_token_secret = self.config_loader.get_searching_authen(rank)
 
+        # Get exectuor configuration to initialise thread pool job exectuor
+        num_thread, thread_names = self.config_loader.get_tweetid_executors_config(rank)
+        self.threadpool_job_executor = JobExecutor(num_thread, num_thread, 2000)
+        
+        # Update thread name
+        for index in range(num_thread):
+            self.threadpool_job_executor.set_thread_name(index, thread_names[index])
+
+        # Get tweeter authentication keys for tweetid repo harvest mode
+        authen_info = self.config_loader.get_tweetid_authentications(rank, num_thread)
+        
+        # Instantiate tweepy apis
+        tweepy_apis = {}
         api_factory = APIFactory()
-        self.tweepy_api = api_factory.create_api(api_key, api_secret_key,
-                                access_token, access_token_secret)
+        for key, value in authen_info.items():
+            tweepy_api = api_factory.create_api(value.api_key, value.api_secret_key,
+                                value.access_token, value.access_token_secret)
+            tweepy_apis[key] = tweepy_api
 
         for folder in dataset_folders:
             print(f"Processing tweetid data set folder [{folder}]")
-            job = TweetIdProcessJob(self.tweepy_api, self.config_loader, self.writer, folder)
+            job = TweetIdProcessJob(tweepy_apis, self.config_loader, self.writer, folder)
             self.threadpool_job_executor.queue(job)
 
         while(self.threadpool_job_executor.is_any_thread_alive() is True):

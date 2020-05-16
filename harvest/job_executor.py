@@ -31,6 +31,10 @@ class JobExecutor(object):
                 # Start the worker thread
                 worker.start()
 
+    def set_thread_name(self, index, thread_name):
+        if (thread_name):
+            if 0 <= index < len(self.thread_list):
+                self.thread_list[index].name = thread_name
 
     def add_thread(self):
         # Instantiate the worker thread

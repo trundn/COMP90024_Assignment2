@@ -25,6 +25,7 @@ class Worker(threading.Thread):
                 job = self.queue.get()
                 if ((job is not None) and (isinstance(job, Runnable))):
                     self.handling_job_list.append(job)
+                    job.handled_thread_name = self.name
                     job.run()
         except:
             print("Exception", sys.exc_info()[0], "occurred.")

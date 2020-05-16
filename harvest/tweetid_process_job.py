@@ -20,8 +20,9 @@ from tweet_writer import TweetWriter
 import constants
 
 class TweetIdProcessJob(Runnable):
-    def __init__(self, tweepy_api, config_loader, writer, dataset_folder):
-        self.tweepy_api = tweepy_api
+    def __init__(self, tweepy_apis, config_loader, writer, dataset_folder):
+        self.own_tweepy_api = None
+        self.tweepy_apis = tweepy_apis
         self.config_loader = config_loader
         self.writer = writer
         self.dataset_folder = dataset_folder
@@ -37,7 +38,7 @@ class TweetIdProcessJob(Runnable):
                 last_index = min((i + 1) * 100, tweet_count)
                 # Sleep 2 seconds to avoid rate limit issue
                 time.sleep(constants.TWO_SECONDS)
-                full_tweets = self.tweepy_api.statuses_lookup(tweet_ids[i * 100 : last_index])
+                full_tweets = self.own_tweepy_api.statuses_lookup(tweet_ids[i * 100 : last_index])
                 
                 # Check if tweet is in configured user filter locations
                 for tweet in full_tweets:
@@ -64,6 +65,7 @@ class TweetIdProcessJob(Runnable):
 
     def run(self):
         try:
+            self.own_tweepy_api = self.tweepy_apis[self.handled_thread_name]
             for pth, dirs, files in os.walk(self.dataset_folder):
                 for file_name in files:
                     data_folder = Path(self.dataset_folder)

@@ -4,6 +4,8 @@ import json
 import os
 # Implements some useful functions on pathnames
 from pathlib import Path
+# Contains the tweet authentication keys
+from auth_info import AuthenticationInfo
 # The harvest constant definitions
 import constants
 
@@ -24,6 +26,7 @@ class ConfigurationLoader(object):
 
         self.streaming = {}
         self.searching = {}
+        self.tweetid = {}
 
         self.couchdb_connection_string = ""
 
@@ -48,6 +51,7 @@ class ConfigurationLoader(object):
                         config_content = json.loads(fstream.read())
                         self.streaming = config_content[constants.JSON_STREAMING_SECTION_PROP]
                         self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
+                        self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
                         self.track = config_content[constants.JSON_TRACK_PROP]
                         self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
                     except Exception as exception:
@@ -79,31 +83,62 @@ class ConfigurationLoader(object):
             locations = self.streaming[constants.JSON_LOCATIONS_PROP]
 
         return locations
+    
+    def get_tweetid_executors_config(self, rank):
+        num_thread = 1
+        thread_names = []
+
+        if (self.tweetid is not None):
+            exectors = self.tweetid[constants.JSON_EXECUTORS_PROP]
+            if (exectors):
+                num_thread = exectors[constants.JSON_NUM_THEAD_PROP]
+                thread_names = exectors["thread_names_rank_{}".format(rank)]
+
+        return num_thread, thread_names
+    
+    def get_tweetid_authentications(self, rank, num_thread):
+        authen_info = {}
+
+        if (self.tweetid is not None):
+            authens = self.tweetid[constants.JSON_AUTHENS_PROP]
+            if (authens):
+                authens_for_rank = authens["rank_{}".format(rank)]
+                for index in range(num_thread):
+                    account = authens_for_rank["account{}".format(index)]
+                    if (account is not None):
+                        thread_owner = account[constants.JSON_THREAD_OWNER_PROP]
+                        api_key = account[constants.JSON_API_KEY_PROP]
+                        api_secret_key = account[constants.JSON_API_SECRET_KEY_PROP]
+                        access_token = account[constants.JSON_ACCESS_TOKEN_PROP]
+                        access_token_secret = account[constants.JSON_ACCESS_TOKEN_SECRET]
+                        
+                        authen_obj = AuthenticationInfo(api_key, api_secret_key, access_token, access_token_secret)
+                        authen_info[thread_owner] = authen_obj
+
+        return authen_info
 
     def get_tweeid_dataset(self, processor_id, processor_size):
         groupped_dataset = []
         all_sub_folders = []
 
-        if (self.searching is not None):
-            tweetids = self.searching[constants.JSON_TWEET_IDS_SECTION]
-            if (tweetids):
-                folders = tweetids[constants.JSON_FOLDERS_PROP]
-                if (folders):
-                    for configured_folder in folders:
-                        if os.path.isdir(configured_folder):
-                            data_folder_path = Path(configured_folder)
-                            all_sub_folders.append(configured_folder)
+        if (self.tweetid is not None):
+            folders = self.tweetid[constants.JSON_FOLDERS_PROP]
+            if (folders):
+                for configured_folder in folders:
+                    if os.path.isdir(configured_folder):
+                        data_folder_path = Path(configured_folder)
+                        all_sub_folders.append(configured_folder)
                             
-                            for pth, dirs, files in os.walk(configured_folder):
-                                for sub_folder in dirs:
-                                    sub_folder_path = data_folder_path / sub_folder
-                                    if os.path.isdir(sub_folder_path):
-                                        all_sub_folders.append(sub_folder_path)
+                        for pth, dirs, files in os.walk(configured_folder):
+                            for sub_folder in dirs:
+                                sub_folder_path = data_folder_path / sub_folder
+                                if os.path.isdir(sub_folder_path):
+                                    all_sub_folders.append(sub_folder_path)
 
-                    if(all_sub_folders):
-                        for i, folder in enumerate(all_sub_folders):
-                            if (i % processor_size == processor_id):
-                                groupped_dataset.append(folder)
+                if(all_sub_folders):
+                    for i, folder in enumerate(all_sub_folders):
+                        if (i % processor_size == processor_id):
+                            groupped_dataset.append(folder)
 
         return groupped_dataset
 
