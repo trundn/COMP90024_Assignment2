@@ -10,10 +10,11 @@ from runnable import Runnable
 from datetime import datetime
 
 class WriterJob(Runnable):
-    def __init__(self, all_tweets, db_connection, config_loader):
+    def __init__(self, all_tweets, db_connection, config_loader, ignore_coordinates_filter = False):
         self.all_tweets = all_tweets
         self.db_connection = db_connection
         self.config_loader = config_loader
+        self.ignore_coordinates_filter = ignore_coordinates_filter
         self.helper = Helper()
 
     def run(self):
@@ -25,7 +26,7 @@ class WriterJob(Runnable):
                 if (self.helper.is_match(full_text.lower(), self.config_loader.track)):
                     source, coordinates = self.helper.extract_coordinates(tweet)
 
-                    if (coordinates):
+                    if (coordinates or (self.ignore_coordinates_filter is True)):
                         emotions = self.helper.extract_emotions(full_text)
                         word_count, pronoun_count = self.helper.extract_word_count(full_text)
 

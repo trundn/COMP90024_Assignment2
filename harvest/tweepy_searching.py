@@ -42,7 +42,7 @@ class SearchingAPIThread(threading.Thread):
                 # Get all posible user tweets (max: 3200 tweets for each uer)
                 all_tweets = helper.get_all_tweets(self.tweepy_api, user_id)
                 # Write all tweets to counchdb
-                self.writer.write_to_counchdb(all_tweets)
+                self.writer.write_to_counchdb(all_tweets, True)
                 # Sleep 2 seconds
                 time.sleep(constants.TWO_SECONDS)
 

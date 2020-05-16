@@ -18,7 +18,7 @@ class TweetWriter(object):
         self.database_connection.init_database()
         self.threadpool_job_executor = JobExecutor(-1, 50, 50000)
 
-    def write_to_counchdb(self, all_tweets):
+    def write_to_counchdb(self, all_tweets, ignore_coordinates_filter = False):
         if (all_tweets):
-            job = WriterJob(all_tweets, self.database_connection, self.config_loader)
+            job = WriterJob(all_tweets, self.database_connection, self.config_loader, ignore_coordinates_filter)
             self.threadpool_job_executor.queue(job)
