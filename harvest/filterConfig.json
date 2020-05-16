@@ -76,10 +76,10 @@
             "rank_1": {
                 "account0": {
                     "thread_owner": "tweetid_thread_1_rank_1",
-                    "api_key": "",
-                    "api_secret_key": "",
-                    "access_token": "",
-                    "access_token_secret": ""
+                    "api_key": "3K2tan8WcJMhJUESICpHvFtpT",
+                    "api_secret_key": "v2Iyd8YPjnROoBCJYEUiEcCplqLvt8tYlEJgi9bsNdevHfsXDK",
+                    "access_token": "1251428608700104704-VqExqisPWTN4faHRW4Rt7o1bgDmlwt",
+                    "access_token_secret": "psQOr9dTIevpUjnl8JSFyVeMvbnpLuFY6LoYaFP6E8sLR"
                 },
                 "account1": {
                     "thread_owner": "tweetid_thread_2_rank_1",
