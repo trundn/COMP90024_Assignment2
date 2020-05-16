@@ -31,7 +31,6 @@ class TweetIdQueryThread(threading.Thread):
         processor_size = comm.Get_size()
 
         dataset_folders = self.config_loader.get_tweeid_dataset(rank, processor_size)
-        api_key, api_secret_key, access_token, access_token_secret = self.config_loader.get_searching_authen(rank)
 
         # Get exectuor configuration to initialise thread pool job exectuor
         num_thread, thread_names = self.config_loader.get_tweetid_executors_config(rank)
