@@ -1,0 +1,40 @@
+---
+# Pull couchDB in Database Instances
+- name: Pull couchDB image 
+  become: yes  
+  docker_image:
+    name: "{{ couchdb_image }}"
+    source: pull
+
+# Remove couchDB in Database Instances
+- name: Remove old couchDB containers
+  become: yes
+  docker_container:
+    name: "{{ couchdb_name }}"
+    state: absent
+
+- name: Reboot machines
+  become: yes
+  reboot:
+    reboot_timeout: 3000
+
+# Create couchDB in Database Instances
+- name: Create couchDB containers
+  become: yes
+  docker_container:
+    name: "{{ couchdb_name }}"
+    env:
+        COUCHDB_USER: "{{ couchdb_user_name }}"
+        COUCHDB_PASSWORD: "{{ couchdb_password }}"
+        NODENAME: "{{ couchdb_node_name }}"
+        COUCHDB_SECRET: "{{ couchdb_secret }}"
+        ERL_FLAGS: "{{ erl_flags }}"
+    volumes: 
+      - "/data:/opt/couchdb/data"
+    ports:
+      - "4369:4369"
+      - "5984:5984"
+      - "9100:9100"
+    image: "{{ couchdb_image }}"
+    detach: yes
+    state: started
