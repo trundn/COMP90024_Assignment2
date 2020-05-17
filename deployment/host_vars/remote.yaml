@@ -5,12 +5,11 @@ ansible_user: ubuntu
 ansible_ssh_private_key_file: ~/.ssh/mayank-sharma-key.pem
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no' 
 
-couchdb_name: 'couchdb{{ ansible_default_ipv4.address }}'
+couchdb_name: "couchdb{{ ansible_default_ipv4.address }}"
 couchdb_image: couchdb:3.0.0
 couchdb_user_name: admin
 couchdb_password: password
-couchdb_node_name: 'couchdb@{{ ansible_default_ipv4.address}}'
-couchdb_cookie: 'l4jx5hjc3yncpkm42fy10k4g6j12h4x3'
-couchdb_secret: 'l4jx5hjc3yncpkm42fy10k4g6j12h4x3'
-couchdb_uuid: 'l4jx5hjc3yncpkm42fy10k4g6j12h4x3'
-erl_flags: '-setcookie \"{{ couchdb_cookie }}\" -name \"{{ couchdb_node_name }}\"'
+couchdb_cookie: '0e0cfc55cf5cde25799c547bdf0008ea'
+couchdb_secret: '0e0cfc55cf5cde25799c547bdf001633'
+couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
+couchdb_nodes: "{{ groups['slaveInstances'] }}"

@@ -26,15 +26,35 @@
     env:
         COUCHDB_USER: "{{ couchdb_user_name }}"
         COUCHDB_PASSWORD: "{{ couchdb_password }}"
-        NODENAME: "{{ couchdb_node_name }}"
+        NODENAME: "{{ ansible_default_ipv4.address }}"
         COUCHDB_SECRET: "{{ couchdb_secret }}"
-        ERL_FLAGS: "{{ erl_flags }}"
     volumes: 
       - "/data:/opt/couchdb/data"
     ports:
-      - "4369:4369"
       - "5984:5984"
+      - "4369:4369"
       - "9100:9100"
     image: "{{ couchdb_image }}"
     detach: yes
     state: started
+
+- name: Modify vm.args to set cookie
+  become: yes
+  command: docker exec {{ couchdb_name }} bash -c "echo \"-setcookie {{ couchdb_cookie }}\" >> /opt/couchdb/etc/vm.args" 
+  
+- name: Restart couchDB containers
+  become: yes
+  docker_container:
+    name: "{{ couchdb_name }}"
+    state: started
+    restart: yes
+
+- name: Bind address to 0.0.0.0
+  command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/chttpd/bind_address -d '\"0.0.0.0\"'"
+
+- name: Setting up UUID
+  command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/couchdb/uuid -d '\"{{couchdb_uuid}}\"'"
+
+- name: Setting up http secret
+  command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/couch_httpd_auth/secret -d '\"{{couchdb_secret}}\"'"
+
