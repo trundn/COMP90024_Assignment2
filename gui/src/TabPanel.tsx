@@ -10,15 +10,14 @@ import HelpIcon from '@material-ui/icons/Help';
 import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import ThumbUp from '@material-ui/icons/ThumbUp';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Home from "./components/Home";
-import SentimentAnalysis from "./components/SentimentAnalysis";
-import Sentiment from "./components/Sentiment";
-import Movement from "./components/Movement";
-import UserTracker from "./components/UserTracker";
-import Statistics from "./components/Statistics";
-import Language from "./components/Language";
+import Home from "./components/Home/Home";
+import SentimentAnalysis from "./components/SentimentAnalysis/SentimentAnalysis";
+import Sentiment from "./components/Sentiment/Sentiment";
+import Movement from "./components/Movement/Movement";
+import UserTracker from "./components/UserTracker/UserTracker";
+import Statistics from "./components/Statistics/Statistics";
+import Language from "./components/Language/Language";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -39,7 +38,7 @@ function TabPanel(props: TabPanelProps) {
             {value === index && (
                 <Box p={1}>
                     <div className={"container"}>
-                        <Typography>{children}</Typography>
+                        <div>{children}</div>
                     </div>
                 </Box>
             )}
@@ -64,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function ScrollableTabsButtonForce() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(0);
+    const [value, setValue] = React.useState(6);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
