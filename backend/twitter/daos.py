@@ -20,5 +20,5 @@ class TwitterDAO:
     def create(self, doc):
         return self.twitter_database.save(doc)
 
-    def retrieve(self, id):
-        return self.twitter_database.get(id=id)
+    def retrieve(self, document_id):
+        return self.twitter_database.get(id=document_id)

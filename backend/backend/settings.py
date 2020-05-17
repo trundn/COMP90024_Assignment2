@@ -116,5 +116,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-COUCH_SERVER_URL = 'http://admin:admin@localhost:5984'
-COUCH_DATABASE_NAME = 'tweet'
+COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
+COUCH_DATABASE_NAME = 'tweets'
