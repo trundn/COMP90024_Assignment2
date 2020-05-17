@@ -17,7 +17,7 @@ import SentimentAnalysis from "./components/SentimentAnalysis";
 import Sentiment from "./components/Sentiment";
 import Movement from "./components/Movement";
 import UserTracker from "./components/UserTracker";
-import Creators from "./components/Creators";
+import Statistics from "./components/Statistics";
 import Language from "./components/Language";
 
 interface TabPanelProps {
@@ -87,7 +87,7 @@ export default function ScrollableTabsButtonForce() {
                     <Tab label="Movement" icon={<HelpIcon/>} {...a11yProps(3)} />
                     <Tab label="User Tracker" icon={<ShoppingBasket/>} {...a11yProps(4)} />
                     <Tab label="Language" icon={<ThumbDown/>} {...a11yProps(5)} />
-                    <Tab label="Creators" icon={<ThumbUp/>} {...a11yProps(6)} />
+                    <Tab label="Statistics" icon={<ThumbUp/>} {...a11yProps(6)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -109,7 +109,7 @@ export default function ScrollableTabsButtonForce() {
                 <Language/>
             </TabPanel>
             <TabPanel value={value} index={6}>
-                <Creators/>
+                <Statistics/>
             </TabPanel>
         </div>
     );
