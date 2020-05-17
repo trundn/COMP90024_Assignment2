@@ -68,7 +68,7 @@ export default class Statistics extends React.Component {
                         <Legend/>
                         <Line type="monotone" dataKey="value" stroke="#82ca9d"/>
                     </LineChart>
-                    <div>Number Of Tweets Per Day</div>
+                    <div>Number Of Tweets Per Hour</div>
                 </div>
                 <div className={"float-content"}>
                     <BarChart width={600}
