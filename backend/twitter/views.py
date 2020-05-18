@@ -81,6 +81,24 @@ class TweetsInPolygonView(views.APIView):
 class StatisticsInPolygonView(views.APIView):
     map_dao = MapDAO()
 
+    def get(self, request, pk):
+        result = []
+        data = Polygon.objects.get(pk=pk)
+        serializer = PolygonSerializer(data)
+        data = serializer.data
+        content = json.loads(data['content'])
+        features = content['features']
+        for feature in features:
+            feature_code = feature['properties']['feature_code']
+            feature_name = feature['properties']['feature_name']
+            polygon_data = feature['geometry']['coordinates']
+            result.append({
+                'code': feature_code,
+                'name': feature_name,
+                'statistics': self.map_dao.get_statistics_in_polygon(polygon_data)
+            })
+        return Response(result, status=status.HTTP_200_OK)
+
     def post(self, request):
         try:
             polygons = request.data

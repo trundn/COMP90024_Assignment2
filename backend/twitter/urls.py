@@ -15,6 +15,6 @@ urlpatterns = [
     path('language-statistics/', LanguageStatisticsView.as_view()),
     path('tweets-in-rectangle/', TweetsInRectangleView.as_view()),
     path('tweets-in-polygon/', TweetsInPolygonView.as_view()),
-    path('statistics-in-polygon/', StatisticsInPolygonView.as_view()),
+    path('statistics-in-polygon/<pk>', StatisticsInPolygonView.as_view()),
     path('document/', include(twitter_router.urls))
 ]
