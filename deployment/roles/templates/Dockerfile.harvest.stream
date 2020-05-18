@@ -1,0 +1,12 @@
+FROM python:3.7
+
+COPY ../harvest /harvest
+COPY ../script /script
+
+WORKDIR /harvest
+
+RUN pip install requirements.txt
+
+WORKDIR /script
+
+CMD ["bash","./harvest_instance1_two_cores.sh"]
