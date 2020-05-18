@@ -4,6 +4,7 @@ import axios from 'axios'
 import './style.sass';
 import TreeMenu from 'react-simple-tree-menu';
 import PacmanLoader from "react-spinners/PacmanLoader";
+import config from "../../assets/config.js"
 
 const treeData = [
     {
@@ -96,17 +97,17 @@ export default class Sentiment extends Component {
             this.setState({
                 selectedId: event.polygonId
             });
-            let polygon_url = `http://localhost:8000/tweets/polygon/${event.polygonId}`;
-            let statistics_url = `http://localhost:8000/tweets/statistics-in-polygon/${event.polygonId}`;
+            let polygon_url = config.polygon_url.format(event.polygonId);
+            let statistics_url = config.statistics_url.format(event.polygonId);
             this.geoJson.current.leafletElement.clearLayers();
-            this.setState({
-                loading: true
-            });
             this.requestDataForMap(polygon_url, statistics_url);
         }
     }
 
     requestDataForMap(polygon_url, statistics_url) {
+        this.setState({
+            loading: true
+        });
         let request1 = axios.get(polygon_url);
         let request2 = axios.get(statistics_url);
         axios.all([request1, request2]).then(axios.spread((...responses) => {
@@ -123,10 +124,13 @@ export default class Sentiment extends Component {
                 this.geoJson.current.leafletElement.addData(polygonData);
                 this.setState({
                     polygonData: polygonData,
-                    loading: false
                 });
             }
-        }));
+        })).then(() => {
+            this.setState({
+                loading: false
+            });
+        });
     }
 
     render() {

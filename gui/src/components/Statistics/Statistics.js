@@ -2,6 +2,7 @@ import React from "react";
 import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar} from "recharts";
 import axios from 'axios';
 import './style.sass'
+import config from "../../assets/config";
 
 export default class Statistics extends React.Component {
     state = {
@@ -32,7 +33,7 @@ export default class Statistics extends React.Component {
     }
 
     componentDidMount() {
-        axios.get("http://127.0.0.1:8000/tweets/tweets-per-hour/").then(response => {
+        axios.get(config.tweets_per_hour).then(response => {
             if (response.status === 200) {
                 this.setState({
                     lineChartData: response.data.rows
@@ -41,7 +42,7 @@ export default class Statistics extends React.Component {
         }, error => {
             console.log(error);
         });
-        axios.get("http://127.0.0.1:8000/tweets/language-statistics/").then(response => {
+        axios.get(config.language_statistics_url).then(response => {
             if (response.status === 200) {
                 console.log(response.data.rows);
                 this.setState({
