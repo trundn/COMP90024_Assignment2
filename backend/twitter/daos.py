@@ -68,7 +68,7 @@ class MapDAO(DAO):
         tweets_in_polygon = []
 
         for polygon_data_item in polygon_data:
-            polygon = Polygon(polygon_data_item)
+            polygon = Polygon(polygon_data_item[0])
             bottom_left_point = [polygon.bounds[0], polygon.bounds[1]]
             top_right_point = [polygon.bounds[2], polygon.bounds[3]]
             tweets = self.get_tweets_in_rectangle(bottom_left_point, top_right_point)

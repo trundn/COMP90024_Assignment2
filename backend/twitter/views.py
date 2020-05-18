@@ -62,10 +62,9 @@ class TweetsInRectangleView(views.APIView):
 class TweetsInPolygonView(views.APIView):
     map_dao = MapDAO()
 
-    def get(self, request):
+    def post(self, request):
         try:
-            polygons = request.query_params.get('polygons')
-            polygons = json.loads(polygons)
+            polygons = request.data
             result = self.map_dao.get_tweets_in_polygon(polygons)
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
@@ -75,10 +74,9 @@ class TweetsInPolygonView(views.APIView):
 class StatisticsInPolygonView(views.APIView):
     map_dao = MapDAO()
 
-    def get(self, request):
+    def post(self, request):
         try:
-            polygons = request.query_params.get('polygons')
-            polygons = json.loads(polygons)
+            polygons = request.data
             result = self.map_dao.get_statistics_in_polygon(polygons)
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:

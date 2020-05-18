@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {Map, TileLayer, GeoJSON} from 'react-leaflet'
-import lga2018data from '../../assets/lga2018.json'
+import statesData from '../../assets/states.json'
 import axios from 'axios'
 
 export default class Sentiment extends Component {
@@ -21,7 +21,7 @@ export default class Sentiment extends Component {
 
     onEachFeature(feature, layer) {
         layer.on('click', () => {
-            axios.get('http://127.0.0.1:8000/tweets/statistics-in-polygon/?polygons=' + JSON.stringify(feature.geometry.coordinates[0])).then(response => {
+            axios.post('http://127.0.0.1:8000/tweets/statistics-in-polygon/', feature.geometry.coordinates).then(response => {
                 if (response.status === 200) {
                     let data = response.data;
                     let popupContent = `<Popup>
@@ -60,7 +60,7 @@ export default class Sentiment extends Component {
                     attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
                 <GeoJSON
-                    data={lga2018data}
+                    data={statesData}
                     style={this.geoJSONStyle}
                     onEachFeature={this.onEachFeature}
                     onmouseover={this.onMouseOver}/>

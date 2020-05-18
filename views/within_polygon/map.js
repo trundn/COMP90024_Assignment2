@@ -14,7 +14,7 @@ function (doc) {
       type = "POSITIVE";
       emotion_value = doc.emotions.pos;
     }
-
-    emit(doc.calculated_coordinates, type, 1);
+    calculated_coordinates = doc.calculated_coordinates
+    emit([calculated_coordinates[1], calculated_coordinates[0]], type);
   }
 }
