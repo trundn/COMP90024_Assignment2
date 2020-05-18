@@ -3,6 +3,8 @@ from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
 from .daos import TwitterDAO, StatisticsDAO, MapDAO
+from .models import Polygon
+from .serializers import PolygonSerializer
 import json
 
 
@@ -20,6 +22,11 @@ class TwitterViewSet(viewsets.ViewSet):
     def retrieve(self, request, pk=None):
         details = self.twitterDAO.retrieve(pk)
         return Response(details)
+
+
+class PolygonViewSet(viewsets.ModelViewSet):
+    serializer_class = PolygonSerializer
+    queryset = Polygon.objects.all()
 
 
 class TweetsPerHourView(views.APIView):
