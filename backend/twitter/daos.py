@@ -77,3 +77,20 @@ class MapDAO(DAO):
                     tweets_in_polygon.append(tweet)
 
         return tweets_in_polygon
+
+    def get_statistics_in_polygon(self, polygon_data):
+        statistics = {
+            "number_of_positive_tweets": 0,
+            "number_of_neural_tweets": 0,
+            "number_of_negative_tweets": 0
+        }
+        tweets_in_polygon = self.get_tweets_in_polygon(polygon_data)
+        for tweet in tweets_in_polygon:
+            if tweet['value'] == 'POSITIVE':
+                statistics['number_of_positive_tweets'] = statistics['number_of_positive_tweets'] + 1
+            elif tweet['value'] == 'NEUTRAL':
+                statistics['number_of_neural_tweets'] = statistics['number_of_neural_tweets'] + 1
+            elif tweet['value'] == 'NEGATIVE':
+                statistics['number_of_negative_tweets'] = statistics['number_of_negative_tweets'] + 1
+
+        return statistics

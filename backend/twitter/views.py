@@ -70,3 +70,16 @@ class TweetsInPolygonView(views.APIView):
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class StatisticsInPolygonView(views.APIView):
+    map_dao = MapDAO()
+
+    def get(self, request):
+        try:
+            polygons = request.query_params.get('polygons')
+            polygons = json.loads(polygons)
+            result = self.map_dao.get_statistics_in_polygon(polygons)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
