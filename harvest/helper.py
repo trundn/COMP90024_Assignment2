@@ -51,7 +51,7 @@ class Helper(object):
 
                 source = constants.PLACE
                 tmp_coordinates = tweet.place.bounding_box.coordinates[0]
-                latitude = (tmp_coordinates[0][1] + tmp_coordinates[1][1]) / 2
+                latitude = (tmp_coordinates[0][1] + tmp_coordinates[2][1]) / 2
                 longitude =(tmp_coordinates[0][0] + tmp_coordinates[2][0]) / 2
                 coordinates = [latitude, longitude]
 

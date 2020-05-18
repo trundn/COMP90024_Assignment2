@@ -101,7 +101,7 @@ def process_twitter_data(rank, processor_size,
                                             source = constants.PLACE
                                             temp_coordinates = tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES][0]
                                             
-                                            lat = (temp_coordinates[0][1] + temp_coordinates[1][1])/2
+                                            lat = (temp_coordinates[0][1] + temp_coordinates[2][1])/2
                                             lng = (temp_coordinates[0][0] + temp_coordinates[2][0])/2
                                             coordinates = [lat, lng]
 
