@@ -2,7 +2,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
-from .daos import TwitterDAO, StatisticsDAO
+from .daos import TwitterDAO, StatisticsDAO, MapDAO
+import json
 
 
 class TwitterViewSet(viewsets.ViewSet):
@@ -28,8 +29,8 @@ class TweetsPerHourView(views.APIView):
         try:
             result = self.statistics_dao.get_tweets_per_hour()
             return Response(result, status=status.HTTP_200_OK)
-        except Exception(e):
-            return Response(e, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class LanguageStatisticsView(views.APIView):
@@ -39,5 +40,33 @@ class LanguageStatisticsView(views.APIView):
         try:
             result = self.statistics_dao.get_language_statistics()
             return Response(result, status=status.HTTP_200_OK)
-        except Exception(e):
-            return Response(e, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsInRectangleView(views.APIView):
+    map_dao = MapDAO()
+
+    def get(self, request):
+        try:
+            bottom_left_point = request.query_params.get('bottom_left_point')
+            top_right_point = request.query_params.get('top_right_point')
+            # bottom_left_point = [-45, 110]
+            # top_right_point = [-8, 155]
+            result = self.map_dao.get_tweets_in_rectangle(bottom_left_point, top_right_point)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsInPolygonView(views.APIView):
+    map_dao = MapDAO()
+
+    def get(self, request):
+        try:
+            polygons = request.query_params.get('polygons')
+            polygons = json.loads(polygons)
+            result = self.map_dao.get_tweets_in_polygon(polygons)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

@@ -2,6 +2,9 @@ from couchdb import Server
 
 from django.conf import settings
 
+from shapely.geometry import Point
+from shapely.geometry import Polygon, MultiPolygon
+
 
 class DAO:
     def __init__(self):
@@ -35,10 +38,42 @@ class StatisticsDAO(DAO):
 
     def get_tweets_per_hour(self):
         response = self.twitter_database.list('_design/tweets-per-hour', '_view/tweets-per-hour',
-                                              **{'reduce': True, 'group': True})
+                                              **{'inclusive': True, 'reduce': True, 'group': True})
         return response[1]
 
     def get_language_statistics(self):
         response = self.twitter_database.list('_design/language', '_view/language',
-                                              **{'reduce': True, 'group': True})
+                                              **{'inclusive': True, 'reduce': True, 'group': True})
         return response[1]
+
+
+class MapDAO(DAO):
+    def __init__(self):
+        super().__init__()
+
+    def get_tweets_in_rectangle(self, bottom_left_point, top_right_point):
+        params = {
+            'inclusive_end': True,
+            'start_key': bottom_left_point,
+            'end_key': top_right_point
+        }
+        try:
+            response = self.twitter_database.list('_design/within-polygon', '_view/within-polygon', **params)
+            tweets = response[1]["rows"]
+        except Exception as e:
+            tweets = []
+        return tweets
+
+    def get_tweets_in_polygon(self, polygon_data):
+        tweets_in_polygon = []
+
+        for polygon_data_item in polygon_data:
+            polygon = Polygon(polygon_data_item)
+            bottom_left_point = [polygon.bounds[0], polygon.bounds[1]]
+            top_right_point = [polygon.bounds[2], polygon.bounds[3]]
+            tweets = self.get_tweets_in_rectangle(bottom_left_point, top_right_point)
+            for tweet in tweets:
+                if polygon.contains(Point(tweet['key'])):
+                    tweets_in_polygon.append(tweet)
+
+        return tweets_in_polygon
