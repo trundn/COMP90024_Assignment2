@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
-import {Map, TileLayer, GeoJSON, Tooltip} from 'react-leaflet'
+import {Map, TileLayer, GeoJSON} from 'react-leaflet'
 import lga2018data from '../../assets/lga2018.json'
-
+import axios from 'axios'
 
 export default class Sentiment extends Component {
     state = {
@@ -20,10 +20,25 @@ export default class Sentiment extends Component {
     }
 
     onEachFeature(feature, layer) {
-        console.log(feature);
-        console.log(layer);
-        const popupContent = `<Popup><p>${feature.properties.feature_name}</p></Popup>`
-        layer.bindPopup(popupContent)
+        layer.on('click', () => {
+            axios.get('http://127.0.0.1:8000/tweets/statistics-in-polygon/?polygons=' + JSON.stringify(feature.geometry.coordinates[0])).then(response => {
+                if (response.status === 200) {
+                    let data = response.data;
+                    let popupContent = `<Popup>
+                        <p>${feature.properties.feature_name}</p>
+                        <p>Number Of Positive Tweets: ${data.number_of_positive_tweets}</p>
+                        <p>Number Of Neural Tweets: ${data.number_of_neural_tweets}</p>
+                        <p>Number Of Negative Tweets: ${data.number_of_negative_tweets}</p>
+                        </Popup>`;
+                    layer.bindPopup(popupContent);
+                    layer.openPopup();
+                }
+
+                console.log(response);
+            }, error => {
+                console.log(error);
+            });
+        });
         layer.on('mouseover', () => {
             layer.setStyle({
                 'fillColor': '#ff0000'
@@ -33,7 +48,6 @@ export default class Sentiment extends Component {
             layer.setStyle({
                 'fillColor': '#fff2af'
             })
-            layer.closePopup();
         });
     }
 
@@ -49,8 +63,7 @@ export default class Sentiment extends Component {
                     data={lga2018data}
                     style={this.geoJSONStyle}
                     onEachFeature={this.onEachFeature}
-                    onmouseover={this.onMouseOver}
-                />
+                    onmouseover={this.onMouseOver}/>
             </Map>
         )
     }
