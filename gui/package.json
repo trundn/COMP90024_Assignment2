@@ -16,6 +16,7 @@
     "react-leaflet": "^2.7.0",
     "react-scripts": "3.4.1",
     "react-simple-tree-menu": "^1.1.15",
+    "react-spinners": "^0.8.3",
     "recharts": "^1.8.5",
     "typescript": "^3.8.3"
   },
