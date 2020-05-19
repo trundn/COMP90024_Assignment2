@@ -29,7 +29,7 @@
         NODENAME: "{{ ansible_default_ipv4.address }}"
         COUCHDB_SECRET: "{{ couchdb_secret }}"
     volumes: 
-      - "/data:/opt/couchdb/data"
+      - "/data/couchdb:/opt/couchdb/data"
     ports:
       - "5984:5984"
       - "4369:4369"
