@@ -7,9 +7,14 @@
 - hosts: dbInstance1
   vars_files:
     -host_vars/remote.yaml
+  gather_facts: true
 
-  - hosts: dbInstance2
+- hosts: dbInstance2
   vars_files:
     - host_vars/remote.yaml
   gather_facts: true
 
+- hosts: dbInstance3
+  vars_files:
+    - host_vars/remote.yaml
+  gather_facts: true

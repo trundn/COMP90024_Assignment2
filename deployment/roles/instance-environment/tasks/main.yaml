@@ -1,17 +1,17 @@
 ---
-- name: Delete shards folder
+- name: Delete folders
   become: yes
   file:
-    path: "/data/{{ item }}"
+    path: "/data/couchdb/{{ item }}"
     state: absent
   with_items:
     - .delete
     - shards
 
-- name: Delete shards folder
+- name: Delete files
   become: yes
   file:
-    path: "/data/{{ item }}"
+    path: "/data/couchdb/{{ item }}"
     state: absent
   with_items:
     - _dbs.couch

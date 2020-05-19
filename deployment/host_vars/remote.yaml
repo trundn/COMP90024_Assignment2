@@ -13,3 +13,11 @@ couchdb_cookie: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_secret: '0e0cfc55cf5cde25799c547bdf001633'
 couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_nodes: "{{ groups['slaveInstances'] }}"
+
+harvester_instance1: stream
+harvester_instance2: search
+harvester_instance3: tweetid
+
+dockerfile_search: Dockerfile.harvest.search
+dockerfile_stream: Dockerfile.harvest.stream
+dockerfile_tweetid: Dockerfile.harvest.tweetid

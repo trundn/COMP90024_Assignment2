@@ -3,13 +3,18 @@
 - name: Remove Harvest containers
   become: yes
   docker_container:
-    name: search
+    name: "{{ harvester_instance2 }}"
     state: absent
 
 # Create search harvester 
-- name: Build search harvester containers
+- name: Build search harvester image
   become: yes
   docker_image:
-    name: "{{  }}"
-    build:
+    name: "{{ harvester_instance2 }}"
+    build: 
+     dockerfile: "{{ dockerfile_search }}"
+     path: ../templates
+     pull: yes
+    state: present
+    source: build
     
