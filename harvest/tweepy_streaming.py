@@ -48,8 +48,12 @@ class StreamingAPIThread(threading.Thread):
         self.tweepy_api = None
         self.writer = writer
         self.config_loader = config_loader
+        
         # The initial backoff time after a disconnection occurs, in seconds.
+        self.default_backoff_time = 1
         self.minimum_backoff_time = 1
+        # The maximum backoff time before giving up, in seconds.
+        self.maximum_backoff_time = 32
 
     def run(self):
         # Create tweepy API
@@ -75,8 +79,12 @@ class StreamingAPIThread(threading.Thread):
         
             except IOError as ex:
                 print(f"Exception occurred during tweet streaming. {ex}")
-                delay = self.minimum_backoff_time + random.randint(0, 1000) / 1000.0
                 
+                if self.minimum_backoff_time > self.maximum_backoff_time:
+                    self.minimum_backoff_time = self.default_backoff_time
+
+                delay = self.minimum_backoff_time + random.randint(0, 1000) / 1000.0
+
                 print(f"Trying to reconect after {delay} seconds")
                 time.sleep(delay)
                 self.minimum_backoff_time *= 2
