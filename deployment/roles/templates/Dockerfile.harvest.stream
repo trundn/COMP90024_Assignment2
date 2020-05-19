@@ -5,7 +5,7 @@ COPY ../script /app/script
 
 WORKDIR /app/harvest
 
-RUN pip install requirements.txt
+RUN pip install -r requirements.txt
 
 WORKDIR /app/script
 

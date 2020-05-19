@@ -13,7 +13,7 @@
     name: "{{ harvester_instance2 }}"
     build: 
      dockerfile: "{{ dockerfile_search }}"
-     path: ../templates
+     path: "../../templates/{{ dockerfile_search }}"
      pull: yes
     state: present
     source: build
