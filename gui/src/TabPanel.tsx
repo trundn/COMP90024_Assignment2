@@ -3,14 +3,14 @@ import {makeStyles, Theme} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import PhoneIcon from '@material-ui/icons/Phone';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import PersonPinIcon from '@material-ui/icons/PersonPin';
-import HelpIcon from '@material-ui/icons/Help';
-import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
-import ThumbDown from '@material-ui/icons/ThumbDown';
-import ThumbUp from '@material-ui/icons/ThumbUp';
 import Box from '@material-ui/core/Box';
+import HomeIcon from '@material-ui/icons/Home';
+import MoodIcon from '@material-ui/icons/Mood';
+import ListAltIcon from '@material-ui/icons/ListAlt';
+import AirplanemodeActiveIcon from '@material-ui/icons/AirplanemodeActive';
+import MyLocationIcon from '@material-ui/icons/MyLocation';
+import LanguageIcon from '@material-ui/icons/Language';
+import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Home from './components/Home/Home';
 import SentimentAnalysis from './components/SentimentAnalysis/SentimentAnalysis';
 import Sentiment from './components/Sentiment/Sentiment';
@@ -80,13 +80,13 @@ export default function ScrollableTabsButtonForce() {
                     indicatorColor="primary"
                     textColor="primary"
                     aria-label="scrollable force tabs example">
-                    <Tab label="Home" icon={<PhoneIcon/>} {...a11yProps(0)} />
-                    <Tab label="Sentiment" icon={<FavoriteIcon/>} {...a11yProps(1)} />
-                    <Tab label="Sentiment Analysis" icon={<PersonPinIcon/>} {...a11yProps(2)} />
-                    <Tab label="Movement" icon={<HelpIcon/>} {...a11yProps(3)} />
-                    <Tab label="User Tracker" icon={<ShoppingBasket/>} {...a11yProps(4)} />
-                    <Tab label="Language" icon={<ThumbDown/>} {...a11yProps(5)} />
-                    <Tab label="Statistics" icon={<ThumbUp/>} {...a11yProps(6)} />
+                    <Tab label="Home" icon={<HomeIcon/>} {...a11yProps(0)} />
+                    <Tab label="Sentiment" icon={<MoodIcon/>} {...a11yProps(1)} />
+                    <Tab label="Sentiment Analysis" icon={<ListAltIcon/>} {...a11yProps(2)} />
+                    <Tab label="Movement" icon={<AirplanemodeActiveIcon/>} {...a11yProps(3)} />
+                    <Tab label="User Tracker" icon={<MyLocationIcon/>} {...a11yProps(4)} />
+                    <Tab label="Language" icon={<LanguageIcon/>} {...a11yProps(5)} />
+                    <Tab label="Statistics" icon={<TrendingUpIcon/>} {...a11yProps(6)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
