@@ -4,6 +4,10 @@ import json
 import sys, traceback
 # Constructs higher-level threading interfaces on top of the lower level _thread module
 import threading
+# Provides various time-related functions
+import time
+# Implements pseudo-random number generators for various distributions
+import random
 # An easy-to-use Python library for accessing the Twitter API
 import tweepy
 # The harvest constant definitions
@@ -44,6 +48,8 @@ class StreamingAPIThread(threading.Thread):
         self.tweepy_api = None
         self.writer = writer
         self.config_loader = config_loader
+        # The initial backoff time after a disconnection occurs, in seconds.
+        self.minimum_backoff_time = 1
 
     def run(self):
         # Create tweepy API
@@ -53,14 +59,24 @@ class StreamingAPIThread(threading.Thread):
                                 self.config_loader.access_token,
                                 self.config_loader.access_token_secret)
 
-        # Instantiate the stream listener
-        listener = StreamListener(self.tweepy_api, self.config_loader, self.writer)
+        while(True):
+            try:
+                # Instantiate the stream listener
+                listener = StreamListener(self.tweepy_api, self.config_loader, self.writer)
 
-        # Streaming and filtering tweet data
-        stream = tweepy.Stream(auth = self.tweepy_api.auth,
-            listener = listener, tweet_mode = constants.TWEET_MODE)
+                # Streaming and filtering tweet data
+                stream = tweepy.Stream(auth = self.tweepy_api.auth,
+                    listener = listener, tweet_mode = constants.TWEET_MODE)
 
-        # Filer tweets based on configured locations
-        locations = self.config_loader.get_streaming_locations()
-        if (locations is not None):
-            stream.filter(locations = locations)
+                # Filer tweets based on configured locations
+                locations = self.config_loader.get_streaming_locations()
+                if (locations is not None):
+                    stream.filter(locations = locations)
+        
+            except IOError as ex:
+                print(f"Exception occurred during tweet streaming. {ex}")
+                delay = self.minimum_backoff_time + random.randint(0, 1000) / 1000.0
+                
+                print(f"Trying to reconect after {delay} seconds")
+                time.sleep(delay)
+                self.minimum_backoff_time *= 2

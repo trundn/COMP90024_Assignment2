@@ -1,3 +1,5 @@
 function (doc) {
-  emit(doc.raw_data.user.id, doc.raw_data.user);
+  if (doc.calculated_coordinates) {
+    emit(doc.raw_data.user.id, doc.raw_data.user);
+  }
 }
