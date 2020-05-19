@@ -50,7 +50,7 @@ class TweetIdProcessJob(Runnable):
                         if (constants.AUSTRALIA_COUNTRY_NAME == location):
                             all_tweets.append(tweet)
                     else:
-                        coordinates = self.helper.extract_coordinates(tweet)
+                        source, coordinates = self.helper.extract_coordinates(tweet)
                         if (coordinates):
                             all_tweets.append(tweet)
 
