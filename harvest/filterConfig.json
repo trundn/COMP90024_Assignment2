@@ -90,10 +90,10 @@
                 },
                 "account2": {
                     "thread_owner": "tweetid_thread_3_rank_1",
-                    "api_key": "",
-                    "api_secret_key": "",
-                    "access_token": "",
-                    "access_token_secret": ""
+                    "api_key": "mcHIZ9L4CyN1FFKeFOIYeVVPJ",
+                    "api_secret_key": "4yj2mYNFZYqcEh7M2XATzPq6NNpB35LyR9yPU9D84F9qyZsglX",
+                    "access_token": "1262514721405591552-XxuDU9KaEKB59S57WLlWl0ErcpjNNK",
+                    "access_token_secret": "QDYOEtGuBPJkYqyZmsCGBbOTJXQHVnts83u51XiUJha9l"
                 }
             }
         }
