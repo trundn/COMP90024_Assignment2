@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
-from .daos import TwitterDAO, StatisticsDAO, MapDAO, RouteDAO
+from .daos import TwitterDAO, StatisticsDAO, MapDAO, RouteDAO, UserDAO
 from .models import Polygon
 from .serializers import PolygonSerializer
 import json
@@ -127,6 +127,17 @@ class GetMostActiveUsers(views.APIView):
     def get(self, request):
         try:
             result = self.route_dao.get_most_active_users()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetUserInfo(views.APIView):
+    user_dao = UserDAO()
+
+    def get(self, request, pk):
+        try:
+            result = self.user_dao.get_user_info(int(pk))
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

@@ -105,7 +105,7 @@ class RouteDAO(DAO):
             'reduce': False,
             'key': user_key
         }
-        response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
+        response = self.twitter_database.list('_design/tracking-user', '_view/tracking-user', **params)
         rows = response[1]["rows"]
         sorted_rows = sorted(rows, key=lambda i: i['value'][1])
         for row in sorted_rows:
@@ -121,8 +121,24 @@ class RouteDAO(DAO):
             'reduce': True,
             'group': True
         }
-        response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
+        response = self.twitter_database.list('_design/tracking-user', '_view/tracking-user', **params)
         rows = response[1]["rows"]
         sorted_rows = sorted(rows, key=lambda i: i['value'], reverse=True)
 
         return sorted_rows
+
+
+class UserDAO(DAO):
+    def get_user_info(self, pk):
+        result = []
+
+        params = {
+            'limit': 1,
+            'key': pk
+        }
+        response = self.twitter_database.list('_design/user', '_view/user', **params)
+        rows = response[1]["rows"]
+        if (len(rows) > 0):
+            return rows[0]
+        else:
+            return None
