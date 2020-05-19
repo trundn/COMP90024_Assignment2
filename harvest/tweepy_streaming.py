@@ -74,7 +74,7 @@ class StreamingAPIThread(threading.Thread):
                     stream.filter(locations = locations)
         
             except IOError as ex:
-                print(f"Exception occurred during streaming tweet. {ex}")
+                print(f"Exception occurred during tweet streaming. {ex}")
                 delay = self.minimum_backoff_time + random.randint(0, 1000) / 1000.0
                 
                 print(f"Trying to reconect after {delay} seconds")
