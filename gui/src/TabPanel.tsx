@@ -11,13 +11,13 @@ import ShoppingBasket from '@material-ui/icons/ShoppingBasket';
 import ThumbDown from '@material-ui/icons/ThumbDown';
 import ThumbUp from '@material-ui/icons/ThumbUp';
 import Box from '@material-ui/core/Box';
-import Home from "./components/Home/Home";
-import SentimentAnalysis from "./components/SentimentAnalysis/SentimentAnalysis";
-import Sentiment from "./components/Sentiment/Sentiment";
-import Movement from "./components/Movement/Movement";
-import UserTracker from "./components/UserTracker/UserTracker";
-import Statistics from "./components/Statistics/Statistics";
-import Language from "./components/Language/Language";
+import Home from './components/Home/Home';
+import SentimentAnalysis from './components/SentimentAnalysis/SentimentAnalysis';
+import Sentiment from './components/Sentiment/Sentiment';
+import Movement from './components/Movement/Movement';
+import UserTracker from './components/UserTracker/UserTracker';
+import Statistics from './components/Statistics/Statistics';
+import Language from './components/Language/Language';
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -30,14 +30,14 @@ function TabPanel(props: TabPanelProps) {
 
     return (
         <div
-            role="tabpanel"
+            role='tabpanel'
             hidden={value !== index}
             id={`scrollable-force-tabpanel-${index}`}
             aria-labelledby={`scrollable-force-tab-${index}`}
             {...other}>
             {value === index && (
                 <Box p={1}>
-                    <div className={"container"}>
+                    <div className={'container'}>
                         <div>{children}</div>
                     </div>
                 </Box>

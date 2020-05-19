@@ -106,3 +106,16 @@ class StatisticsInPolygonView(views.APIView):
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class FindRouteView(views.APIView):
+    map_dao = MapDAO()
+
+    def get(self, request):
+        try:
+            # user_key = request.query_params.get('user_key')
+            user_key = [23068812, "irwwick"]
+            result = self.map_dao.get_route_by_user(user_key)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

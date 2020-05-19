@@ -1,47 +1,58 @@
-import React from "react";
-import {BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend} from "recharts";
-
-const data = [
-    {
-        name: "Page A", uv: 4000, pv: 2400, amt: 2400,
-    },
-    {
-        name: "Page B", uv: 3000, pv: 1398, amt: 2210,
-    },
-    {
-        name: "Page C", uv: 2000, pv: 9800, amt: 2290,
-    },
-    {
-        name: "Page D", uv: 2780, pv: 3908, amt: 2000,
-    },
-    {
-        name: "Page E", uv: 1890, pv: 4800, amt: 2181,
-    },
-    {
-        name: "Page F", uv: 2390, pv: 3800, amt: 2500,
-    },
-    {
-        name: "Page G", uv: 3490, pv: 4300, amt: 2100,
-    },
-];
+import React from 'react'
+import {Map, Polyline, TileLayer} from 'react-leaflet'
+import axios from 'axios'
+import './style.sass';
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import config from '../../assets/config.js'
 
 export default class Movement extends React.Component {
+    state = {
+        lat: -37.8136,
+        lng: 144.9631,
+        zoom: 7,
+        polyline: null,
+        loading: false
+    }
+
+    componentDidMount() {
+        this.setState({
+            loading: true
+        });
+        axios.get(config.find_route_url).then(response => {
+            if (response.status === 200) {
+                this.setState({
+                    polyline: response.data,
+                    lat: response.data[0][0],
+                    lng: response.data[0][1]
+                });
+            }
+            console.log(response.data);
+        }).then(() => {
+            this.setState({
+                loading: false
+            });
+        });
+    }
+
     render() {
+        const position = [this.state.lat, this.state.lng]
         return (
-            <BarChart width={1000}
-                      height={800}
-                      data={data}
-                      margin={{
-                          top: 5, right: 30, left: 20, bottom: 5,
-                      }}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="name"/>
-                <YAxis/>
-                <Tooltip/>
-                <Legend/>
-                <Bar dataKey="pv" fill="#8884d8"/>
-                <Bar dataKey="uv" fill="#82ca9d"/>
-            </BarChart>
-        );
+            <div className={"relative"}>
+                <Map center={position} zoom={this.state.zoom}>
+                    <TileLayer attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
+
+                    {this.state.polyline && <Polyline color="black" positions={this.state.polyline}/>}
+                </Map>
+                <div className={"absolute"}>
+                    <PacmanLoader
+                        size={100}
+                        margin={2}
+                        color={'#006600'}
+                        loading={this.state.loading}/>
+                </div>
+                {this.state.loading && <div className={"loading-layer"}/>}
+            </div>
+        )
     }
 }

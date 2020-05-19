@@ -94,3 +94,18 @@ class MapDAO(DAO):
                 statistics['number_of_negative_tweets'] = statistics['number_of_negative_tweets'] + 1
 
         return statistics
+
+    def get_route_by_user(self, user_key):
+        result = []
+
+        params = {
+            'inclusive_end': True,
+            'key': user_key
+        }
+        response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
+        rows = response[1]["rows"]
+        sorted_rows = sorted(rows, key=lambda i: i['value'][1])
+        for row in sorted_rows:
+            result.append(row['value'][0])
+
+        return result
