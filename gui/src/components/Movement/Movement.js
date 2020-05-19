@@ -16,6 +16,7 @@ export default class Movement extends React.Component {
         startPointPopup: null,
         endPointPopup: null,
         borderPoints: [],
+        userInfo: null,
         loading: false
     }
 
@@ -29,7 +30,7 @@ export default class Movement extends React.Component {
                 let users = response.data;
                 users.forEach(user => {
                     let dataItem = {
-                        key: user.key[1],
+                        key: user.key[0],
                         label: user.key[1],
                         nodes: [],
                         user_key: user.key,
@@ -37,6 +38,7 @@ export default class Movement extends React.Component {
                     };
                     treeMenuData.push(dataItem);
                 });
+                console.log(treeMenuData);
 
                 this.setState({
                     treeMenuData: treeMenuData
@@ -92,7 +94,15 @@ export default class Movement extends React.Component {
                     this.setState({
                         borderPoints: borderPoints
                     });
-
+                }
+            }
+        });
+        axios.get(config.get_user_info.format(event.user_key[0])).then(response => {
+            if (response.status === 200) {
+                if (response.data !== {}) {
+                    this.setState({
+                        userInfo: response.data.value
+                    });
                 }
             }
         });
@@ -120,12 +130,21 @@ export default class Movement extends React.Component {
                         </Popup>
                     </Marker>}
                     {this.state.borderPoints &&
-                    this.state.borderPoints.map(borderPoint => {
-                        return <CircleMarker center={borderPoint} color="purple" fillOpacity={1} fill="purple"
+                    this.state.borderPoints.map((borderPoint, index) => {
+                        return <CircleMarker key={index} center={borderPoint} color="purple" fillOpacity={1}
+                                             fill="purple"
                                              radius={5}/>
                     })}
 
                 </Map>
+                {this.state.userInfo && <div className={"user-info"}>
+                    Name:<strong> {this.state.userInfo.name}</strong><br/>
+                    Screen Name:<strong> {this.state.userInfo.screen_name}</strong><br/>
+                    <p>{this.state.userInfo.description}</p>
+                    <img className={"user-info-image"} src={this.state.userInfo.profile_image_url}
+                         alt={"profile-image"}/><br/>
+                    Location: <strong>{this.state.userInfo.location}</strong>
+                </div>}
                 <div className={"fixed"}>
                     <TreeMenu data={this.state.treeMenuData} debounceTime={125} disableKeyboard={false}
                               hasSearch onClickItem={event => this.onMenuItemClick(event)}
