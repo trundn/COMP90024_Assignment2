@@ -1,2 +1,4 @@
 *.bat
 *.cpython-38.pyc
+env
+gui/node_modules
