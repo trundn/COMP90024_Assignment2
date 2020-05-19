@@ -149,7 +149,7 @@ class ConfigurationLoader(object):
     def get_politician_type(self, screen_name):
         result = ""
         
-        if (screen_name and self.ruling_politicians and self.opposition_politicians):
+        if (screen_name):
             search_key = screen_name.lower()
             if (search_key in self.ruling_politicians):
                 result = constants.RULING_POLITICIAN
