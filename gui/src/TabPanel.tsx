@@ -14,8 +14,8 @@ import TrendingUpIcon from '@material-ui/icons/TrendingUp';
 import Home from './components/Home/Home';
 import SentimentAnalysis from './components/SentimentAnalysis/SentimentAnalysis';
 import Sentiment from './components/Sentiment/Sentiment';
-import Movement from './components/Movement/Movement';
 import UserTracker from './components/UserTracker/UserTracker';
+import Movement from './components/Movement/Movement';
 import Statistics from './components/Statistics/Statistics';
 import Language from './components/Language/Language';
 
