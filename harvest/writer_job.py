@@ -33,10 +33,11 @@ class WriterJob(Runnable):
                         converted_datetime = ""
                         if tweet.created_at != None:
                             converted_datetime = tweet.created_at.strftime('%Y-%m-%d %H:%M:%S%z')
+                        politician_type = self.config_loader.get_politician_type(tweet.user.screen_name)
 
                         filter_data = {'_id' : tweet.id_str, 'created_at' : converted_datetime,\
                                     'text' : full_text, 'user' : tweet.user.screen_name, \
-                                    'calculated_coordinates' : coordinates, \
+                                    'politician' : politician_type, 'calculated_coordinates' : coordinates, \
                                     'coordinates_source' : source, 'emotions': emotions, \
                                     'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
                                     'raw_data' : tweet._json}

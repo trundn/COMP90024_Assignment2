@@ -22,6 +22,8 @@ class ConfigurationLoader(object):
 
         self.track = []
         self.users = []
+        self.ruling_politicians = []
+        self.opposition_politicians = []
         self.user_location_filters = []
 
         self.streaming = {}
@@ -54,6 +56,8 @@ class ConfigurationLoader(object):
                         self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
                         self.track = config_content[constants.JSON_TRACK_PROP]
                         self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
+                        self.ruling_politicians = config_content[constants.JSON_RULING_POLITICIANS_PROP]
+                        self.opposition_politicians = config_content[constants.JSON_OPP_POLITICIANS_PROP]
                     except Exception as exception:
                         print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
             else:
@@ -141,12 +145,25 @@ class ConfigurationLoader(object):
                             groupped_dataset.append(folder)
 
         return groupped_dataset
+    
+    def get_politician_type(self, screen_name):
+        result = ""
+        
+        if (screen_name and self.ruling_politicians and self.opposition_politicians):
+            search_key = screen_name.lower()
+            if (search_key in self.ruling_politicians):
+                result = constants.RULING_POLITICIAN
+            elif (search_key in self.opposition_politicians):
+                result = constants.OPPOSITION_POLITICIAN
+
+        return result
 
     def get_searching_users(self, processor_id, processor_size):
         groupped_users = []
 
         if (self.searching is not None):
             user_list = self.searching[constants.JSON_USERS_PROP]
+            user_list = self.ruling_politicians + self.opposition_politicians + user_list
             for i, user in enumerate(user_list):
                 if (i % processor_size == processor_id):
                     groupped_users.append(user)
