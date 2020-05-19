@@ -9,11 +9,6 @@
     },
     "searching": {
         "users": [
-            "ScottMorrisonMP",
-            "DanielAndrewsMP",
-            "GladysB",
-            "AnnastaciaMP",
-            "MarkMcGowanMP",
             "WHO",
             "healthgovau"
         ],
@@ -98,6 +93,16 @@
             }
         }
     },
+    "ruling_politicians":[
+        "ScottMorrisonMP",
+        "DanielAndrewsMP",
+        "GladysB",
+        "AnnastaciaMP",
+        "MarkMcGowanMP"
+    ],
+    "opposition_politicians":[
+
+    ],
     "track": [
         "covid",
         "covidsafe",
