@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
-from .daos import TwitterDAO, StatisticsDAO, MapDAO, RouteDAO, UserDAO
+from .daos import TwitterDAO, StatisticsDAO, MapDAO, RouteDAO, UserDAO, HomeDAO
 from .models import Polygon
 from .serializers import PolygonSerializer
 import json
@@ -121,7 +121,7 @@ class FindRouteView(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetMostActiveUsers(views.APIView):
+class GetMostActiveUsersView(views.APIView):
     route_dao = RouteDAO()
 
     def get(self, request):
@@ -132,12 +132,34 @@ class GetMostActiveUsers(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-class GetUserInfo(views.APIView):
+class GetUserInfoView(views.APIView):
     user_dao = UserDAO()
 
     def get(self, request, pk):
         try:
             result = self.user_dao.get_user_info(int(pk))
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsByCategoriesView(views.APIView):
+    home_dao = HomeDAO()
+
+    def get(self, request):
+        try:
+            result = self.home_dao.tweets_by_categories()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsWithCoordinatesView(views.APIView):
+    home_dao = HomeDAO()
+
+    def get(self, request):
+        try:
+            result = self.home_dao.tweets_with_coordinates()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

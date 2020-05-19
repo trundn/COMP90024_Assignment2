@@ -142,3 +142,21 @@ class UserDAO(DAO):
             return rows[0]
         else:
             return None
+
+
+class HomeDAO(DAO):
+    def tweets_by_categories(self):
+        params = {
+            'reduce': True,
+            'group': True
+        }
+        response = self.twitter_database.list('_design/home', '_view/tweets_by_categories', **params)
+        return response
+
+    def tweets_with_coordinates(self):
+        params = {
+            'reduce': True,
+            'group_level': 2
+        }
+        response = self.twitter_database.list('_design/home', '_view/tweets_with_coordinates', **params)
+        return response
