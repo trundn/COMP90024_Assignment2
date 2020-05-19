@@ -1,8 +1,8 @@
-import React from "react";
-import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar} from "recharts";
+import React from 'react';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, BarChart, Bar} from 'recharts';
 import axios from 'axios';
 import './style.sass'
-import config from "../../assets/config";
+import config from '../../assets/config';
 
 export default class Statistics extends React.Component {
     state = {

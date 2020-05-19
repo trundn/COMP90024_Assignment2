@@ -23,19 +23,23 @@ code {
 }
 
 .rstm-toggle-icon {
-    display: inline-block; }
+    display: inline-block;
+}
+
 .rstm-toggle-icon-symbol {
     width: 2rem;
     height: 2rem;
     text-align: center;
-    line-height: 2rem; }
+    line-height: 2rem;
+}
 
 .rstm-tree-item-group {
     list-style-type: none;
     padding-left: 0;
     border-top: 1px solid #ccc;
     text-align: left;
-    width: 100%; }
+    width: 100%;
+}
 
 .rstm-tree-item {
     padding: 0.75rem 1rem;
@@ -45,16 +49,33 @@ code {
     border-bottom: 1px solid #ccc;
     box-shadow: none;
     z-index: unset;
-    position: relative; }
+    position: relative;
+}
+
 .rstm-tree-item--active {
     color: white;
     background: #179ed3;
-    border-bottom: none; }
+    border-bottom: none;
+}
+
 .rstm-tree-item--focused {
     box-shadow: 0 0 5px 0 #222;
-    z-index: 999; }
+    z-index: 999;
+}
 
 .rstm-search {
     padding: 1rem 1.5rem;
     border: none;
-    width: 100%; }
+    width: 100%;
+}
+
+.loading-layer {
+    z-index: 100000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #e6ffe6;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%
+}
