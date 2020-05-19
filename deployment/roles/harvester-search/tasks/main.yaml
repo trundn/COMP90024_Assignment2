@@ -1,0 +1,15 @@
+---
+# Remove harvesters in Database Instances
+- name: Remove Harvest containers
+  become: yes
+  docker_container:
+    name: search
+    state: absent
+
+# Create search harvester 
+- name: Build search harvester containers
+  become: yes
+  docker_image:
+    name: "{{  }}"
+    build:
+    
