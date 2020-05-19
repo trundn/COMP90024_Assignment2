@@ -1,6 +1,6 @@
 from django.urls import path, include
 from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, LanguageStatisticsView, TweetsInRectangleView, \
-    TweetsInPolygonView, StatisticsInPolygonView, FindRouteView
+    TweetsInPolygonView, StatisticsInPolygonView, FindRouteView, GetMostActiveUsers
 from rest_framework.routers import DefaultRouter
 
 polygon_router = DefaultRouter()
@@ -17,5 +17,6 @@ urlpatterns = [
     path('tweets-in-polygon/', TweetsInPolygonView.as_view()),
     path('statistics-in-polygon/<pk>/', StatisticsInPolygonView.as_view()),
     path('find-route/', FindRouteView.as_view()),
+    path('get-most-active-users/', GetMostActiveUsers.as_view()),
     path('document/', include(twitter_router.urls))
 ]

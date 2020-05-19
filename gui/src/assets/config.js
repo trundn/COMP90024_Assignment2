@@ -4,7 +4,8 @@ const config = {
     'statistics_url': base_url + 'statistics-in-polygon/{0}/',
     'tweets_per_hour': base_url + 'language-statistics/',
     'language_statistics_url': base_url + 'language-statistics/',
-    'find_route_url': base_url + 'find-route/'
+    'get_most_active_users': base_url + 'get-most-active-users/',
+    'find_route_url': base_url + 'find-route/?user_key={0}'
 }
 
 export default config

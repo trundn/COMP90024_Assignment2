@@ -95,11 +95,14 @@ class MapDAO(DAO):
 
         return statistics
 
+
+class RouteDAO(DAO):
     def get_route_by_user(self, user_key):
+        print(user_key)
         result = []
 
         params = {
-            'inclusive_end': True,
+            'reduce': False,
             'key': user_key
         }
         response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
@@ -109,3 +112,18 @@ class MapDAO(DAO):
             result.append(row['value'][0])
 
         return result
+
+    def get_most_active_users(self):
+        result = []
+
+        params = {
+            'limit': 500,
+            'reduce': True,
+            'group': True
+        }
+        response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
+        print(response)
+        rows = response[1]["rows"]
+        sorted_rows = sorted(rows, key=lambda i: i['value'], reverse=True)
+
+        return sorted_rows

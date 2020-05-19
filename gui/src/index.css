@@ -66,6 +66,7 @@ code {
 .rstm-search {
     padding: 1rem 1.5rem;
     border: none;
+    font-size: 1em;
     width: 100%;
 }
 
@@ -78,4 +79,25 @@ code {
     opacity: 0.5;
     width: 100%;
     height: 100%
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+
+    background: lightgray;
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+
+::-webkit-scrollbar-thumb:window-inactive {
+    background: lightgray;
 }

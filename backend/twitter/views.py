@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
-from .daos import TwitterDAO, StatisticsDAO, MapDAO
+from .daos import TwitterDAO, StatisticsDAO, MapDAO, RouteDAO
 from .models import Polygon
 from .serializers import PolygonSerializer
 import json
@@ -109,13 +109,24 @@ class StatisticsInPolygonView(views.APIView):
 
 
 class FindRouteView(views.APIView):
-    map_dao = MapDAO()
+    route_dao = RouteDAO()
 
     def get(self, request):
         try:
-            # user_key = request.query_params.get('user_key')
-            user_key = [23068812, "irwwick"]
-            result = self.map_dao.get_route_by_user(user_key)
+            user_key = request.query_params.get('user_key')
+            user_key = json.loads(user_key)
+            result = self.route_dao.get_route_by_user(user_key)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class GetMostActiveUsers(views.APIView):
+    route_dao = RouteDAO()
+
+    def get(self, request):
+        try:
+            result = self.route_dao.get_most_active_users()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
