@@ -34,7 +34,7 @@ class TweetIdQueryThread(threading.Thread):
 
         # Get exectuor configuration to initialise thread pool job exectuor
         num_thread, thread_names = self.config_loader.get_tweetid_executors_config(rank)
-        self.threadpool_job_executor = JobExecutor(num_thread, num_thread, 2000)
+        self.threadpool_job_executor = JobExecutor(num_thread, num_thread, 5000)
         
         # Update thread name
         for index in range(num_thread):
