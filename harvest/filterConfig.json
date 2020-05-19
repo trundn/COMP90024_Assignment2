@@ -93,16 +93,14 @@
             }
         }
     },
-    "ruling_politicians":[
+    "ruling_politicians": [
         "ScottMorrisonMP",
         "DanielAndrewsMP",
         "GladysB",
         "AnnastaciaMP",
         "MarkMcGowanMP"
     ],
-    "opposition_politicians":[
-
-    ],
+    "opposition_politicians": [],
     "track": [
         "covid",
         "covidsafe",
@@ -145,5 +143,8 @@
         "gold coast",
         "perth",
         "adelaide"
+    ],
+    "country_geometry_filters": [
+        "auCoordinates.json"
     ]
 }
