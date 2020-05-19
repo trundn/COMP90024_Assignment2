@@ -51,12 +51,11 @@ def parse_arguments(argv):
     # Return all arguments
     return data_path, filter_config_path, database_config_path
 
-def process_twitter_data(rank, processor_size, 
-                        data_path, couchdb_connection_string, track):
+def process_twitter_data(rank, processor_size, data_path, config_loader):
     if os.path.exists(data_path):
         helper = Helper()
         lock = threading.Lock()
-        db_connection = CouchDBConnection(couchdb_connection_string, lock)
+        db_connection = CouchDBConnection(config_loader.couchdb_connection_string, lock)
         db_connection.init_database()
 
         with open(data_path, encoding = constants.UTF8_ENCODING) as fstream:
@@ -78,7 +77,7 @@ def process_twitter_data(rank, processor_size,
                                 else:
                                     tweet_text = tweet_doc[constants.JSON_TEXT_PROP]
 
-                                if (helper.is_match(tweet_text.lower(), track)):
+                                if (helper.is_match(tweet_text.lower(), config_loader.track)):
                                     # Extract coordinator
                                     source = ""
                                     coordinates = []
@@ -109,10 +108,11 @@ def process_twitter_data(rank, processor_size,
                                     if (coordinates):
                                         emotions = helper.extract_emotions(tweet_text)
                                         word_count, pronoun_count = helper.extract_word_count(tweet_text)
-
+                                        politician_type = config_loader.get_politician_type(tweet_doc['user']['screen_name'])
+                                        
                                         filter_data = {'_id' : tweet_doc['id_str'], 'created_at' : tweet_doc['created_at'],\
                                                 'text' : tweet_text, 'user' : tweet_doc['user']['screen_name'],\
-                                                'calculated_coordinates' : coordinates, \
+                                                'politician' : politician_type, 'calculated_coordinates' : coordinates, \
                                                 'coordinates_source' : source, 'emotions': emotions, \
                                                 'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
                                                 'raw_data' : json.dumps(tweet_doc)}
@@ -136,8 +136,6 @@ def main(args):
     rank = comm.Get_rank()
     processor_size = comm.Get_size()
 
-    print(f"{rank} {processor_size}")
-
     # Parse command line arguments to get twitter data file and database config path
     data_path, filter_config_path, database_config_path = parse_arguments(args)
 
@@ -151,8 +149,7 @@ def main(args):
             config_loader.load_filter_config()
             config_loader.load_couchdb_config()
 
-            process_twitter_data(rank, processor_size, data_path,
-                config_loader.couchdb_connection_string, config_loader.track)
+            process_twitter_data(rank, processor_size, data_path, config_loader)
 
 # Run the actual program
 if __name__ == "__main__":

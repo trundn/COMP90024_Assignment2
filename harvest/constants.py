@@ -36,13 +36,18 @@ JSON_LOCATIONS_PROP = "locations"
 JSON_LANGUAGES_PROP = "languages"
 JSON_TRACK_PROP = "track"
 JSON_USERS_PROP = "users"
-JSON_USER_LOCATION_FILTERS_PROP = "user_location_filers"
+JSON_RULING_POLITICIANS_PROP = "ruling_politicians"
+JSON_OPP_POLITICIANS_PROP = "opposition_politicians"
+JSON_GEOMETRY_FILTERS_PROP = "geometry_filters"
 
 JSON_COUCHDB_SECTION_PROP = "couchdb"
 JSON_USERNAME_PROP = "username"
 JSON_PASSWORD_PROP = "password"
 JSON_HOST_PROP = "host"
 JSON_PORT_PROP = "port"
+
+JSON_FEATURES_PROP = "features"
+JSON_GEOMETRY_PROP = "geometry"
 
 JSON_DOCUMENT = "doc"
 JSON_TRUNCATED_PROP = "truncated"
@@ -66,6 +71,9 @@ PLACE = "place"
 COORDINATES = "coordinates"
 BOUNDING_BOX = "bounding_box"
 AUSTRALIA_COUNTRY_NAME = "australia"
+
+RULING_POLITICIAN = "ruling"
+OPPOSITION_POLITICIAN = "opposition"
 
 FIRST_PERSON_SINGULAR = ["i", "me", "my", "mine", "myself"]
 FIRST_PERSON_PLURAL = ["we", "us", "our", "ours", "uurselves"]

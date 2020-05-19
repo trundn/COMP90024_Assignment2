@@ -1,5 +1,5 @@
-import React from "react";
-import {Map, TileLayer, Popup, Marker} from "react-leaflet";
+import React from 'react';
+import {Map, TileLayer, Popup, Marker} from 'react-leaflet';
 
 export default class Home extends React.Component {
     constructor(props) {
@@ -16,8 +16,8 @@ export default class Home extends React.Component {
         return (
             <Map center={position} zoom={this.state.zoom}>
                 <TileLayer
-                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                    attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
+                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                    attribution='&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors'/>
                 <Marker position={position}>
                     <Popup>
                         A pretty CSS3 popup. <br/> Easily customizable.

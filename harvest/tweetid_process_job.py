@@ -50,9 +50,7 @@ class TweetIdProcessJob(Runnable):
                         if (constants.AUSTRALIA_COUNTRY_NAME == location):
                             all_tweets.append(tweet)
                     else:
-                        location = tweet.user.location.lower()
-                        if (self.helper.is_match(location, self.config_loader.user_location_filters)):
-                            all_tweets.append(tweet)
+                        all_tweets.append(tweet)
 
                 # Write all tweets to counchdb
                 if (all_tweets):

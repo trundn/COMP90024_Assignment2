@@ -1,5 +1,5 @@
-import React from "react";
-import {Map, Marker, Popup, TileLayer} from "react-leaflet";
+import React from 'react';
+import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
 
 export default class UserTracker extends React.Component {
     constructor(props) {

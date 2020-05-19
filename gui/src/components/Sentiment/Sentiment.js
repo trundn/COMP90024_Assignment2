@@ -3,8 +3,8 @@ import {GeoJSON, Map, TileLayer} from 'react-leaflet'
 import axios from 'axios'
 import './style.sass';
 import TreeMenu from 'react-simple-tree-menu';
-import PacmanLoader from "react-spinners/PacmanLoader";
-import config from "../../assets/config.js"
+import PacmanLoader from 'react-spinners/PacmanLoader';
+import config from '../../assets/config.js'
 
 const treeData = [
     {
@@ -84,8 +84,10 @@ export default class Sentiment extends Component {
     }
 
     componentDidMount() {
-        let polygon_url = "http://localhost:8000/tweets/polygon/1/";
-        let statistics_url = "http://localhost:8000/tweets/statistics-in-polygon/1";
+        let polygon_url = config.polygon_url.format(1);
+        let statistics_url = config.statistics_url.format(1);
+        console.log(polygon_url);
+        console.log(statistics_url);
         this.setState({
             loading: true
         });
@@ -141,13 +143,12 @@ export default class Sentiment extends Component {
                     <TileLayer
                         attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
-                    <GeoJSON
-                        key={"map"}
-                        data={this.state.polygonData}
-                        style={this.geoJSONStyle}
-                        onEachFeature={this.onEachFeature}
-                        onmouseover={this.onMouseOver}
-                        ref={this.geoJson}/>
+                    <GeoJSON key={"map"}
+                             data={this.state.polygonData}
+                             style={this.geoJSONStyle}
+                             onEachFeature={this.onEachFeature}
+                             onmouseover={this.onMouseOver}
+                             ref={this.geoJson}/>
                 </Map>
                 <div className={"fixed"}>
                     <TreeMenu data={treeData} debounceTime={125} disableKeyboard={false}
@@ -158,10 +159,10 @@ export default class Sentiment extends Component {
                     <PacmanLoader
                         size={100}
                         margin={2}
-                        color={"#006600"}
+                        color={'#006600'}
                         loading={this.state.loading}/>
                 </div>
-                {this.state.loading && <div className={"loading-layer"}/>}
+                {this.state.loading && <div className={'loading-layer'}/>}
             </div>
         )
     }

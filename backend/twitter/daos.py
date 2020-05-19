@@ -94,3 +94,51 @@ class MapDAO(DAO):
                 statistics['number_of_negative_tweets'] = statistics['number_of_negative_tweets'] + 1
 
         return statistics
+
+
+class RouteDAO(DAO):
+    def get_route_by_user(self, user_key):
+        print(user_key)
+        result = []
+
+        params = {
+            'reduce': False,
+            'key': user_key
+        }
+        response = self.twitter_database.list('_design/tracking-user', '_view/tracking-user', **params)
+        rows = response[1]["rows"]
+        sorted_rows = sorted(rows, key=lambda i: i['value'][1])
+        for row in sorted_rows:
+            result.append(row['value'][0])
+
+        return result
+
+    def get_most_active_users(self):
+        result = []
+
+        params = {
+            'limit': 500,
+            'reduce': True,
+            'group': True
+        }
+        response = self.twitter_database.list('_design/tracking-user', '_view/tracking-user', **params)
+        rows = response[1]["rows"]
+        sorted_rows = sorted(rows, key=lambda i: i['value'], reverse=True)
+
+        return sorted_rows
+
+
+class UserDAO(DAO):
+    def get_user_info(self, pk):
+        result = []
+
+        params = {
+            'limit': 1,
+            'key': pk
+        }
+        response = self.twitter_database.list('_design/user', '_view/user', **params)
+        rows = response[1]["rows"]
+        if (len(rows) > 0):
+            return rows[0]
+        else:
+            return None
