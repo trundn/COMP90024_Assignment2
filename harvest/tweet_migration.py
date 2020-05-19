@@ -87,12 +87,12 @@ def process_twitter_data(rank, processor_size,
                                         and (constants.COORDINATES in tweet_doc[constants.GEO]) \
                                         and tweet_doc[constants.GEO][constants.COORDINATES]:
                                             source = constants.GEO
-                                            coordinates = tweet_doc[constants.GEO][constants.COORDINATES]
+                                            coordinates = [tweet_doc[constants.GEO][constants.COORDINATES][1], tweet_doc[constants.GEO][constants.COORDINATES][0]]
                                     elif tweet_doc[constants.COORDINATES] \
                                         and (constants.COORDINATES in tweet_doc[constants.COORDINATES]) \
                                         and tweet_doc[constants.COORDINATES][constants.COORDINATES]:
                                             source = constants.COORDINATES
-                                            coordinates = [tweet_doc[constants.COORDINATES][constants.COORDINATES][1],tweet_doc[constants.COORDINATES][constants.COORDINATES][0]]
+                                            coordinates = tweet_doc[constants.COORDINATES][constants.COORDINATES]
                                     elif tweet_doc[constants.PLACE] \
                                         and (constants.BOUNDING_BOX in tweet_doc[constants.PLACE]) \
                                         and isinstance(tweet_doc[constants.PLACE][constants.BOUNDING_BOX], dict) \
@@ -100,10 +100,11 @@ def process_twitter_data(rank, processor_size,
                                         and tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES]:
                                             source = constants.PLACE
                                             temp_coordinates = tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES][0]
-                                            
-                                            lat = (temp_coordinates[0][1] + temp_coordinates[2][1])/2
+
                                             lng = (temp_coordinates[0][0] + temp_coordinates[2][0])/2
-                                            coordinates = [lat, lng]
+                                            lat = (temp_coordinates[0][1] + temp_coordinates[2][1])/2
+
+                                            coordinates = [lng, lat]
 
                                     if (coordinates):
                                         emotions = helper.extract_emotions(tweet_text)

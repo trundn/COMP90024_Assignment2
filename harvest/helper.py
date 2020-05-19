@@ -36,13 +36,13 @@ class Helper(object):
                 and (tweet.geo.coordinates is not None)):
 
                 source = constants.GEO
-                coordinates = tweet.geo.coordinates
+                coordinates = [tweet.geo.coordinates[1], tweet.geo.coordinates[0]]
             elif ((tweet.coordinates is not None) \
                 and hasattr(tweet.coordinates, constants.COORDINATES) \
                 and (tweet.coordinates.coordinates is not None)):
 
                 source = constants.COORDINATES
-                coordinates = [tweet.coordinates.coordinates[1], tweet.coordinates.coordinates[0]]
+                coordinates = tweet.coordinates.coordinates
             elif ((tweet.place is not None) \
                 and hasattr(tweet.place, constants.BOUNDING_BOX) \
                 and (tweet.place.bounding_box is not None) \
@@ -51,9 +51,10 @@ class Helper(object):
 
                 source = constants.PLACE
                 tmp_coordinates = tweet.place.bounding_box.coordinates[0]
-                latitude = (tmp_coordinates[0][1] + tmp_coordinates[2][1]) / 2
                 longitude =(tmp_coordinates[0][0] + tmp_coordinates[2][0]) / 2
-                coordinates = [latitude, longitude]
+                latitude = (tmp_coordinates[0][1] + tmp_coordinates[2][1]) / 2
+
+                coordinates = [longitude, latitude]
 
         return source, coordinates
 
