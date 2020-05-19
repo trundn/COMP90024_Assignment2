@@ -1,9 +1,10 @@
 import React, {PureComponent} from 'react';
 import {
-    PieChart, Pie, Tooltip, BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Legend,
+    PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from 'recharts';
-
+import axios from 'axios';
 import './style.sass'
+import config from '../../assets/config';
 
 const barChartData = [
     {
@@ -14,17 +15,60 @@ const barChartData = [
     }
 ];
 
-const pieChartData = [
-    {name: 'Number of tweets talking about Covid19', value: 400}, {name: 'Number of other tweets', value: 300}
-];
-
 export default class Example extends PureComponent {
+    state = {
+        pieChartData: null,
+        barChartData: null
+    }
+
+    componentDidMount() {
+        axios.get(config.tweets_by_categories).then(response => {
+            if (response.status === 200) {
+                let pieChartData = []
+                for (let i = 0; i < response.data.length; i++) {
+                    let dataItem = response.data[i];
+                    pieChartData.push({
+                        name: dataItem.key,
+                        value: dataItem.value
+                    });
+                }
+                this.setState({
+                    pieChartData: pieChartData
+                });
+            }
+        });
+        axios.get(config.tweets_with_coordinates).then(response => {
+            if (response.status === 200) {
+                let barChartData = []
+                for (let i = 0; i < response.data.length; i++) {
+                    let dataItem = response.data[i];
+                    let name = dataItem['key'][0];
+                    let key = dataItem['key'][1];
+                    let value = dataItem['value'];
+                    let updated = false;
+                    for (let j = 0; j < barChartData.length; j++) {
+                        if (barChartData[j]['name'] === name) {
+                            barChartData[j][key] = value;
+                            updated = true;
+                        }
+                    }
+                    if (!updated) {
+                        let chartDataItem = {name: name}
+                        chartDataItem[key] = value;
+                        barChartData.push(chartDataItem);
+                    }
+                }
+            }
+        });
+    }
+
     render() {
         return (
             <div className={"content"}>
                 <div className={"left-chart"}>
                     <PieChart width={600} height={600}>
-                        <Pie dataKey="value" isAnimationActive={false} data={pieChartData} cx={300} cy={300} outerRadius={200}
+                        <Pie dataKey="value" isAnimationActive={false} data={this.state.pieChartData} cx={300} cy={300}
+                             outerRadius={200}
                              fill="#8884d8" label/>
                         <Tooltip/>
                     </PieChart>

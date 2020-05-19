@@ -6,7 +6,9 @@ const config = {
     'language_statistics_url': base_url + 'language-statistics/',
     'get_most_active_users': base_url + 'get-most-active-users/',
     'find_route_url': base_url + 'find-route/?user_key={0}',
-    'get_user_info': base_url + 'get-user-info/{0}'
+    'get_user_info': base_url + 'get-user-info/{0}',
+    'tweets_by_categories': base_url + 'tweets-by-categories/',
+    'tweets_with_coordinates': base_url + 'tweets-with-coordinates/'
 }
 
 export default config

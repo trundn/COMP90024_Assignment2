@@ -141,6 +141,7 @@ export default class Movement extends React.Component {
                     Name:<strong> {this.state.userInfo.name}</strong><br/>
                     Screen Name:<strong> {this.state.userInfo.screen_name}</strong><br/>
                     <p>{this.state.userInfo.description}</p>
+                     {/*eslint-disable-next-line*/}
                     <img className={"user-info-image"} src={this.state.userInfo.profile_image_url}
                          alt={"profile-image"}/><br/>
                     Location: <strong>{this.state.userInfo.location}</strong>

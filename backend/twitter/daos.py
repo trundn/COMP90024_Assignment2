@@ -151,7 +151,8 @@ class HomeDAO(DAO):
             'group': True
         }
         response = self.twitter_database.list('_design/home', '_view/tweets_by_categories', **params)
-        return response
+        rows = response[1]["rows"]
+        return rows
 
     def tweets_with_coordinates(self):
         params = {
@@ -159,4 +160,5 @@ class HomeDAO(DAO):
             'group_level': 2
         }
         response = self.twitter_database.list('_design/home', '_view/tweets_with_coordinates', **params)
-        return response
+        rows = response[1]["rows"]
+        return rows
