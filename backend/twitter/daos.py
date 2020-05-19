@@ -122,7 +122,6 @@ class RouteDAO(DAO):
             'group': True
         }
         response = self.twitter_database.list('_design/tracking_user', '_view/tracking_user', **params)
-        print(response)
         rows = response[1]["rows"]
         sorted_rows = sorted(rows, key=lambda i: i['value'], reverse=True)
 
