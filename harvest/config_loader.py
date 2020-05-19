@@ -26,8 +26,7 @@ class ConfigurationLoader(object):
         self.users = []
         self.ruling_politicians = []
         self.opposition_politicians = []
-        self.user_location_filters = []
-        self.country_geometry_filters = []
+        self.geometry_filters = []
         self.geometry_data = []
 
         self.streaming = {}
@@ -59,12 +58,11 @@ class ConfigurationLoader(object):
                     self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
                     self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
                     self.track = config_content[constants.JSON_TRACK_PROP]
-                    self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
                     self.ruling_politicians = config_content[constants.JSON_RULING_POLITICIANS_PROP]
                     self.opposition_politicians = config_content[constants.JSON_OPP_POLITICIANS_PROP]
 
-                    self.country_geometry_filters = config_content[constants.JSON_COUNTRY_GEOMETRY_FILTERS_PROP]
-                    for filter_file in self.country_geometry_filters:
+                    self.geometry_filters = config_content[constants.JSON_GEOMETRY_FILTERS_PROP]
+                    for filter_file in self.geometry_filters:
                         self.load_geometry_filter(filter_file)
 
                 except Exception as exception:
@@ -96,10 +94,14 @@ class ConfigurationLoader(object):
                     config_content = json.loads(fstream.read())
                     features = config_content[constants.JSON_FEATURES_PROP]
                     if (features):
-                        coordinates = features[0][constants.JSON_GEOMETRY_PROP][constants.COORDINATES]
-                        for coordinate in coordinates:
-                            polygon = Polygon(coordinate)
-                            self.geometry_data.append(polygon)
+                        for feature in features:
+                            coordinates = feature[constants.JSON_GEOMETRY_PROP][constants.COORDINATES]
+                            for i, coordinate in enumerate(coordinates):
+                                try:
+                                    polygon = Polygon(coordinate[0])
+                                    self.geometry_data.append(polygon)
+                                except:
+                                    print(f"Failed to load coordinates {i} into Polygon object.")
                 except Exception as exception:
                     print("Error occurred during loading geometry filter file. Exception: %s" %exception)
     

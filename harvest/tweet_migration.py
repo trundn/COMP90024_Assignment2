@@ -136,8 +136,6 @@ def main(args):
     rank = comm.Get_rank()
     processor_size = comm.Get_size()
 
-    print(f"{rank} {processor_size}")
-
     # Parse command line arguments to get twitter data file and database config path
     data_path, filter_config_path, database_config_path = parse_arguments(args)
 
