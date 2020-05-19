@@ -77,48 +77,47 @@ def process_twitter_data(rank, processor_size, data_path, config_loader):
                                 else:
                                     tweet_text = tweet_doc[constants.JSON_TEXT_PROP]
 
-                                if (helper.is_match(tweet_text.lower(), config_loader.track)):
-                                    # Extract coordinator
-                                    source = ""
-                                    coordinates = []
+                                match_track_filter = helper.is_match(tweet_text.lower(), config_loader.track)
+                                # Extract coordinator
+                                source = ""
+                                coordinates = []
 
-                                    if tweet_doc[constants.GEO] \
-                                        and (constants.COORDINATES in tweet_doc[constants.GEO]) \
-                                        and tweet_doc[constants.GEO][constants.COORDINATES]:
-                                            source = constants.GEO
-                                            coordinates = [tweet_doc[constants.GEO][constants.COORDINATES][1], tweet_doc[constants.GEO][constants.COORDINATES][0]]
-                                    elif tweet_doc[constants.COORDINATES] \
-                                        and (constants.COORDINATES in tweet_doc[constants.COORDINATES]) \
-                                        and tweet_doc[constants.COORDINATES][constants.COORDINATES]:
-                                            source = constants.COORDINATES
-                                            coordinates = tweet_doc[constants.COORDINATES][constants.COORDINATES]
-                                    elif tweet_doc[constants.PLACE] \
-                                        and (constants.BOUNDING_BOX in tweet_doc[constants.PLACE]) \
-                                        and isinstance(tweet_doc[constants.PLACE][constants.BOUNDING_BOX], dict) \
-                                        and (constants.COORDINATES in tweet_doc[constants.PLACE][constants.BOUNDING_BOX]) \
-                                        and tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES]:
-                                            source = constants.PLACE
-                                            temp_coordinates = tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES][0]
+                                if tweet_doc[constants.GEO] \
+                                    and (constants.COORDINATES in tweet_doc[constants.GEO]) \
+                                    and tweet_doc[constants.GEO][constants.COORDINATES]:
+                                        source = constants.GEO
+                                        coordinates = [tweet_doc[constants.GEO][constants.COORDINATES][1], tweet_doc[constants.GEO][constants.COORDINATES][0]]
+                                elif tweet_doc[constants.COORDINATES] \
+                                    and (constants.COORDINATES in tweet_doc[constants.COORDINATES]) \
+                                    and tweet_doc[constants.COORDINATES][constants.COORDINATES]:
+                                        source = constants.COORDINATES
+                                        coordinates = tweet_doc[constants.COORDINATES][constants.COORDINATES]
+                                elif tweet_doc[constants.PLACE] \
+                                    and (constants.BOUNDING_BOX in tweet_doc[constants.PLACE]) \
+                                    and isinstance(tweet_doc[constants.PLACE][constants.BOUNDING_BOX], dict) \
+                                    and (constants.COORDINATES in tweet_doc[constants.PLACE][constants.BOUNDING_BOX]) \
+                                    and tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES]:
+                                        source = constants.PLACE
+                                        temp_coordinates = tweet_doc[constants.PLACE][constants.BOUNDING_BOX][constants.COORDINATES][0]
 
-                                            lng = (temp_coordinates[0][0] + temp_coordinates[2][0])/2
-                                            lat = (temp_coordinates[0][1] + temp_coordinates[2][1])/2
+                                        lng = (temp_coordinates[0][0] + temp_coordinates[2][0])/2
+                                        lat = (temp_coordinates[0][1] + temp_coordinates[2][1])/2
 
-                                            coordinates = [lng, lat]
+                                        coordinates = [lng, lat]
 
-                                    if (coordinates):
-                                        emotions = helper.extract_emotions(tweet_text)
-                                        word_count, pronoun_count = helper.extract_word_count(tweet_text)
-                                        politician_type = config_loader.get_politician_type(tweet_doc['user']['screen_name'])
+                                emotions = helper.extract_emotions(tweet_text)
+                                word_count, pronoun_count = helper.extract_word_count(tweet_text)
+                                politician_type = config_loader.get_politician_type(tweet_doc['user']['screen_name'])
                                         
-                                        filter_data = {'_id' : tweet_doc['id_str'], 'created_at' : tweet_doc['created_at'],\
-                                                'text' : tweet_text, 'user' : tweet_doc['user']['screen_name'],\
-                                                'politician' : politician_type, 'calculated_coordinates' : coordinates, \
-                                                'coordinates_source' : source, 'emotions': emotions, \
-                                                'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
-                                                'raw_data' : json.dumps(tweet_doc)}
-                                        
-                                        print(f"{tweet_doc['id_str']}    {emotions}    {word_count}    {pronoun_count}")
-                                        db_connection.write_tweet(filter_data)
+                                filter_data = {'_id' : tweet_doc['id_str'], 'created_at' : tweet_doc['created_at'],\
+                                        'text' : tweet_text, 'user' : tweet_doc['user']['screen_name'],\
+                                        'match_track_filter': match_track_filter, 'politician' : politician_type, 'calculated_coordinates' : coordinates, \
+                                        'coordinates_source' : source, 'emotions': emotions, \
+                                        'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
+                                        'raw_data' : json.dumps(tweet_doc)}
+
+                                print(f"{tweet_doc['id_str']}    {emotions}    {word_count}    {pronoun_count}")
+                                db_connection.write_tweet(filter_data)
 
                             except ValueError as error:
                                 print("Failed to decode JSON content from [%d] rank. Error: %s" %(rank, error))
