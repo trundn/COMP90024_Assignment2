@@ -150,10 +150,9 @@ class ConfigurationLoader(object):
         result = ""
         
         if (screen_name):
-            search_key = screen_name.lower()
-            if (search_key in self.ruling_politicians):
+            if (screen_name in self.ruling_politicians):
                 result = constants.RULING_POLITICIAN
-            elif (search_key in self.opposition_politicians):
+            elif (screen_name in self.opposition_politicians):
                 result = constants.OPPOSITION_POLITICIAN
 
         return result
