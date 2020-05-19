@@ -4,6 +4,8 @@ import json
 import os
 # Implements some useful functions on pathnames
 from pathlib import Path
+from shapely.geometry import Point
+from shapely.geometry import Polygon, MultiPolygon
 # Contains the tweet authentication keys
 from auth_info import AuthenticationInfo
 # The harvest constant definitions
@@ -25,6 +27,8 @@ class ConfigurationLoader(object):
         self.ruling_politicians = []
         self.opposition_politicians = []
         self.user_location_filters = []
+        self.country_geometry_filters = []
+        self.geometry_data = []
 
         self.streaming = {}
         self.searching = {}
@@ -47,38 +51,57 @@ class ConfigurationLoader(object):
             print(f"The authentication configuration file does not exist. Path: {self.authen_config_path}")
 
     def load_filter_config(self):
-            if os.path.exists(self.filter_config_path):
-                with open(self.filter_config_path) as fstream:
-                    try:
-                        config_content = json.loads(fstream.read())
-                        self.streaming = config_content[constants.JSON_STREAMING_SECTION_PROP]
-                        self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
-                        self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
-                        self.track = config_content[constants.JSON_TRACK_PROP]
-                        self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
-                        self.ruling_politicians = config_content[constants.JSON_RULING_POLITICIANS_PROP]
-                        self.opposition_politicians = config_content[constants.JSON_OPP_POLITICIANS_PROP]
-                    except Exception as exception:
-                        print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
-            else:
-                print(f"The filter configuration file does not exist. Path: {self.filter_config_path}")
+        if os.path.exists(self.filter_config_path):
+            with open(self.filter_config_path) as fstream:
+                try:
+                    config_content = json.loads(fstream.read())
+                    self.streaming = config_content[constants.JSON_STREAMING_SECTION_PROP]
+                    self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
+                    self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
+                    self.track = config_content[constants.JSON_TRACK_PROP]
+                    self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
+                    self.ruling_politicians = config_content[constants.JSON_RULING_POLITICIANS_PROP]
+                    self.opposition_politicians = config_content[constants.JSON_OPP_POLITICIANS_PROP]
+
+                    self.country_geometry_filters = config_content[constants.JSON_COUNTRY_GEOMETRY_FILTERS_PROP]
+                    for filter_file in self.country_geometry_filters:
+                        self.load_geometry_filter(filter_file)
+
+                except Exception as exception:
+                    print("Error occurred during loading the tweet filter configuration file. Exception: %s" %exception)
+        else:
+            print(f"The filter configuration file does not exist. Path: {self.filter_config_path}")
 
     def load_couchdb_config(self):
         if os.path.exists(self.database_config_path):
-                with open(self.database_config_path) as fstream:
-                    try:
-                        config_content = json.loads(fstream.read())
+            with open(self.database_config_path) as fstream:
+                try:
+                    config_content = json.loads(fstream.read())
 
-                        username = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_USERNAME_PROP]
-                        password = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_PASSWORD_PROP]
-                        host = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_HOST_PROP]
-                        port = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_PORT_PROP]
+                    username = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_USERNAME_PROP]
+                    password = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_PASSWORD_PROP]
+                    host = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_HOST_PROP]
+                    port = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_PORT_PROP]
 
-                        self.couchdb_connection_string = "http://{}:{}@{}:{}/".format(username, password, host, port)
-                    except Exception as exception:
-                        print("Error occurred during loading the tweet database configuration file. Exception: %s" %exception)
+                    self.couchdb_connection_string = "http://{}:{}@{}:{}/".format(username, password, host, port)
+                except Exception as exception:
+                    print("Error occurred during loading the tweet database configuration file. Exception: %s" %exception)
         else:
             print(f"The database configuration file does not exist. Path: {self.database_config_path}")
+    
+    def load_geometry_filter(self, file_path):
+        if os.path.exists(file_path):
+            with open(file_path) as fstream:
+                try:
+                    config_content = json.loads(fstream.read())
+                    features = config_content[constants.JSON_FEATURES_PROP]
+                    if (features):
+                        coordinates = features[0][constants.JSON_GEOMETRY_PROP][constants.COORDINATES]
+                        for coordinate in coordinates:
+                            polygon = Polygon(coordinate)
+                            self.geometry_data.append(polygon)
+                except Exception as exception:
+                    print("Error occurred during loading geometry filter file. Exception: %s" %exception)
     
     def get_streaming_locations(self):
         locations = []
@@ -115,7 +138,7 @@ class ConfigurationLoader(object):
                         api_secret_key = account[constants.JSON_API_SECRET_KEY_PROP]
                         access_token = account[constants.JSON_ACCESS_TOKEN_PROP]
                         access_token_secret = account[constants.JSON_ACCESS_TOKEN_SECRET]
-                        
+
                         authen_obj = AuthenticationInfo(api_key, api_secret_key, access_token, access_token_secret)
                         authen_info[thread_owner] = authen_obj
 
@@ -146,6 +169,18 @@ class ConfigurationLoader(object):
 
         return groupped_dataset
     
+    def within_geometry_filters(self, user_coordinates):
+        result = True
+
+        if (self.geometry_data):
+            result = False
+            for polygon in self.geometry_data:
+                if polygon.contains(Point(user_coordinates[0], user_coordinates[1])):
+                    result = True
+                    break
+
+        return result
+
     def get_politician_type(self, screen_name):
         result = ""
         
@@ -156,7 +191,7 @@ class ConfigurationLoader(object):
                 result = constants.OPPOSITION_POLITICIAN
 
         return result
-
+    
     def get_searching_users(self, processor_id, processor_size):
         groupped_users = []
 

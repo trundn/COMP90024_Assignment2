@@ -39,12 +39,16 @@ JSON_USERS_PROP = "users"
 JSON_RULING_POLITICIANS_PROP = "ruling_politicians"
 JSON_OPP_POLITICIANS_PROP = "opposition_politicians"
 JSON_USER_LOCATION_FILTERS_PROP = "user_location_filers"
+JSON_COUNTRY_GEOMETRY_FILTERS_PROP = "country_geometry_filters"
 
 JSON_COUCHDB_SECTION_PROP = "couchdb"
 JSON_USERNAME_PROP = "username"
 JSON_PASSWORD_PROP = "password"
 JSON_HOST_PROP = "host"
 JSON_PORT_PROP = "port"
+
+JSON_FEATURES_PROP = "features"
+JSON_GEOMETRY_PROP = "geometry"
 
 JSON_DOCUMENT = "doc"
 JSON_TRUNCATED_PROP = "truncated"
