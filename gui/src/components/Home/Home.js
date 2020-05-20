@@ -6,15 +6,6 @@ import axios from 'axios';
 import './style.sass'
 import backendUrl from '../../assets/backendUrl';
 
-const barChartData = [
-    {
-        name: 'Tweets Without Coordinates', basic: 4000, covid: 2400
-    },
-    {
-        name: 'Tweets With Coordinates', basic: 3000, covid: 1398
-    }
-];
-
 export default class Example extends PureComponent {
     state = {
         pieChartData: null,
@@ -58,6 +49,9 @@ export default class Example extends PureComponent {
                         barChartData.push(chartDataItem);
                     }
                 }
+                this.setState({
+                    barChartData: barChartData
+                });
             }
         });
     }
@@ -77,7 +71,7 @@ export default class Example extends PureComponent {
                     <BarChart
                         width={600}
                         height={600}
-                        data={barChartData}>
+                        data={this.state.barChartData}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="name"/>
                         <YAxis/>

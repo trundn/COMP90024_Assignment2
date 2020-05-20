@@ -1,14 +1,14 @@
 import React from 'react';
-import {CircleMarker, Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
+import {CircleMarker, Map, Polyline, TileLayer} from 'react-leaflet';
 import './style.sass';
 import axios from 'axios'
 import backendUrl from '../../assets/backendUrl.js'
 
 export default class Movement extends React.Component {
     state = {
-        lat: 51.505,
-        lng: -.09,
-        zoom: 13,
+        lat: -25,
+        lng: 130,
+        zoom: 4,
         polylines: [],
         borderPoints: []
     }
@@ -36,9 +36,9 @@ export default class Movement extends React.Component {
     }
 
     render() {
-        const position = [this.state.lat, this.state.lng];
+        const center = [this.state.lat, this.state.lng];
         return (
-            <Map center={position} zoom={this.state.zoom}>
+            <Map center={center} zoom={this.state.zoom}>
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>

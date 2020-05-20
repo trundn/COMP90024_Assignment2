@@ -107,7 +107,7 @@ export default class UserTracker extends React.Component {
     }
 
     render() {
-        const center = [-37.8136, 144.9631];
+        const center = [-25, 130];
         return (
             <div className={"relative"}>
                 <Map center={this.state.startPoint ? this.state.startPoint : center} zoom={this.state.zoom}>

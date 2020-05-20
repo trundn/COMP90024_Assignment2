@@ -58,7 +58,7 @@ JSON_TEXT_PROP = "text"
 
 TWEET_ID_COLUMN = "tweet_id"
 TAB_CHAR = "\t"
-TWEETS_DATABASE = "tweets"
+TWEETS_DATABASE = "twitter_database"
 LIMIT_COUNT_PER_REQ = 200
 TWEET_MODE = "extended"
 
