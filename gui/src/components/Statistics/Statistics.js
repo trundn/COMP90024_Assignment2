@@ -19,10 +19,10 @@ import backendUrl from '../../assets/backendUrl';
 
 export default class Statistics extends React.Component {
     state = {
-        lineChartData: [],
-        barChartData: [],
-        bubbleChartData: [],
-        bubbleRange: []
+        lineChartData: null,
+        barChartData: null,
+        bubbleChartData: null,
+        bubbleRange: null
     }
 
     componentDidMount() {
@@ -79,38 +79,39 @@ export default class Statistics extends React.Component {
         const domain = [0, 500];
         return (
             <div className={"content"}>
-                <div>
-                    <div className={"left"}>
-                        <LineChart width={980} height={600} data={this.state.lineChartData}
-                                   margin={{
-                                       top: 5, right: 30, left: 20, bottom: 5,
-                                   }}>
-                            <CartesianGrid strokeDasharray="5 5"/>
-                            <XAxis dataKey="key"/>
-                            <YAxis/>
-                            <Tooltip/>
-                            <Legend/>
-                            <Line type="monotone" dataKey="value" stroke="#82ca9d"/>
-                        </LineChart>
-                        <div className={"chart-title"}>Number Of Tweets Per Hour</div>
-                    </div>
-                    <div className={"right"}>
-                        <BarChart width={600}
-                                  height={600}
-                                  data={this.state.barChartData}
-                                  margin={{
-                                      top: 5, right: 30, left: 20, bottom: 5,
-                                  }}>
-                            <CartesianGrid strokeDasharray="3 3"/>
-                            <XAxis dataKey="key"/>
-                            <YAxis/>
-                            <Tooltip/>
-                            <Legend/>
-                            <Bar dataKey="value" fill="#8884d8"/>
-                        </BarChart>
-                        <div className={"chart-title"}>Language Statistics</div>
-                    </div>
-                </div>
+                {this.state.lineChartData &&
+                <div className={"line-chart"}>
+                    <LineChart width={1000} height={700} data={this.state.lineChartData}
+                               margin={{
+                                   top: 5, right: 30, left: 20, bottom: 5,
+                               }}>
+                        <CartesianGrid strokeDasharray="5 5"/>
+                        <XAxis dataKey="key"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Line type="monotone" dataKey="value" stroke="#82ca9d"/>
+                    </LineChart>
+                    <div className={"chart-title"}>Number Of Tweets Per Hour</div>
+                </div>}
+                {this.state.barChartData &&
+                <div className={"bar-chart"}>
+                    <BarChart width={1000}
+                              height={600}
+                              data={this.state.barChartData}
+                              margin={{
+                                  top: 5, right: 30, left: 20, bottom: 5,
+                              }}>
+                        <CartesianGrid strokeDasharray="3 3"/>
+                        <XAxis dataKey="key"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Bar dataKey="value" fill="#8884d8"/>
+                    </BarChart>
+                    <div className={"chart-title"}>Language Statistics</div>
+                </div>}
+                {this.state.bubbleChartData &&
                 <div className={'bubble-chart'}>
                     {this.state.bubbleChartData.map((row, index) => {
                         let days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
@@ -131,14 +132,15 @@ export default class Statistics extends React.Component {
                             <YAxis type="number" dataKey="index" name={day} height={10} width={100} tick={{fontSize: 0}}
                                    tickLine={false} axisLine={false}
                                    label={{value: day, position: 'insideRight'}}/>
-                            <ZAxis type="number" dataKey="value" name="Number Of Tweets" domain={domain} range={this.state.bubbleRange}/>
+                            <ZAxis type="number" dataKey="value" name="Number Of Tweets" domain={domain}
+                                   range={this.state.bubbleRange}/>
                             <Tooltip cursor={{strokeDasharray: '3 3'}} wrapperStyle={{zIndex: 100}}
                                      content={this.renderTooltip}/>
                             <Scatter data={row} fill="#41b1db"/>
                         </ScatterChart>
                     })}
                     <div className={"chart-title"}>Activity Last 5 months</div>
-                </div>
+                </div>}
             </div>
         );
     }
