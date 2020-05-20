@@ -35,12 +35,9 @@ class StreamListener(tweepy.StreamListener):
         # Try to query time line for this user
         all_tweets = self.helper.get_all_tweets(self.tweepy_api, status.user.screen_name)
 
-        # Only get historic tweets having coordiantes
-        processed_tweets = self.helper.filer_tweets_with_coordinates(all_tweets)
-
         # Write all tweets to counchdb
-        if (processed_tweets):
-            self.writer.write_to_counchdb(processed_tweets)
+        if (all_tweets):
+            self.writer.write_to_counchdb(all_tweets)
 
     def on_error(self, status_code):
         print("Encountered streaming error (", status_code, ")")
