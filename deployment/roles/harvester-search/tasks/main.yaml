@@ -6,15 +6,50 @@
     name: "{{ harvester_instance2 }}"
     state: absent
 
+# Copy Dockerfile to Database Instances
+- name: Copy Dockerfile.harvest.search
+  become: yes
+  copy:
+    src: ../../templates/Dockerfile.harvest.search
+    dest: /home/ubuntu
+
+# Copy Directories to Database Instances
+- name: Copy harvest and script folder
+  become: yes
+  copy:
+    src: "../../../{{ item }}"
+    dest: /home/ubuntu
+    mode: '0777'
+  with_items:
+    - harvest
+    - script
+  
+# Unzip data in harvest
+#- name: Unzip dataset.tar.gz
+#  become: yes
+#  unarchive:
+#    src: /home/ubuntu/harvest
+#    dest: /home/ubuntu/harvest
+#    remote_src: yes
+
 # Create search harvester 
 - name: Build search harvester image
   become: yes
   docker_image:
     name: "{{ harvester_instance2 }}"
     build: 
-     dockerfile: "{{ dockerfile_search }}"
-     path: "../../templates/{{ dockerfile_search }}"
-     pull: yes
+      dockerfile: "{{ dockerfile_search }}"
+      path: /home/ubuntu
+      pull: yes
     state: present
     source: build
-    
+
+- name: Run search harvester container
+  become: yes
+  docker_container:
+    name: "{{ harvester_instance2 }}"
+    volumes:
+      - "/data/app:/app"
+    image: "{{ harvester_instance2 }}"
+    detach: yes
+    state: started

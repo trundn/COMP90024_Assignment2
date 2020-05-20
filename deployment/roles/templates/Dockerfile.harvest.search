@@ -1,7 +1,7 @@
 FROM python:3.7
 
-COPY ../../../harvest /app/harvest
-COPY ../../../script /app/script
+COPY harvest /app/harvest
+COPY script /app/script
 
 WORKDIR /app/harvest
 
