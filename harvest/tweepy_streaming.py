@@ -36,7 +36,7 @@ class StreamListener(tweepy.StreamListener):
         all_tweets = self.helper.get_all_tweets(self.tweepy_api, status.user.screen_name)
 
         # Only get historic tweets having coordiantes
-        processed_tweets = self.help.filer_tweets_with_coordinates(all_tweets)
+        processed_tweets = self.helper.filer_tweets_with_coordinates(all_tweets)
 
         # Write all tweets to counchdb
         if (processed_tweets):

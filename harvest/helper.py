@@ -133,7 +133,7 @@ class Helper(object):
                     if (constants.AUSTRALIA_COUNTRY_NAME == location):
                         processed_tweets.append(tweet)
                     else:
-                        source, coordinates = self.helper.extract_coordinates(tweet)
+                        source, coordinates = self.extract_coordinates(tweet)
                         if (coordinates):
                             processed_tweets.append(tweet)
 
