@@ -14,6 +14,7 @@ class TweetWriter(object):
         self.config_loader = config_loader
         self.lock = threading.Lock()
         self.database_connection = CouchDBConnection(
+            self.config_loader.couchdb_database_name,
             self.config_loader.couchdb_connection_string, self.lock)
         self.database_connection.init_database()
         self.threadpool_job_executor = JobExecutor(-1, 50, 50000)

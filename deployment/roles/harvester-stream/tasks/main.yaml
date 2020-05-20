@@ -16,10 +16,12 @@
 # Copy Directories to Database Instances
 - name: Copy harvest and script folder
   become: yes
-  copy:
+  synchronize:
     src: "../../../{{ item }}"
     dest: /home/ubuntu
-    mode: '0777'
+    mode: push
+    rsync_opts:
+      - "--exclude=dataset"
   with_items:
     - harvest
     - script

@@ -34,6 +34,7 @@ class ConfigurationLoader(object):
         self.tweetid = {}
 
         self.couchdb_connection_string = ""
+        self.couchdb_database_name = ""
 
     def load_authentication_config(self):
         if os.path.exists(self.authen_config_path):
@@ -81,6 +82,7 @@ class ConfigurationLoader(object):
                     host = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_HOST_PROP]
                     port = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_PORT_PROP]
 
+                    self.couchdb_database_name = config_content[constants.JSON_COUCHDB_SECTION_PROP][constants.JSON_DATABASE_NAME_PROP]
                     self.couchdb_connection_string = "http://{}:{}@{}:{}/".format(username, password, host, port)
                 except Exception as exception:
                     print("Error occurred during loading the tweet database configuration file. Exception: %s" %exception)

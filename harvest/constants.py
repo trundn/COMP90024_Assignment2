@@ -41,6 +41,7 @@ JSON_OPP_POLITICIANS_PROP = "opposition_politicians"
 JSON_GEOMETRY_FILTERS_PROP = "geometry_filters"
 
 JSON_COUCHDB_SECTION_PROP = "couchdb"
+JSON_DATABASE_NAME_PROP = "database_name"
 JSON_USERNAME_PROP = "username"
 JSON_PASSWORD_PROP = "password"
 JSON_HOST_PROP = "host"

@@ -50,5 +50,9 @@ class SearchingAPIThread(threading.Thread):
             for user_id in users:
                 for follower in helper.get_followers(self.tweepy_api, user_id, -1):
                     all_followers_tweets = helper.get_all_tweets(self.tweepy_api, follower.screen_name)
+
+                    # Only get historic tweets having coordiantes
+                    processed_tweets = helper.filer_tweets_with_coordinates(all_followers_tweets)
                     # Write all tweets to counchdb
-                    self.writer.write_to_counchdb(all_followers_tweets)
+                    if (processed_tweets):
+                        self.writer.write_to_counchdb(processed_tweets)

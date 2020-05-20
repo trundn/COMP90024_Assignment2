@@ -34,9 +34,10 @@ class StreamListener(tweepy.StreamListener):
 
         # Try to query time line for this user
         all_tweets = self.helper.get_all_tweets(self.tweepy_api, status.user.screen_name)
-        
+
         # Write all tweets to counchdb
-        self.writer.write_to_counchdb(all_tweets)
+        if (all_tweets):
+            self.writer.write_to_counchdb(all_tweets)
 
     def on_error(self, status_code):
         print("Encountered streaming error (", status_code, ")")
@@ -77,7 +78,7 @@ class StreamingAPIThread(threading.Thread):
                 if (locations is not None):
                     stream.filter(locations = locations)
         
-            except IOError as ex:
+            except Exception as ex:
                 print(f"Exception occurred during tweet streaming. {ex}")
                 
                 if self.minimum_backoff_time > self.maximum_backoff_time:
