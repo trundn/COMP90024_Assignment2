@@ -49,10 +49,10 @@ class StreamingAPIThread(threading.Thread):
         self.writer = writer
         self.config_loader = config_loader
         
-        # The initial backoff time after a disconnection occurs, in seconds.
+        # The initial backoff time after a disconnection occurs, in seconds
         self.default_backoff_time = 1
         self.minimum_backoff_time = 1
-        # The maximum backoff time before giving up, in seconds.
+        # The maximum backoff time before reseting to default value
         self.maximum_backoff_time = 32
 
     def run(self):

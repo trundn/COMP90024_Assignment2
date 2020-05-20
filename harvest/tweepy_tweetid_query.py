@@ -1,5 +1,7 @@
 # Provides various time-related functions
 import time
+# Implements pseudo-random number generators for various distributions
+import random
 # Message Passing Interface (MPI) standard library
 from mpi4py import MPI
 # Using library for system dependent functionalities
@@ -24,6 +26,12 @@ class TweetIdQueryThread(threading.Thread):
         threading.Thread.__init__(self)
         self.writer = writer
         self.config_loader = config_loader
+        
+         # The initial waiting time after a disconnection occurs, in seconds
+        self.default_waiting_time = 1
+        self.minimum_waiting_time = 1
+        # The maximum waiting time before reseting to default value
+        self.maximum_waiting_time = 64
 
     def run(self):
         comm = MPI.COMM_WORLD
@@ -58,8 +66,13 @@ class TweetIdQueryThread(threading.Thread):
                 self.threadpool_job_executor.queue(job)
 
             while(self.threadpool_job_executor.is_any_thread_alive() is True):
-                # Sleep 1 second before checking thread alive status again
-                time.sleep(constants.ONE_SECOND)
+                if self.minimum_waiting_time > self.maximum_waiting_time:
+                    self.minimum_waiting_time = self.default_waiting_time
+
+                delay = self.minimum_waiting_time + random.randint(0, 1000) / 1000.0
+
+                time.sleep(delay)
+                self.minimum_waiting_time *= 2
 
             print("Finished harvesting from tweetid datasets.")
 
