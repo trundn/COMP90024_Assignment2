@@ -77,6 +77,6 @@ RULING_POLITICIAN = "ruling"
 OPPOSITION_POLITICIAN = "opposition"
 
 FIRST_PERSON_SINGULAR = ["i", "me", "my", "mine", "myself"]
-FIRST_PERSON_PLURAL = ["we", "us", "our", "ours", "uurselves"]
+FIRST_PERSON_PLURAL = ["we", "us", "our", "ours", "ourselves"]
 SECOND_PERSON_PRONOUN = ["you", "your", "yours", "yourselves"]
 THIRD_PERSON_PRONOUN = ["he", "his", "himself", "she", "her", "hers", "herself", "it", "its", "itself"]
