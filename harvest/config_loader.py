@@ -157,9 +157,9 @@ class ConfigurationLoader(object):
                     if os.path.isdir(configured_folder):
                         data_folder_path = Path(configured_folder)
                         all_sub_folders.append(configured_folder)
-                            
+
                         for pth, dirs, files in os.walk(configured_folder):
-                            for sub_folder in dirs:
+                            for sub_folder in sorted(dirs, reverse = True):
                                 sub_folder_path = data_folder_path / sub_folder
                                 if os.path.isdir(sub_folder_path):
                                     all_sub_folders.append(sub_folder_path)
