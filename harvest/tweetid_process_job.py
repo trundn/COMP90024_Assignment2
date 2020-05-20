@@ -39,24 +39,13 @@ class TweetIdProcessJob(Runnable):
                 # Sleep 2 seconds to avoid rate limit issue
                 time.sleep(constants.TWO_SECONDS)
                 full_tweets = self.own_tweepy_api.statuses_lookup(tweet_ids[i * 100 : last_index])
-                
-                # Check if tweet is in configured user filter locations
-                for tweet in full_tweets:
-                    if (hasattr(tweet, constants.PLACE) \
-                        and tweet.place is not None \
-                        and tweet.place.country is not None):
 
-                        location = tweet.place.country.lower()
-                        if (constants.AUSTRALIA_COUNTRY_NAME == location):
-                            all_tweets.append(tweet)
-                    else:
-                        source, coordinates = self.helper.extract_coordinates(tweet)
-                        if (coordinates):
-                            all_tweets.append(tweet)
+                # Check if tweet is in configured user filter locations
+                processed_tweets = self.helper.filer_tweets_with_coordinates(full_tweets)
 
                 # Write all tweets to counchdb
-                if (all_tweets):
-                    self.writer.write_to_counchdb(all_tweets)
+                if (processed_tweets):
+                    self.writer.write_to_counchdb(processed_tweets)
 
             return full_tweets
         except:

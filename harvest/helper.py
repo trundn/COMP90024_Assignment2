@@ -118,6 +118,26 @@ class Helper(object):
             print(ex)
 
         return alltweets
+    
+    def filer_tweets_with_coordinates(self, all_tweets):
+        processed_tweets = []
+
+        if (all_tweets):
+            # Check if tweet is in configured user filter locations
+            for tweet in all_tweets:
+                if (hasattr(tweet, constants.PLACE) \
+                        and tweet.place is not None \
+                        and tweet.place.country is not None):
+
+                    location = tweet.place.country.lower()
+                    if (constants.AUSTRALIA_COUNTRY_NAME == location):
+                        processed_tweets.append(tweet)
+                    else:
+                        source, coordinates = self.helper.extract_coordinates(tweet)
+                        if (coordinates):
+                            processed_tweets.append(tweet)
+
+        return processed_tweets
 
     def extract_full_text(self, tweet):
         full_text = ""
