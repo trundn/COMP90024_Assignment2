@@ -9,43 +9,108 @@ import axios from 'axios';
 import backendUrl from '../../assets/backendUrl';
 
 const colors = scaleOrdinal(schemeCategory10).range();
-console.log(colors);
-const data = [
-    {x: 100, y: 200, z: 200},
-    {x: 120, y: 100, z: 260},
-    {x: 170, y: 300, z: 400},
-    {x: 140, y: 250, z: 280},
-    {x: 150, y: 400, z: 500},
-    {x: 120, y: 280, z: 200},
-    {x: 130, y: 280, z: 200},
-    {x: 140, y: 280, z: 200},
-    {x: 150, y: 280, z: 200},
-    {x: 160, y: 280, z: 200},
-    {x: 170, y: 280, z: 200},
-];
 
 export default class SentimentAnalysis extends React.Component {
-    static jsfiddleUrl = 'https://jsfiddle.net/alidingling/9Lfxjjty/';
+    state = {
+        negData: [],
+        neuData: [],
+        posData: []
+    }
+
+    componentDidMount() {
+        axios.get(backendUrl.tweets_with_emotion_values_and_pro_cnt.format(100, 0)).then(response => {
+            if (response.status === 200) {
+                let negData = [];
+                let neuData = [];
+                let posData = [];
+                response.data.forEach(tweet => {
+                    let statistics = tweet['value'];
+                    ['neg', 'neu', 'pos'].forEach(emotionKey => {
+                        ['fps_cnt', 'fpp_cnt', 'sp_cnt', 'tp_cnt'].forEach((wordType, index) => {
+                            let dataItem = {
+                                x: statistics[1][wordType],
+                                y: statistics[0][emotionKey],
+                                colorIndex: index
+                            }
+                            switch (emotionKey) {
+                                case 'neg':
+                                    negData.push(dataItem);
+                                    break;
+                                case 'neu':
+                                    neuData.push(dataItem);
+                                    break;
+                                case 'pos':
+                                    posData.push(dataItem);
+                                    break;
+                            }
+                        });
+                    });
+                });
+                this.setState({
+                    negData: negData,
+                    neuData: neuData,
+                    posData: posData
+                });
+                console.log(neuData);
+            }
+        });
+    }
 
     render() {
         return (
-            <ScatterChart
-                width={400}
-                height={400}
-                margin={{
-                    top: 20, right: 20, bottom: 20, left: 20,
-                }}
-            >
-                <CartesianGrid />
-                <XAxis type="number" dataKey="x" name="stature" unit="cm" />
-                <YAxis type="number" dataKey="y" name="weight" unit="kg" />
-                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
-                <Scatter name="A school" data={data} fill="#8884d8">
-                    {
-                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />)
-                    }
-                </Scatter>
-            </ScatterChart>
+            <div className={"content"}>
+                <div className={"left"}>
+                    <ScatterChart
+                        width={400}
+                        height={400}>
+                        <CartesianGrid/>
+                        <XAxis type="number" dataKey="x" name="words" unit=""/>
+                        <YAxis type="number" dataKey="y" name="probability" unit=""/>
+                        <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+                        <Scatter name="A school" data={this.state.negData} fill="#8884d8">
+                            {
+                                this.state.posData.map((entry, index) => <Cell key={`cell-${index}`}
+                                                                               fill={colors[entry.colorIndex]}/>)
+                            }
+                        </Scatter>
+                    </ScatterChart>
+                    <div>Negative Emotions</div>
+                </div>
+                <div className={"middle"}>
+                    <ScatterChart
+                        width={400}
+                        height={400}>
+                        <CartesianGrid/>
+                        <XAxis type="number" dataKey="x" name="words" unit=""/>
+                        <YAxis type="number" dataKey="y" name="probability" unit=""/>
+                        <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+                        <Scatter name="A school" data={this.state.neuData} fill="#8884d8">
+                            {
+                                this.state.posData.map((entry, index) => <Cell key={`cell-${index}`}
+                                                                               fill={colors[entry.colorIndex]}/>)
+                            }
+                        </Scatter>
+                    </ScatterChart>
+                    <div>Neural Emotions</div>
+                </div>
+                <div className={"right"}>
+                    <ScatterChart
+                        width={400}
+                        height={400}>
+                        <CartesianGrid/>
+                        <XAxis type="number" dataKey="x" name="words" unit=""/>
+                        <YAxis type="number" dataKey="y" name="probability" unit=""/>
+                        <Tooltip cursor={{strokeDasharray: '3 3'}}/>
+                        <Scatter name="A school" data={this.state.posData} fill="#8884d8">
+                            {
+                                this.state.posData.map((entry, index) => <Cell key={`cell-${index}`}
+                                                                               fill={colors[entry.colorIndex]}/>)
+                            }
+                        </Scatter>
+                    </ScatterChart>
+                    <div>Positive Emotions</div>
+                </div>
+            </div>
         );
     }
 }

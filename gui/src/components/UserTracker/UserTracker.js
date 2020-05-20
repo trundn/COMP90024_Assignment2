@@ -8,7 +8,9 @@ import TreeMenu from "react-simple-tree-menu";
 
 export default class UserTracker extends React.Component {
     state = {
-        zoom: 7,
+        lat: -25,
+        lng: 130,
+        zoom: 4,
         treeMenuData: [],
         polyline: null,
         startPoint: null,
@@ -107,7 +109,7 @@ export default class UserTracker extends React.Component {
     }
 
     render() {
-        const center = [-25, 130];
+        const center = [this.state.lat, this.state.lng];
         return (
             <div className={"relative"}>
                 <Map center={this.state.startPoint ? this.state.startPoint : center} zoom={this.state.zoom}>
