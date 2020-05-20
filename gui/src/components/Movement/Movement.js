@@ -1,15 +1,38 @@
 import React from 'react';
-import {Map, Marker, Popup, TileLayer} from 'react-leaflet';
+import {CircleMarker, Map, Marker, Polyline, Popup, TileLayer} from 'react-leaflet';
 import './style.sass';
+import axios from 'axios'
+import backendUrl from '../../assets/backendUrl.js'
 
 export default class Movement extends React.Component {
-    constructor(props) {
-        super(props)
-        this.state = {
-            lat: 51.505,
-            lng: -.09,
-            zoom: 13
-        };
+    state = {
+        lat: 51.505,
+        lng: -.09,
+        zoom: 13,
+        polylines: [],
+        borderPoints: []
+    }
+
+    componentDidMount() {
+        axios.get(backendUrl.movement).then(response => {
+            if (response.status === 200) {
+                let polylines = [];
+                let borderPoints = [];
+                let movementData = response.data;
+                movementData.forEach((movementDataItem) => {
+                    if (movementDataItem.value.length >= 2) {
+                        polylines.push(movementDataItem.value);
+                        movementDataItem.value.forEach(borderPoint => {
+                            borderPoints.push(borderPoint);
+                        });
+                    }
+                });
+                this.setState({
+                    polylines: polylines,
+                    borderPoints: borderPoints
+                });
+            }
+        });
     }
 
     render() {
@@ -19,11 +42,15 @@ export default class Movement extends React.Component {
                 <TileLayer
                     url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                     attribution="&copy; <a href=&quot;http://osm.org/copyright&quot;>OpenStreetMap</a> contributors"/>
-                <Marker position={position}>
-                    <Popup>
-                        A pretty CSS3 popup. <br/> Easily customizable.
-                    </Popup>
-                </Marker>
+                {this.state.polylines.map((polyline, index) => {
+                    return <Polyline key={index} color="purple" positions={polyline}/>
+                })};
+                {this.state.borderPoints &&
+                this.state.borderPoints.map((borderPoint, index) => {
+                    return <CircleMarker key={index} center={borderPoint} color="purple" fillOpacity={1}
+                                         fill="purple"
+                                         radius={5}/>
+                })}
             </Map>
         );
     }

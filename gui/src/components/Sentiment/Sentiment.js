@@ -4,7 +4,7 @@ import axios from 'axios'
 import './style.sass';
 import TreeMenu from 'react-simple-tree-menu';
 import PacmanLoader from 'react-spinners/PacmanLoader';
-import config from '../../assets/config.js'
+import backendUrl from '../../assets/backendUrl.js'
 
 const treeData = [
     {
@@ -84,8 +84,8 @@ export default class Sentiment extends Component {
     }
 
     componentDidMount() {
-        let polygon_url = config.polygon_url.format(1);
-        let statistics_url = config.statistics_url.format(1);
+        let polygon_url = backendUrl.polygon.format(1);
+        let statistics_url = backendUrl.statistics.format(1);
         console.log(polygon_url);
         console.log(statistics_url);
         this.setState({
@@ -99,8 +99,8 @@ export default class Sentiment extends Component {
             this.setState({
                 selectedId: event.polygonId
             });
-            let polygon_url = config.polygon_url.format(event.polygonId);
-            let statistics_url = config.statistics_url.format(event.polygonId);
+            let polygon_url = backendUrl.polygon.format(event.polygonId);
+            let statistics_url = backendUrl.statistics.format(event.polygonId);
             this.geoJson.current.leafletElement.clearLayers();
             this.requestDataForMap(polygon_url, statistics_url);
         }

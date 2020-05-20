@@ -162,3 +162,14 @@ class HomeDAO(DAO):
         response = self.twitter_database.list('_design/home', '_view/tweets_with_coordinates', **params)
         rows = response[1]["rows"]
         return rows
+
+
+class MovementDAO(DAO):
+    def get_movement_data(self):
+        params = {
+            'reduce': True,
+            'group': True
+        }
+        response = self.twitter_database.list('_design/movement', '_view/movement', **params)
+        rows = response[1]["rows"]
+        return rows

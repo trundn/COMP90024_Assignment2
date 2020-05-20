@@ -4,7 +4,7 @@ import {
 } from 'recharts';
 import axios from 'axios';
 import './style.sass'
-import config from '../../assets/config';
+import backendUrl from '../../assets/backendUrl';
 
 const barChartData = [
     {
@@ -22,7 +22,7 @@ export default class Example extends PureComponent {
     }
 
     componentDidMount() {
-        axios.get(config.tweets_by_categories).then(response => {
+        axios.get(backendUrl.tweets_by_categories).then(response => {
             if (response.status === 200) {
                 let pieChartData = []
                 for (let i = 0; i < response.data.length; i++) {
@@ -37,7 +37,7 @@ export default class Example extends PureComponent {
                 });
             }
         });
-        axios.get(config.tweets_with_coordinates).then(response => {
+        axios.get(backendUrl.tweets_with_coordinates).then(response => {
             if (response.status === 200) {
                 let barChartData = []
                 for (let i = 0; i < response.data.length; i++) {

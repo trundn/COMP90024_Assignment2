@@ -3,7 +3,7 @@ import {Map, Marker, Polyline, CircleMarker, Popup, TileLayer} from 'react-leafl
 import axios from 'axios'
 import './style.sass';
 import PacmanLoader from 'react-spinners/PacmanLoader';
-import config from '../../assets/config.js'
+import backendUrl from '../../assets/backendUrl.js'
 import TreeMenu from "react-simple-tree-menu";
 
 export default class UserTracker extends React.Component {
@@ -24,7 +24,7 @@ export default class UserTracker extends React.Component {
         this.setState({
             loading: true
         });
-        axios.get(config.get_most_active_users).then(response => {
+        axios.get(backendUrl.get_most_active_users).then(response => {
             if (response.status === 200) {
                 let treeMenuData = [];
                 let users = response.data;
@@ -38,8 +38,6 @@ export default class UserTracker extends React.Component {
                     };
                     treeMenuData.push(dataItem);
                 });
-                console.log(treeMenuData);
-
                 this.setState({
                     treeMenuData: treeMenuData
                 });
@@ -52,7 +50,7 @@ export default class UserTracker extends React.Component {
     }
 
     onMenuItemClick(event) {
-        axios.get(config.find_route_url.format(JSON.stringify(event.user_key))).then(response => {
+        axios.get(backendUrl.find_route_url.format(JSON.stringify(event.user_key))).then(response => {
             if (response.status === 200) {
                 let polyline = response.data;
                 if (polyline.length > 0) {
@@ -97,7 +95,7 @@ export default class UserTracker extends React.Component {
                 }
             }
         });
-        axios.get(config.get_user_info.format(event.user_key[0])).then(response => {
+        axios.get(backendUrl.get_user_info.format(event.user_key[0])).then(response => {
             if (response.status === 200) {
                 if (response.data !== {}) {
                     this.setState({
