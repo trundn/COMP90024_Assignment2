@@ -4,16 +4,20 @@ import couchdb
 import constants
 
 class CouchDBConnection(object):
-    def __init__(self, connection_string, lock):
+    def __init__(self, database_name, connection_string, lock):
         self.lock = lock
+        self.database_name = database_name
+        if (self.database_name is None or self.database_name == ""):
+            self.database_name = constants.TWEETS_DATABASE
         self.connection_string = connection_string
         self.server = couchdb.Server(self.connection_string)
 
     def init_database(self):
-        if constants.TWEETS_DATABASE in self.server:
-            self.database = self.server[constants.TWEETS_DATABASE]
+        
+        if self.database_name in self.server:
+            self.database = self.server[self.database_name]
         else:
-            self.database = self.server.create(constants.TWEETS_DATABASE)
+            self.database = self.server.create(self.database_name)
 
     def write_tweet(self, tweet_content):
         if ((tweet_content is not None) and isinstance(tweet_content, dict)):
