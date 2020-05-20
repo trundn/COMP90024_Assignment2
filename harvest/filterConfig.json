@@ -140,59 +140,38 @@
         "notoiletpaper",
         "notissue",
         "toiletpapercrisis",
-        // Traditional Mandarin
-        // virus
         "新冠肺炎",
         "新型冠狀病毒",
         "新冠病毒",
         "冠狀病毒",
         "肺炎",
-        // quarantine
         "隔離",
         "自主隔離",
         "居家檢疫",
         "自主健康管理", 
-        // social distance
         "社交距離",
-        // pandemic
         "疫情",
-        // confirmed
         "確診",
-        // WHO
         "世界衛生組織",
         "世衛",
-
-        // Simplified Mandarin
-        // virus
         "新型冠状病毒",
         "冠状病毒",
-        // quarantine
         "隔离",
         "自主隔离",
         "居家检疫",
         "自主健康管理", 
-        // social distance
         "社交距离",
-        // confirmed
         "确诊",
-        // WHO
         "世界卫生组织",
         "世卫",
-
-        // Japanese
-        // virus
         "新型コロナウイルス",
         "新型のコロナウイルス",
         "コロナウイルス",
         "しんがたコロナウイルス",
-        // confirmed
         "かんせんかくにん",
-        // pandemic
         "パンデミック",
         "オーバーシュート",
-        // social distance
         "ソーシャルディスタンス",
-        // WHO
         "世界保健機関",
 
     ],
