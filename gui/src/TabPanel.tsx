@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function ScrollableTabsButtonForce() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(3);
+    const [value, setValue] = React.useState(2);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);

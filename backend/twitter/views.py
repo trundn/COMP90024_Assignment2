@@ -108,6 +108,17 @@ class StatisticsInPolygonView(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
+class MovementView(views.APIView):
+    movement_dao = MovementDAO()
+
+    def get(self, request):
+        try:
+            result = self.movement_dao.get_movement_data()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
 class FindRouteView(views.APIView):
     movement_dao = MovementDAO()
 
@@ -165,12 +176,20 @@ class TweetsWithCoordinatesView(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-class MovementView(views.APIView):
-    movement_dao = MovementDAO()
+class TweetsWithEmoValuesAndProCnt(views.APIView):
+    statistics_dao = StatisticsDAO()
 
     def get(self, request):
         try:
-            result = self.movement_dao.get_movement_data()
+            skip = request.query_params.get('skip')
+            limit = request.query_params.get('limit')
+            if skip is not None:
+                skip = int(skip)
+            else:
+                skip = 0
+            if limit is not None:
+                limit = int(limit)
+            result = self.statistics_dao.get_tweets_with_emo_and_procnt(skip, limit)
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

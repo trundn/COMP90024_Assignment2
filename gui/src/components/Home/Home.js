@@ -2,8 +2,8 @@ import React, {PureComponent} from 'react';
 import {
     PieChart, Pie, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid, Legend,
 } from 'recharts';
-import axios from 'axios';
 import './style.sass'
+import axios from 'axios';
 import backendUrl from '../../assets/backendUrl';
 
 export default class Example extends PureComponent {

@@ -37,14 +37,25 @@ class StatisticsDAO(DAO):
         super().__init__()
 
     def get_tweets_per_hour(self):
-        response = self.twitter_database.list('_design/tweets-per-hour', '_view/tweets-per-hour',
-                                              **{'inclusive': True, 'reduce': True, 'group': True})
+        params = {'inclusive': True, 'reduce': True, 'group': True}
+        response = self.twitter_database.list('_design/tweets-per-hour', '_view/tweets-per-hour', **params)
         return response[1]
 
     def get_language_statistics(self):
-        response = self.twitter_database.list('_design/language', '_view/language',
-                                              **{'inclusive': True, 'reduce': True, 'group': True})
+        params = {'inclusive': True, 'reduce': True, 'group': True}
+        response = self.twitter_database.list('_design/language', '_view/language', **params)
         return response[1]
+
+    def get_tweets_with_emo_and_procnt(self, skip, limit):
+        params = {
+            'skip': skip
+        }
+        if (limit is not None):
+            params['limit'] = limit
+        print(params)
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-with-emo-val-and-pro-cnt', **params)
+        rows = response[1]["rows"]
+        return rows
 
 
 class MapDAO(DAO):

@@ -1,75 +1,51 @@
 import React from 'react';
-import {AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip} from 'recharts';
+import {
+    ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip, Cell
+} from 'recharts';
+import {scaleOrdinal} from 'd3-scale';
+import {schemeCategory10} from 'd3-scale-chromatic';
+import './style.sass'
+import axios from 'axios';
+import backendUrl from '../../assets/backendUrl';
 
+const colors = scaleOrdinal(schemeCategory10).range();
+console.log(colors);
 const data = [
-    {
-        month: '2015.01', a: 4000, b: 2400, c: 2400,
-    },
-    {
-        month: '2015.02', a: 3000, b: 1398, c: 2210,
-    },
-    {
-        month: '2015.03', a: 2000, b: 9800, c: 2290,
-    },
-    {
-        month: '2015.04', a: 2780, b: 3908, c: 2000,
-    },
-    {
-        month: '2015.05', a: 1890, b: 4800, c: 2181,
-    },
-    {
-        month: '2015.06', a: 2390, b: 3800, c: 2500,
-    },
-    {
-        month: '2015.07', a: 3490, b: 4300, c: 2100,
-    },
+    {x: 100, y: 200, z: 200},
+    {x: 120, y: 100, z: 260},
+    {x: 170, y: 300, z: 400},
+    {x: 140, y: 250, z: 280},
+    {x: 150, y: 400, z: 500},
+    {x: 120, y: 280, z: 200},
+    {x: 130, y: 280, z: 200},
+    {x: 140, y: 280, z: 200},
+    {x: 150, y: 280, z: 200},
+    {x: 160, y: 280, z: 200},
+    {x: 170, y: 280, z: 200},
 ];
-const getPercent = ({value, total}) => {
-    const ratio = total > 0 ? value / total : 0;
-
-    return toPercent(ratio, 2);
-};
-
-const toPercent = (decimal, fixed = 0) => `${(decimal * 100).toFixed(fixed)}%`;
-const renderTooltipContent = (o) => {
-    const {payload, label} = o;
-    const total = payload.reduce((result, entry) => (result + entry.value), 0);
-
-    return (
-        <div className='customized-tooltip-content'>
-            <p className='total'>{`${label} (Total: ${total})`}</p>
-            <ul className='list'>
-                {
-                    payload.map((entry, index) => (
-                        <li key={`item-${index}`} style={{color: entry.color}}>
-                            {`${entry.name}: ${entry.value}(${getPercent({value: entry.value, total: total})})`}
-                        </li>
-                    ))
-                }
-            </ul>
-        </div>
-    );
-};
 
 export default class SentimentAnalysis extends React.Component {
+    static jsfiddleUrl = 'https://jsfiddle.net/alidingling/9Lfxjjty/';
+
     render() {
         return (
-            <AreaChart
-                width={1000}
-                height={800}
-                data={data}
-                stackOffset="expand"
+            <ScatterChart
+                width={400}
+                height={400}
                 margin={{
-                    top: 10, right: 30, left: 0, bottom: 0,
-                }}>
-                <CartesianGrid strokeDasharray="3 3"/>
-                <XAxis dataKey="month"/>
-                <YAxis tickFormatter={toPercent}/>
-                <Tooltip content={renderTooltipContent}/>
-                <Area type="monotone" dataKey="a" stackId="1" stroke="#8884d8" fill="#8884d8"/>
-                <Area type="monotone" dataKey="b" stackId="1" stroke="#82ca9d" fill="#82ca9d"/>
-                <Area type="monotone" dataKey="c" stackId="1" stroke="#ffc658" fill="#ffc658"/>
-            </AreaChart>
+                    top: 20, right: 20, bottom: 20, left: 20,
+                }}
+            >
+                <CartesianGrid />
+                <XAxis type="number" dataKey="x" name="stature" unit="cm" />
+                <YAxis type="number" dataKey="y" name="weight" unit="kg" />
+                <Tooltip cursor={{ strokeDasharray: '3 3' }} />
+                <Scatter name="A school" data={data} fill="#8884d8">
+                    {
+                        data.map((entry, index) => <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />)
+                    }
+                </Scatter>
+            </ScatterChart>
         );
     }
 }
