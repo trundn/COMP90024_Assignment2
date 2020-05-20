@@ -1,24 +1,10 @@
 ---
-# Remove harvesters in Database Instances
-- name: Remove Harvest containers
-  become: yes
-  docker_container:
-    name: "{{ harvester_instance1 }}"
-    state: absent
-    
-# Copy Dockerfile to Database Instances
-- name: Copy Dockerfile.harvest.stream
-  become: yes
-  copy:
-    src: ../../templates/Dockerfile.harvest.stream
-    dest: /home/ubuntu
-    
 # Copy Directories to Database Instances
 - name: Copy harvest and script folder
   become: yes
   synchronize:
     src: "../../../{{ item }}"
-    dest: /home/ubuntu
+    dest: /data/app
     mode: push
     rsync_opts:
       - "--exclude=dataset"
@@ -26,33 +12,14 @@
     - harvest
     - script
 
-# Unzip data in harvest
-#- name: Unzip dataset.tar.gz
-#  become: yes
-#  unarchive:
-#    src: /home/ubuntu/harvest
-#    dest: /home/ubuntu/harvest
-#    remote_src: yes
-
-# Create stream harvester 
-- name: Build stream harvester image
+# Install packages
+- name: Install pip modules
   become: yes
-  docker_image:
-    name: "{{ harvester_instance1 }}"
-    build: 
-      dockerfile: "{{ dockerfile_stream }}"
-      path: /home/ubuntu
-      pull: yes
+  pip:
+    requirements: /data/app/harvest/requirements.txt
     state: present
-    source: build
-    
-- name: Run stream harvester container
+
+# Run stream harvester
+- name: Execute harvest_instance1_two_cores.sh
   become: yes
-  docker_container:
-    name: "{{ harvester_instance1 }}"
-    volumes:
-      - "/data/app:/app"
-    image: "{{ harvester_instance1 }}"
-    detach: yes
-    state: started
-    
+  command: ./harvest_instance1_two_cores.sh
