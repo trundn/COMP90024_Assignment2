@@ -4,6 +4,7 @@ const backendUrl = {
     'statistics_in_polygon': base_url + 'statistics-in-polygon/{0}/',
     'tweets_per_hour': base_url + 'tweets-per-hour/',
     'language_statistics': base_url + 'language-statistics/',
+    'total_tweets_by_day_and_hour': base_url + 'total-tweets-by-day-and-hour/',
     'tweets_with_emotion_values_and_pro_cnt': base_url + 'tweets-with-emo-values-and-pro-cnt/?limit={0}&skip={1}',
     'get_most_active_users': base_url + 'get-most-active-users/',
     'find_route_url': base_url + 'find-route/?user_key={0}',

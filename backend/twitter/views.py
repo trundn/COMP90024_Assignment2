@@ -40,6 +40,17 @@ class TweetsPerHourView(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
+class TotalTweetsByDayAndHour(views.APIView):
+    statistics_dao = StatisticsDAO()
+
+    def get(self, request):
+        try:
+            result = self.statistics_dao.get_total_tweets_by_day_and_hour()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
 class LanguageStatisticsView(views.APIView):
     statistics_dao = StatisticsDAO()
 

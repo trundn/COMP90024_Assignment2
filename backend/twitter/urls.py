@@ -1,5 +1,5 @@
 from django.urls import path, include
-from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, LanguageStatisticsView, \
+from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, TotalTweetsByDayAndHour, LanguageStatisticsView, \
     TweetsWithEmoValuesAndProCnt, TweetsInRectangleView, TweetsInPolygonView, StatisticsInPolygonView, FindRouteView, \
     GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, MovementView
 from rest_framework.routers import DefaultRouter
@@ -13,6 +13,7 @@ twitter_router.register('', TwitterViewSet, basename='twitter')
 urlpatterns = [
     path('polygon/', include(polygon_router.urls)),
     path('tweets-per-hour/', TweetsPerHourView.as_view()),
+    path('total-tweets-by-day-and-hour/', TotalTweetsByDayAndHour.as_view()),
     path('language-statistics/', LanguageStatisticsView.as_view()),
     path('tweets-with-emo-values-and-pro-cnt/', TweetsWithEmoValuesAndProCnt.as_view()),
     path('tweets-in-rectangle/', TweetsInRectangleView.as_view()),

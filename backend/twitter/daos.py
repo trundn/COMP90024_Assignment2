@@ -41,6 +41,12 @@ class StatisticsDAO(DAO):
         response = self.twitter_database.list('_design/tweets-per-hour', '_view/tweets-per-hour', **params)
         return response[1]
 
+    def get_total_tweets_by_day_and_hour(self):
+        params = {'reduce': True, 'group_level': 2}
+        response = self.twitter_database.list('_design/statistics', '_view/total-tweets-by-day-n-hour', **params)
+        rows = response[1]["rows"]
+        return rows
+
     def get_language_statistics(self):
         params = {'inclusive': True, 'reduce': True, 'group': True}
         response = self.twitter_database.list('_design/language', '_view/language', **params)
@@ -52,7 +58,6 @@ class StatisticsDAO(DAO):
         }
         if (limit is not None):
             params['limit'] = limit
-        print(params)
         response = self.twitter_database.list('_design/statistics', '_view/tweets-with-emo-val-and-pro-cnt', **params)
         rows = response[1]["rows"]
         return rows
