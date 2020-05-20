@@ -61,7 +61,8 @@ export default class UserTracker extends React.Component {
                     });
                     let startPoint = polyline[0];
                     let endPoint = polyline[polyline.length - 1];
-                    if (startPoint[0] === endPoint[0] && startPoint[1] === endPoint[1]) {
+                    if (startPoint[0].toFixed(3) === endPoint[0].toFixed(3) &&
+                        startPoint[1].toFixed(3) === endPoint[1].toFixed(3)) {
                         this.setState({
                             startPoint: startPoint,
                             endPoint: null,
