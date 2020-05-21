@@ -1,57 +1,49 @@
 ---
-# Remove harvesters in Database Instances
-- name: Remove Harvest containers
-  become: yes
-  docker_container:
-    name: "{{ harvester_instance2 }}"
-    state: absent
-
-# Copy Dockerfile to Database Instances
-- name: Copy Dockerfile.harvest.search
-  become: yes
-  copy:
-    src: ../../templates/Dockerfile.harvest.search
-    dest: /home/ubuntu
-
 # Copy Directories to Database Instances
 - name: Copy harvest and script folder
   become: yes
   synchronize:
     src: "../../../{{ item }}"
-    dest: /home/ubuntu/app
+    dest: /data/app
     mode: push
     rsync_opts:
       - "--exclude=dataset"
   with_items:
     - harvest
     - script
-  
-# Unzip data in harvest
-#- name: Unzip dataset.tar.gz
-#  become: yes
-#  unarchive:
-#    src: /home/ubuntu/harvest
-#    dest: /home/ubuntu/harvest
-#    remote_src: yes
 
-# Create search harvester 
-- name: Build search harvester image
+# Install packages
+- name: Install pip modules
   become: yes
-  docker_image:
-    name: "{{ harvester_instance2 }}"
-    build: 
-      dockerfile: "{{ dockerfile_search }}"
-      path: /home/ubuntu
-      pull: yes
+  pip:
+    requirements: /data/app/harvest/requirements.txt
     state: present
-    source: build
 
-- name: Run search harvester container
+# Install openmpi packages
+- name: Install openmpi packages for mpi4py
   become: yes
-  docker_container:
-    name: "{{ harvester_instance2 }}"
-    volumes:
-      - "/data/app:/app"
-    image: "{{ harvester_instance2 }}"
-    detach: yes
-    state: started
+  apt: 
+    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev']
+    state: latest
+    install_recommends: yes
+    update_cache: yes 
+
+# Install packages
+- name: Install mpi4py modules
+  become: yes
+  pip:
+    name: mpi4py
+    state: present
+
+# Change file permissions
+#- name: making file executable
+#  become: yes
+#  file:
+#    path: /data/app/script/harvest_instance1_two_cores.sh
+#    mode: '0777'
+
+# Run stream harvester
+- name: Execute harvest_instance1_two_cores.sh
+  command:
+    chdir: /data/app/script
+    cmd: bash harvest_instance1_two_cores.sh

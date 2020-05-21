@@ -1,0 +1,25 @@
+FROM dhna/mpi4py:latest
+
+ENV http_proxy http://wwwproxy.unimelb.edu.au:8000/
+ENV https_proxy http://wwwproxy.unimelb.edu.au:8000/
+
+RUN apt-get update && apt-get install -y python3-dev python3-pip python3-setuptools curl
+
+COPY ./app/harvest/requirements.txt /app/harvest/requirements.txt
+
+WORKDIR /app/harvest
+
+RUN pip install --upgrade pip
+
+RUN pip install -r requirements.txt
+
+WORKDIR /
+
+COPY ./app/script/harvest_instance1_two_cores.sh /app/script/harvest_instance1_two_cores.sh
+
+COPY ./app/harvest /app/harvest
+COPY ./app/script /app/script
+
+WORKDIR /app/script
+
+CMD ["bash","harvest_instance1_two_cores.sh"]

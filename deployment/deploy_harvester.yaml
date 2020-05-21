@@ -20,8 +20,8 @@
     - host_vars/remote.yaml
   gather_facts: true
 
-  #roles:
-  #  - role: harvester-search
+#  roles:
+#    - role: harvester-search
 
 - hosts: dbInstance3
   vars_files:
