@@ -18,7 +18,7 @@
 - name: Install pip modules
   become: yes
   pip:
-    requirements: "{{  pip_requirements_path }}"
+    requirements: "{{ pip_requirements_path }}"
     state: present
   
 # Install openmpi packages
