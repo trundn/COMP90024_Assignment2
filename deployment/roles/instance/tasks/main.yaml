@@ -59,14 +59,14 @@
       dbInstance2
       dbInstance3
       
-    dest: "/media/mayankshar21/New Volume/university/COMP90024/Project/COMP90024_Assignment2/deployment/hosts.ini"
+    dest: "./hosts.ini"
 
 - name: Add dynamically created IP addresses to inventory
   lineinfile:
     line: |
       [{{ item.name }}]
       {{ item.address }}
-    dest: "/media/mayankshar21/New Volume/university/COMP90024/Project/COMP90024_Assignment2/deployment/hosts.ini"
+    dest: "./hosts.ini"
   loop: '{{ instance_facts }}' 
 
 

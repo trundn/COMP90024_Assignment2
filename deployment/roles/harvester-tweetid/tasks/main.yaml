@@ -11,9 +11,18 @@
       - "--exclude={{execution_file_instance1}}"
       - "--exclude={{execution_file_instance2}}"
   with_items:
-    - harvest/dataset/2020-03-22
     - harvest
     - script
+  
+# Copy Directories to Database Instances
+- name: Copy dataset folder
+  become: yes
+  synchronize:
+    src: "{{ dataset_source_directory }}{{ item }}"
+    dest: "{{ dataset_destination_directory }}"
+    mode: push
+  with_items:
+    - "2020-03-22"
     
 # Install packages
 - name: Install pip modules
@@ -26,7 +35,7 @@
 - name: Install openmpi packages for mpi4py
   become: yes
   apt: 
-    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev']
+    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev', 'dos2unix']
     state: latest
     install_recommends: yes
     update_cache: yes 
@@ -43,9 +52,9 @@
   shell: "bash {{ execution_file_instance3 }}"
   args:
     chdir: "{{ bash_execution_path }}"
-    async: "{{ async_time }}"
-    poll: "{{ poll_value }}"
-    register: results
+  async: "{{ async_time }}"
+  poll: "{{ poll_value }}"
+  register: results
   
 - name: Testing the task
   async_status:

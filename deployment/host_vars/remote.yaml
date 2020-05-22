@@ -14,16 +14,11 @@ couchdb_secret: '0e0cfc55cf5cde25799c547bdf001633'
 couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_nodes: "{{ groups['slaveInstances'] }}"
 
-harvester_instance1: stream
-harvester_instance2: search
-harvester_instance3: tweetid
-
-dockerfile_search: Dockerfile.harvest.search
-dockerfile_stream: Dockerfile.harvest.stream
-dockerfile_tweetid: Dockerfile.harvest.tweetid
-
-copy_source_directory: "../../../../"
+copy_source_directory: "../"
 copy_destination_directory: "/data/app"
+
+dataset_source_directory: "../harvest/dataset/"
+dataset_destination_directory: "/data/app/harvest/dataset"
 
 pip_requirements_path: "/data/app/harvest/requirements.txt"
 

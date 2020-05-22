@@ -25,7 +25,7 @@
 - name: Install openmpi packages for mpi4py
   become: yes
   apt: 
-    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev']
+    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev', 'dos2unix']
     state: latest
     install_recommends: yes
     update_cache: yes 
