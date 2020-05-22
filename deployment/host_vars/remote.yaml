@@ -21,3 +21,19 @@ harvester_instance3: tweetid
 dockerfile_search: Dockerfile.harvest.search
 dockerfile_stream: Dockerfile.harvest.stream
 dockerfile_tweetid: Dockerfile.harvest.tweetid
+
+copy_source_directory: "../../../../"
+copy_destination_directory: "/data/app"
+
+pip_requirements_path: "/data/app/harvest/requirements.txt"
+
+bash_execution_path: "/data/app/script"
+
+execution_file_instance1: harvest_instance1_two_cores.sh
+execution_file_instance2: harvest_instance2_two_cores.sh
+execution_file_instance3: harvest_instance3_two_cores.sh
+
+async_time: 100000
+poll_value: 0
+total_retries: 100
+delay_per_try: 30

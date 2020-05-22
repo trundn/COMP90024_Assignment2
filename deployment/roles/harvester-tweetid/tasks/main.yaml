@@ -1,0 +1,56 @@
+---
+# Copy Directories to Database Instances
+- name: Copy harvest and script folder
+  become: yes
+  synchronize:
+    src: "{{ copy_source_directory }}{{ item }}"
+    dest: "{{ copy_destination_directory }}"
+    mode: push
+    rsync_opts:
+      - "--exclude=dataset"
+      - "--exclude={{execution_file_instance1}}"
+      - "--exclude={{execution_file_instance2}}"
+  with_items:
+    - harvest/dataset/2020-03-22
+    - harvest
+    - script
+    
+# Install packages
+- name: Install pip modules
+  become: yes
+  pip:
+    requirements: "{{  pip_requirements_path }}"
+    state: present
+    
+# Install openmpi packages
+- name: Install openmpi packages for mpi4py
+  become: yes
+  apt: 
+    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev']
+    state: latest
+    install_recommends: yes
+    update_cache: yes 
+    
+# Install packages
+- name: Install mpi4py modules
+  become: yes
+  pip:
+    name: mpi4py
+    state: present
+    
+# Run tweetid harvester
+- name: Execute harvest_instance3_two_cores.sh
+  shell: "bash {{ execution_file_instance3 }}"
+  args:
+    chdir: "{{ bash_execution_path }}"
+    async: "{{ async_time }}"
+    poll: "{{ poll_value }}"
+    register: results
+  
+- name: Testing the task
+  async_status:
+    jid: "{{ results.ansible_job_id }}"
+  register: harvester_result
+  until: harvester_result is not finished
+  retries: "{{ total_retries }}"
+  delay: "{{ delay_per_try }}"
