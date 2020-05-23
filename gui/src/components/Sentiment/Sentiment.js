@@ -10,21 +10,32 @@ const treeData = [
     {
         key: 'australia',
         label: 'Australia',
-        nodes: [
-            {
-                key: 'states-and-territories',
-                label: 'State and Territories',
-                nodes: [],
-                polygonId: 2
-            },
-            {
-                key: 'postal-areas-2016',
-                label: 'Postal Areas',
-                nodes: [],
-                polygonId: 3
-            }
-        ],
+        nodes: [],
         polygonId: 1
+    },
+    {
+        key: 'states-and-territories',
+        label: 'State and Territories',
+        nodes: [],
+        polygonId: 2
+    },
+    {
+        key: 'postal-areas-2016',
+        label: 'Postal Areas',
+        nodes: [],
+        polygonId: 3
+    },
+    {
+        key: 'working-zone',
+        label: 'Working Zone',
+        nodes: [],
+        polygonId: 4
+    },
+    {
+        key: 'functional-economic-regions',
+        label: 'Functional Economic Regions',
+        nodes: [],
+        polygonId: 5
     }
 ];
 
