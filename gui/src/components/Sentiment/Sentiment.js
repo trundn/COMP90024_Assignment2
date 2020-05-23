@@ -3,7 +3,7 @@ import {GeoJSON, Map, TileLayer} from 'react-leaflet'
 import axios from 'axios'
 import './style.sass';
 import TreeMenu from 'react-simple-tree-menu';
-import PacmanLoader from 'react-spinners/PacmanLoader';
+import GridLoader from 'react-spinners/GridLoader';
 import backendUrl from '../../assets/backendUrl.js'
 
 export default class Sentiment extends Component {
@@ -149,8 +149,8 @@ export default class Sentiment extends Component {
                               resetOpenNodesOnDataUpdate={false}/>
                 </div>
                 <div className={"absolute"}>
-                    <PacmanLoader
-                        size={100}
+                    <GridLoader
+                        size={50}
                         margin={2}
                         color={'#006600'}
                         loading={this.state.loading}/>

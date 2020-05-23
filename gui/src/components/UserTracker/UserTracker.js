@@ -2,7 +2,7 @@ import React from 'react'
 import {Map, Marker, Polyline, CircleMarker, Popup, TileLayer} from 'react-leaflet'
 import axios from 'axios'
 import './style.sass';
-import PacmanLoader from 'react-spinners/PacmanLoader';
+import GridLoader from 'react-spinners/GridLoader';
 import backendUrl from '../../assets/backendUrl.js'
 import TreeMenu from "react-simple-tree-menu";
 
@@ -153,8 +153,8 @@ export default class UserTracker extends React.Component {
                               resetOpenNodesOnDataUpdate={false}/>
                 </div>
                 <div className={"absolute"}>
-                    <PacmanLoader
-                        size={100}
+                    <GridLoader
+                        size={50}
                         margin={2}
                         color={'#006600'}
                         loading={this.state.loading}/>
