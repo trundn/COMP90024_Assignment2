@@ -34,17 +34,17 @@ export default class Sentiment extends Component {
 
     onEachFeature(feature, layer) {
         let offset = 0;
-        // let statistics = feature.statistics;
-        // if (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets !== 0) {
-        //     offset = (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets) / (statistics.number_of_positive_tweets + statistics.number_of_negative_tweets)
-        // }
-        // let popupContent = `<Popup>
-        //                 <p>${feature.properties.feature_name}</p>
-        //                 <p>Number Of Positive Tweets: ${statistics.number_of_positive_tweets}</p>
-        //                 <p>Number Of Neural Tweets: ${statistics.number_of_neural_tweets}</p>
-        //                 <p>Number Of Negative Tweets: ${statistics.number_of_negative_tweets}</p>
-        //                 </Popup>`;
-        // layer.bindPopup(popupContent);
+        let statistics = feature.statistics;
+        if (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets !== 0) {
+            offset = (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets) / (statistics.number_of_positive_tweets + statistics.number_of_negative_tweets)
+        }
+        let popupContent = `<Popup>
+                        <p>${feature.properties.feature_name}</p>
+                        <p>Number Of Positive Tweets: ${statistics.number_of_positive_tweets}</p>
+                        <p>Number Of Neural Tweets: ${statistics.number_of_neural_tweets}</p>
+                        <p>Number Of Negative Tweets: ${statistics.number_of_negative_tweets}</p>
+                        </Popup>`;
+        layer.bindPopup(popupContent);
 
         layer.on('mouseover', () => {
             layer.setStyle({
@@ -103,19 +103,18 @@ export default class Sentiment extends Component {
             loading: true
         });
         let request1 = axios.get(polygon_url);
-        // let request2 = axios.get(statistics_url); #TODO: Improve it
-        axios.all([request1]).then(axios.spread((...responses) => {
+        let request2 = axios.get(statistics_url);
+        axios.all([request1, request2]).then(axios.spread((...responses) => {
             let response1 = responses[0];
-            // let response2 = responses[1];
-            let response2 = responses[0]; // #TODO: remove later
+            let response2 = responses[1];
             if (response1.status === 200 && response2.status === 200) {
                 let polygonData = JSON.parse(response1.data.content);
-                // let statistics = response2.data;
-                // for (let i = 0; i < polygonData.features.length; i++) {
-                //     let feature_code = polygonData.features[i].properties.feature_code;
-                //     let particular_statistics = statistics.find(statistics_per_area => statistics_per_area.code === feature_code);
-                //     polygonData.features[i].statistics = particular_statistics.statistics;
-                // }
+                let statistics = response2.data;
+                for (let i = 0; i < polygonData.features.length; i++) {
+                    let feature_code = polygonData.features[i].properties.feature_code;
+                    let particular_statistics = statistics.find(statistics_per_area => statistics_per_area.code === feature_code);
+                    polygonData.features[i].statistics = particular_statistics.statistics;
+                }
                 this.geoJson.current.leafletElement.addData(polygonData);
                 this.setState({
                     polygonData: polygonData,

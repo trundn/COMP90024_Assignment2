@@ -3,6 +3,7 @@ const backendUrl = {
     'list_polygon': base_url + 'polygon/',
     'detail_polygon': base_url + 'polygon/{0}/',
     'statistics_in_polygon': base_url + 'statistics-in-polygon/{0}/',
+    'statistics_in_particular_polygon': base_url + 'statistics-in-polygon/',
     'tweets_per_hour': base_url + 'tweets-per-hour/',
     'language_statistics': base_url + 'language-statistics/',
     'total_tweets_by_day_and_hour': base_url + 'total-tweets-by-day-and-hour/',
