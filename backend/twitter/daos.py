@@ -36,9 +36,27 @@ class StatisticsDAO(DAO):
     def __init__(self):
         super().__init__()
 
+    def tweets_by_categories(self):
+        params = {
+            'reduce': True,
+            'group': True
+        }
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-by-categories', **params)
+        rows = response[1]["rows"]
+        return rows
+
+    def tweets_with_coordinates(self):
+        params = {
+            'reduce': True,
+            'group_level': 2
+        }
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-with-coordinates', **params)
+        rows = response[1]["rows"]
+        return rows
+
     def get_tweets_per_hour(self):
         params = {'inclusive': True, 'reduce': True, 'group': True}
-        response = self.twitter_database.list('_design/tweets-per-hour', '_view/tweets-per-hour', **params)
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-per-hour', **params)
         return response[1]
 
     def get_total_tweets_by_day_and_hour(self):
@@ -49,7 +67,7 @@ class StatisticsDAO(DAO):
 
     def get_language_statistics(self):
         params = {'inclusive': True, 'reduce': True, 'group': True}
-        response = self.twitter_database.list('_design/language', '_view/language', **params)
+        response = self.twitter_database.list('_design/statistics', '_view/language', **params)
         return response[1]
 
     def get_tweets_with_emo_and_procnt(self, skip, limit):
@@ -63,7 +81,7 @@ class StatisticsDAO(DAO):
         return rows
 
 
-class MapDAO(DAO):
+class SentimentMapDAO(DAO):
     def __init__(self):
         super().__init__()
 
@@ -74,7 +92,7 @@ class MapDAO(DAO):
             'end_key': top_right_point
         }
         try:
-            response = self.twitter_database.list('_design/within-polygon', '_view/within-polygon', **params)
+            response = self.twitter_database.list('_design/sentiment-map', '_view/within-polygon', **params)
             tweets = response[1]["rows"]
         except Exception as e:
             tweets = []
@@ -126,26 +144,6 @@ class UserDAO(DAO):
             return rows[0]
         else:
             return None
-
-
-class HomeDAO(DAO):
-    def tweets_by_categories(self):
-        params = {
-            'reduce': True,
-            'group': True
-        }
-        response = self.twitter_database.list('_design/home', '_view/tweets_by_categories', **params)
-        rows = response[1]["rows"]
-        return rows
-
-    def tweets_with_coordinates(self):
-        params = {
-            'reduce': True,
-            'group_level': 2
-        }
-        response = self.twitter_database.list('_design/home', '_view/tweets_with_coordinates', **params)
-        rows = response[1]["rows"]
-        return rows
 
 
 class MovementDAO(DAO):

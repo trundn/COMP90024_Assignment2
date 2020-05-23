@@ -1,0 +1,9 @@
+{
+  "_id": "_design/user",
+  "views": {
+    "user": {
+      "map": "function (doc) {\n  if (doc.calculated_coordinates) {\n    emit(doc.raw_data.user.id, doc.raw_data.user); \n  }\n}"
+    }
+  },
+  "language": "javascript"
+}

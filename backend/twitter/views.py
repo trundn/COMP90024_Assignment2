@@ -2,7 +2,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework import views
-from .daos import TwitterDAO, StatisticsDAO, MapDAO, UserDAO, HomeDAO, MovementDAO
+from .daos import TwitterDAO, StatisticsDAO, SentimentMapDAO, UserDAO, MovementDAO
 from .models import Polygon
 from .serializers import PolygonSerializer
 import json
@@ -63,7 +63,7 @@ class LanguageStatisticsView(views.APIView):
 
 
 class TweetsInRectangleView(views.APIView):
-    map_dao = MapDAO()
+    sentiment_map_dao = SentimentMapDAO()
 
     def get(self, request):
         try:
@@ -71,14 +71,14 @@ class TweetsInRectangleView(views.APIView):
             top_right_point = request.query_params.get('top_right_point')
             # bottom_left_point = [-45, 110]
             # top_right_point = [-8, 155]
-            result = self.map_dao.get_tweets_in_rectangle(bottom_left_point, top_right_point)
+            result = self.sentiment_map_dao.get_tweets_in_rectangle(bottom_left_point, top_right_point)
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class TweetsInPolygonView(views.APIView):
-    map_dao = MapDAO()
+    map_dao = SentimentMapDAO()
 
     def post(self, request):
         try:
@@ -90,7 +90,7 @@ class TweetsInPolygonView(views.APIView):
 
 
 class StatisticsInPolygonView(views.APIView):
-    map_dao = MapDAO()
+    map_dao = SentimentMapDAO()
 
     def get(self, request, pk):
         result = []
@@ -166,22 +166,22 @@ class GetUserInfoView(views.APIView):
 
 
 class TweetsByCategoriesView(views.APIView):
-    home_dao = HomeDAO()
+    statistics_dao = StatisticsDAO()
 
     def get(self, request):
         try:
-            result = self.home_dao.tweets_by_categories()
+            result = self.statistics_dao.tweets_by_categories()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
 class TweetsWithCoordinatesView(views.APIView):
-    home_dao = HomeDAO()
+    statistics_dao = StatisticsDAO()
 
     def get(self, request):
         try:
-            result = self.home_dao.tweets_with_coordinates()
+            result = self.statistics_dao.tweets_with_coordinates()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

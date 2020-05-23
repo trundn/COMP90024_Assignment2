@@ -1,0 +1,29 @@
+{
+  "_id": "_design/statistics",
+  "views": {
+    "tweets-with-emo-val-and-pro-cnt": {
+      "map": "function (doc) {\n  if (doc.emotions && doc.pronoun_count) {\n      emit(doc._id, [doc.emotions, doc.pronoun_count], 1);\n  }\n}"
+    },
+    "total-tweets-by-day-n-hour": {
+      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
+      "map": "function (doc) {\n  if (doc.raw_data) {\n    var data = doc.raw_data;\n    var date = new Date(data.created_at)\n    var day = date.getDay();\n    var hour = date.getHours()\n    \n    emit([day, hour], 1);\n  }\n}"
+    },
+    "tweets-by-categories": {
+      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
+      "map": "function (doc) {\n  if (doc.match_track_filter === true) {\n    emit(\"Covid19\", 1)\n  } else {\n    emit(\"Others\", 1)\n  }\n}"
+    },
+    "tweets-with-coordinates": {
+      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
+      "map": "function (doc) {\n  if (doc.calculated_coordinates) {\n    if (doc.calculated_coordinates.length == 2) {\n      if (doc.match_track_filter) {\n        emit([\"With Coordinates\", \"covid\"], 1)\n      } else {\n        emit([\"With Coordinates\", \"basic\"], 1)\n      }\n    } else {\n      if (doc.match_track_filter) {\n        emit([\"Without Coordinates\", \"covid\"], 1)\n      } else {\n        emit([\"Without Coordinates\", \"basic\"], 1)\n      }\n    }\n  }\n}"
+    },
+    "language": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  emit(doc.raw_data.lang, 1);\n}"
+    },
+    "tweets-per-hour": {
+      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
+      "map": "function (doc) {\n  if (doc.raw_data) {\n    var data = doc.raw_data;\n    var date = new Date(data.created_at)\n    var hour = date.getHours()\n    emit(hour, 1);\n  }\n}"
+    }
+  },
+  "language": "javascript"
+}
