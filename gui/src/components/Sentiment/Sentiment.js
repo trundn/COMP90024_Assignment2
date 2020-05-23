@@ -20,6 +20,7 @@ export default class Sentiment extends Component {
     constructor(props) {
         super(props);
         this.geoJson = React.createRef();
+        this.pieChart = React.createRef();
         this.statistics = null;
     }
 
@@ -37,11 +38,10 @@ export default class Sentiment extends Component {
             offset = (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets) / (statistics.number_of_positive_tweets + statistics.number_of_negative_tweets)
         }
         let popupContent = `<Popup>
-                        <p>${feature.properties.feature_name}</p>
-                        <p>Number Of Positive Tweets: ${statistics.number_of_positive_tweets}</p>
-                        <p>Number Of Neural Tweets: ${statistics.number_of_neural_tweets}</p>
-                        <p>Number Of Negative Tweets: ${statistics.number_of_negative_tweets}</p>
-                        </Popup>`;
+                                <h3>${feature.properties.feature_name}</h3>
+                                <p>There is/are <strong>${statistics.number_of_positive_tweets}</strong> <strong>positive</strong> tweet(s)</p>
+                                <p>There is/are <strong>${statistics.number_of_negative_tweets}</strong> <strong>negative</strong> tweet(s)</p>
+                            </Popup>`;
         layer.bindPopup(popupContent);
 
         layer.on('mouseover', () => {
