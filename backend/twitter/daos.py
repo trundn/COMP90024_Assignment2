@@ -39,7 +39,8 @@ class StatisticsDAO(DAO):
     def tweets_by_categories(self):
         params = {
             'reduce': True,
-            'group': True
+            'group': True,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/statistics', '_view/tweets-by-categories', **params)
         rows = response[1]["rows"]
@@ -48,31 +49,47 @@ class StatisticsDAO(DAO):
     def tweets_with_coordinates(self):
         params = {
             'reduce': True,
-            'group_level': 2
+            'group_level': 2,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/statistics', '_view/tweets-with-coordinates', **params)
         rows = response[1]["rows"]
         return rows
 
     def get_tweets_per_hour(self):
-        params = {'inclusive': True, 'reduce': True, 'group': True}
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group': True,
+            'update': 'lazy'
+        }
         response = self.twitter_database.list('_design/statistics', '_view/tweets-per-hour', **params)
         return response[1]
 
     def get_total_tweets_by_day_and_hour(self):
-        params = {'reduce': True, 'group_level': 2}
+        params = {
+            'reduce': True,
+            'group_level': 2,
+            'update': 'lazy'
+        }
         response = self.twitter_database.list('_design/statistics', '_view/total-tweets-by-day-n-hour', **params)
         rows = response[1]["rows"]
         return rows
 
     def get_language_statistics(self):
-        params = {'inclusive': True, 'reduce': True, 'group': True}
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group': True,
+            'update': 'lazy'
+        }
         response = self.twitter_database.list('_design/statistics', '_view/language', **params)
         return response[1]
 
     def get_tweets_with_emo_and_procnt(self, skip, limit):
         params = {
-            'skip': skip
+            'skip': skip,
+            'update': 'lazy'
         }
         if (limit is not None):
             params['limit'] = limit
@@ -89,7 +106,8 @@ class SentimentMapDAO(DAO):
         params = {
             'inclusive_end': True,
             'start_key': bottom_left_point,
-            'end_key': top_right_point
+            'end_key': top_right_point,
+            'update': 'lazy'
         }
         try:
             response = self.twitter_database.list('_design/sentiment-map', '_view/within-polygon', **params)
@@ -136,7 +154,8 @@ class UserDAO(DAO):
 
         params = {
             'limit': 1,
-            'key': pk
+            'key': pk,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/user', '_view/user', **params)
         rows = response[1]["rows"]
@@ -150,7 +169,8 @@ class MovementDAO(DAO):
     def get_movement_data(self):
         params = {
             'reduce': True,
-            'group': True
+            'group': True,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/movement', '_view/movement', **params)
         rows = response[1]["rows"]
@@ -162,7 +182,8 @@ class MovementDAO(DAO):
 
         params = {
             'reduce': False,
-            'key': user_key
+            'key': user_key,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/movement', '_view/find-route', **params)
         rows = response[1]["rows"]
@@ -178,7 +199,8 @@ class MovementDAO(DAO):
         params = {
             'limit': 500,
             'reduce': True,
-            'group': True
+            'group': True,
+            'update': 'lazy'
         }
         response = self.twitter_database.list('_design/movement', '_view/find-route', **params)
         rows = response[1]["rows"]
