@@ -4,7 +4,7 @@ from rest_framework import viewsets
 from rest_framework import views
 from .daos import TwitterDAO, StatisticsDAO, SentimentMapDAO, UserDAO, MovementDAO
 from .models import Polygon
-from .serializers import PolygonSerializer
+from .serializers import PolygonSerializer, PartialPolygonSerializer
 import json
 
 
@@ -27,6 +27,11 @@ class TwitterViewSet(viewsets.ViewSet):
 class PolygonViewSet(viewsets.ModelViewSet):
     serializer_class = PolygonSerializer
     queryset = Polygon.objects.all()
+
+    def list(self, request, *args, **kwargs):
+        polygons = Polygon.objects.all()
+        serializer = PartialPolygonSerializer(polygons, many=True)
+        return Response(serializer.data)
 
 
 class TweetsPerHourView(views.APIView):
