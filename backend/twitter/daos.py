@@ -43,7 +43,7 @@ class StatisticsDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/statistics', '_view/tweets-by-categories', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         return rows
 
     def tweets_with_coordinates(self):
@@ -53,7 +53,7 @@ class StatisticsDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/statistics', '_view/tweets-with-coordinates', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         return rows
 
     def get_tweets_per_hour(self):
@@ -73,7 +73,7 @@ class StatisticsDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/statistics', '_view/total-tweets-by-day-n-hour', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         return rows
 
     def get_language_statistics(self):
@@ -94,7 +94,7 @@ class StatisticsDAO(DAO):
         if (limit is not None):
             params['limit'] = limit
         response = self.twitter_database.list('_design/statistics', '_view/tweets-with-emo-val-and-pro-cnt', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         return rows
 
 
@@ -111,7 +111,7 @@ class SentimentMapDAO(DAO):
         }
         try:
             response = self.twitter_database.list('_design/sentiment-map', '_view/within-polygon', **params)
-            tweets = response[1]["rows"]
+            tweets = response[1]['rows']
         except Exception as e:
             tweets = []
         return tweets
@@ -132,9 +132,9 @@ class SentimentMapDAO(DAO):
 
     def get_statistics_in_polygon(self, polygon_data):
         statistics = {
-            "number_of_positive_tweets": 0,
-            "number_of_neural_tweets": 0,
-            "number_of_negative_tweets": 0
+            'number_of_positive_tweets': 0,
+            'number_of_neural_tweets': 0,
+            'number_of_negative_tweets': 0
         }
         tweets_in_polygon = self.get_tweets_in_polygon(polygon_data)
         for tweet in tweets_in_polygon:
@@ -158,7 +158,7 @@ class UserDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/user', '_view/user', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         if (len(rows) > 0):
             return rows[0]
         else:
@@ -170,14 +170,14 @@ class MovementDAO(DAO):
         params = {
             'reduce': True,
             'group': True,
-            'update': 'lazy'
+            'update': 'lazy',
+            'limit': 1000
         }
         response = self.twitter_database.list('_design/movement', '_view/movement', **params)
         rows = response[1]["rows"]
         return rows
 
     def get_route_by_user(self, user_key):
-        print(user_key)
         result = []
 
         params = {
@@ -186,7 +186,7 @@ class MovementDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/movement', '_view/find-route', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         sorted_rows = sorted(rows, key=lambda i: i['value'][1])
         for row in sorted_rows:
             result.append(row['value'][0])
@@ -203,7 +203,7 @@ class MovementDAO(DAO):
             'update': 'lazy'
         }
         response = self.twitter_database.list('_design/movement', '_view/find-route', **params)
-        rows = response[1]["rows"]
+        rows = response[1]['rows']
         sorted_rows = sorted(rows, key=lambda i: i['value'], reverse=True)
 
         return sorted_rows
