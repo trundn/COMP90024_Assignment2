@@ -1,18 +1,5 @@
 import React from 'react';
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    BarChart,
-    Bar,
-    ScatterChart,
-    Scatter,
-    ZAxis
-} from 'recharts';
+import {LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ScatterChart, Scatter, ZAxis} from 'recharts';
 import axios from 'axios';
 import './style.sass'
 import backendUrl from '../../assets/backendUrl';
@@ -20,7 +7,6 @@ import backendUrl from '../../assets/backendUrl';
 export default class Statistics extends React.Component {
     state = {
         lineChartData: null,
-        barChartData: null,
         bubbleChartData: null,
         bubbleRange: null
     }
@@ -30,15 +16,6 @@ export default class Statistics extends React.Component {
             if (response.status === 200) {
                 this.setState({
                     lineChartData: response.data.rows
-                });
-            }
-        }, error => {
-            console.log(error);
-        });
-        axios.get(backendUrl.language_statistics).then(response => {
-            if (response.status === 200) {
-                this.setState({
-                    barChartData: response.data.rows
                 });
             }
         }, error => {
@@ -93,23 +70,6 @@ export default class Statistics extends React.Component {
                         <Line type="monotone" dataKey="value" stroke="#82ca9d"/>
                     </LineChart>
                     <div className={"chart-title"}>Number Of Tweets Per Hour</div>
-                </div>}
-                {this.state.barChartData &&
-                <div className={"bar-chart"}>
-                    <BarChart width={1000}
-                              height={600}
-                              data={this.state.barChartData}
-                              margin={{
-                                  top: 5, right: 30, left: 20, bottom: 5,
-                              }}>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="key"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Bar dataKey="value" fill="#8884d8"/>
-                    </BarChart>
-                    <div className={"chart-title"}>Language Statistics</div>
                 </div>}
                 {this.state.bubbleChartData &&
                 <div className={'bubble-chart'}>
