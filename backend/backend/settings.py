@@ -120,8 +120,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
-# COUCH_DATABASE_NAME = 'twitter_database'
+COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
+COUCH_DATABASE_NAME = 'twitter_database'
 
-COUCH_SERVER_URL = 'http://admin:password@172.26.134.18:5984'
-COUCH_DATABASE_NAME = 'twitter'
+# COUCH_SERVER_URL = 'http://admin:password@172.26.134.18:5984'
+# COUCH_DATABASE_NAME = 'twitter'
