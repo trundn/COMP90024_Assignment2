@@ -6,42 +6,9 @@ import TreeMenu from 'react-simple-tree-menu';
 import PacmanLoader from 'react-spinners/PacmanLoader';
 import backendUrl from '../../assets/backendUrl.js'
 
-const treeData = [
-    {
-        key: 'australia',
-        label: 'Australia',
-        nodes: [],
-        polygonId: 1
-    },
-    {
-        key: 'states-and-territories',
-        label: 'State and Territories',
-        nodes: [],
-        polygonId: 2
-    },
-    {
-        key: 'postal-areas-2016',
-        label: 'Postal Areas',
-        nodes: [],
-        polygonId: 3
-    },
-    {
-        key: 'working-zone',
-        label: 'Working Zone',
-        nodes: [],
-        polygonId: 4
-    },
-    {
-        key: 'functional-economic-regions',
-        label: 'Functional Economic Regions',
-        nodes: [],
-        polygonId: 5
-    }
-];
-
-
 export default class Sentiment extends Component {
     state = {
+        treeData: [],
         lat: -37.8136,
         lng: 144.9631,
         zoom: 8,
@@ -95,12 +62,28 @@ export default class Sentiment extends Component {
     }
 
     componentDidMount() {
-        let polygon_url = backendUrl.polygon.format(1);
-        let statistics_url = backendUrl.statistics_in_polygon.format(1);
-        this.setState({
-            loading: true
+        axios.get(backendUrl.list_polygon).then(response => {
+            if (response.status === 200) {
+                let treeData = [];
+                response.data.forEach(polygon => {
+                    let treeDataItem = {
+                        key: polygon.name,
+                        label: polygon.name,
+                        nodes: [],
+                        polygonId: polygon.id
+                    }
+                    treeData.push(treeDataItem);
+                });
+
+                let polygon_url = backendUrl.detail_polygon.format(treeData[0].polygonId);
+                let statistics_url = backendUrl.statistics_in_polygon.format(treeData[0].polygonId);
+                this.setState({
+                    treeData: treeData,
+                    loading: true
+                });
+                this.requestDataForMap(polygon_url, statistics_url);
+            }
         });
-        this.requestDataForMap(polygon_url, statistics_url);
     }
 
     onMenuItemClick(event) {
@@ -108,7 +91,7 @@ export default class Sentiment extends Component {
             this.setState({
                 selectedId: event.polygonId
             });
-            let polygon_url = backendUrl.polygon.format(event.polygonId);
+            let polygon_url = backendUrl.detail_polygon.format(event.polygonId);
             let statistics_url = backendUrl.statistics_in_polygon.format(event.polygonId);
             this.geoJson.current.leafletElement.clearLayers();
             this.requestDataForMap(polygon_url, statistics_url);
@@ -161,7 +144,7 @@ export default class Sentiment extends Component {
                              ref={this.geoJson}/>
                 </Map>
                 <div className={"fixed"}>
-                    <TreeMenu data={treeData} debounceTime={125} disableKeyboard={false}
+                    <TreeMenu data={this.state.treeData} debounceTime={125} disableKeyboard={false}
                               hasSearch onClickItem={event => this.onMenuItemClick(event)}
                               resetOpenNodesOnDataUpdate={false}/>
                 </div>

@@ -1,6 +1,7 @@
 const base_url = 'http://localhost:8000/tweets/';
 const backendUrl = {
-    'polygon': base_url + 'polygon/{0}/',
+    'list_polygon': base_url + 'polygon/',
+    'detail_polygon': base_url + 'polygon/{0}/',
     'statistics_in_polygon': base_url + 'statistics-in-polygon/{0}/',
     'tweets_per_hour': base_url + 'tweets-per-hour/',
     'language_statistics': base_url + 'language-statistics/',
