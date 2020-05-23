@@ -26,9 +26,7 @@ export default class Sentiment extends Component {
     geoJSONStyle() {
         return {
             color: '#1f2021',
-            weight: 1,
-            fillOpacity: 0.5,
-            fillColor: '#66ff66',
+            weight: 1
         }
     }
 
@@ -48,16 +46,33 @@ export default class Sentiment extends Component {
 
         layer.on('mouseover', () => {
             layer.setStyle({
-                'fillColor': '#ff0000',
+                'fillColor': '#fff2af',
                 'fillOpacity': 0.5
             });
         });
-
-        layer.on('mouseout', () => {
+        if (offset >= 0) {
             layer.setStyle({
                 'fillColor': '#66ff66',
                 'fillOpacity': 0.5 + offset * 0.5
             });
+        } else {
+            layer.setStyle({
+                'fillColor': '#ff0000',
+                'fillOpacity': 0.5 + offset * 0.5 * (-1)
+            });
+        }
+        layer.on('mouseout', () => {
+            if (offset >= 0) {
+                layer.setStyle({
+                    'fillColor': '#66ff66',
+                    'fillOpacity': 0.5 + offset * 0.5
+                });
+            } else {
+                layer.setStyle({
+                    'fillColor': '#ff0000',
+                    'fillOpacity': 0.5 + offset * 0.5 * (-1)
+                });
+            }
         });
     }
 
@@ -140,6 +155,7 @@ export default class Sentiment extends Component {
                              style={this.geoJSONStyle}
                              onEachFeature={this.onEachFeature}
                              onmouseover={this.onMouseOver}
+                             onadd={this.onLayerAdd}
                              ref={this.geoJson}/>
                 </Map>
                 <div className={"fixed"}>
