@@ -124,9 +124,10 @@ class SentimentMapDAO(DAO):
             bottom_left_point = [polygon.bounds[0], polygon.bounds[1]]
             top_right_point = [polygon.bounds[2], polygon.bounds[3]]
             tweets = self.get_tweets_in_rectangle(bottom_left_point, top_right_point)
-            for tweet in tweets:
-                if polygon.contains(Point(tweet['key'])):
-                    tweets_in_polygon.append(tweet)
+            tweets_in_polygon = tweets_in_polygon + tweets
+            # for tweet in tweets:
+            #     if polygon.contains(Point(tweet['key'])):
+            #         tweets_in_polygon.append(tweet)
 
         return tweets_in_polygon
 
