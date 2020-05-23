@@ -22,7 +22,6 @@ export default class Sentiment extends Component {
     constructor(props) {
         super(props);
         this.geoJson = React.createRef();
-        this.pieChart = React.createRef();
         this.statistics = null;
     }
 

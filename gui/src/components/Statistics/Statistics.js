@@ -8,7 +8,8 @@ export default class Statistics extends React.Component {
     state = {
         lineChartData: null,
         bubbleChartData: null,
-        bubbleRange: null
+        bubbleRange: null,
+        domain: null
     }
 
     componentDidMount() {
@@ -44,7 +45,8 @@ export default class Statistics extends React.Component {
                 });
                 this.setState({
                     bubbleChartData: bubbleChartData,
-                    bubbleRange: [0, maxValue]
+                    bubbleRange: [0, maxValue],
+                    domain: [0, maxValue]
                 });
             }
         }, error => {
@@ -53,7 +55,6 @@ export default class Statistics extends React.Component {
     }
 
     render() {
-        const domain = [0, 500];
         return (
             <div className={"content"}>
                 {this.state.lineChartData &&
@@ -92,7 +93,7 @@ export default class Statistics extends React.Component {
                             <YAxis type="number" dataKey="index" name={day} height={10} width={100} tick={{fontSize: 0}}
                                    tickLine={false} axisLine={false}
                                    label={{value: day, position: 'insideRight'}}/>
-                            <ZAxis type="number" dataKey="value" name="Number Of Tweets" domain={domain}
+                            <ZAxis type="number" dataKey="value" name="Number Of Tweets" domain={this.state.domain}
                                    range={this.state.bubbleRange}/>
                             <Tooltip cursor={{strokeDasharray: '3 3'}} wrapperStyle={{zIndex: 100}}
                                      content={this.renderTooltip}/>
