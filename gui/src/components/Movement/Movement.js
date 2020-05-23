@@ -6,11 +6,6 @@ import backendUrl from '../../assets/backendUrl.js'
 import GridLoader from "react-spinners/GridLoader";
 import Dropdown from 'react-dropdown';
 
-const options = [
-    'Level 1', 'Level 2', 'Level 3'
-];
-const defaultOption = options[0];
-
 export default class Movement extends React.Component {
     state = {
         lat: -25,
@@ -57,7 +52,6 @@ export default class Movement extends React.Component {
                 let borderPoints = [];
                 let movementData = response.data;
                 movementData.forEach((movementDataItem) => {
-                    console.log(movementDataItem);
                     if (movementDataItem.value.length >= 2) {
                         polylines.push(movementDataItem.value);
                         movementDataItem.value.forEach(borderPoint => {
@@ -80,6 +74,7 @@ export default class Movement extends React.Component {
 
     render() {
         const center = [this.state.lat, this.state.lng];
+        const options = ['Level 1', 'Level 2', 'Level 3'];
         return (
             <div className={"relative"}>
                 <div className={"select-level"}>

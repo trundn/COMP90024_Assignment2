@@ -5,6 +5,7 @@ import './style.sass';
 import TreeMenu from 'react-simple-tree-menu';
 import GridLoader from 'react-spinners/GridLoader';
 import backendUrl from '../../assets/backendUrl.js'
+import {PieChart, Pie, Tooltip} from 'recharts';
 
 export default class Sentiment extends Component {
     state = {
@@ -14,6 +15,7 @@ export default class Sentiment extends Component {
         zoom: 8,
         selectedId: 1,
         polygonData: null,
+        pieChartData: null,
         loading: false
     }
 
@@ -34,8 +36,10 @@ export default class Sentiment extends Component {
     onEachFeature(feature, layer) {
         let offset = 0;
         let statistics = feature.statistics;
-        if (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets !== 0) {
-            offset = (statistics.number_of_positive_tweets - statistics.number_of_negative_tweets) / (statistics.number_of_positive_tweets + statistics.number_of_negative_tweets)
+        let numberOfPositiveTweets = statistics.number_of_positive_tweets;
+        let numberOfNegativeTweets = statistics.number_of_negative_tweets;
+        if (numberOfPositiveTweets - numberOfNegativeTweets !== 0) {
+            offset = (numberOfPositiveTweets - numberOfNegativeTweets) / (numberOfPositiveTweets + numberOfNegativeTweets)
         }
         let popupContent = `<Popup>
                                 <h3>${feature.properties.feature_name}</h3>
@@ -43,7 +47,21 @@ export default class Sentiment extends Component {
                                 <p>There is/are <strong>${statistics.number_of_negative_tweets}</strong> <strong>negative</strong> tweet(s)</p>
                             </Popup>`;
         layer.bindPopup(popupContent);
+        layer.on('click', () => {
+            if (numberOfPositiveTweets === 0 && numberOfNegativeTweets === 0) {
+                this.setState({
+                    pieChartData: null
+                });
+            } else {
+                this.setState({
+                    pieChartData: [
+                        {name: 'Positive', value: numberOfPositiveTweets},
+                        {name: 'Negative', value: numberOfNegativeTweets}
+                    ]
+                });
+            }
 
+        });
         layer.on('mouseover', () => {
             layer.setStyle({
                 'fillColor': '#fff2af',
@@ -153,9 +171,9 @@ export default class Sentiment extends Component {
                     <GeoJSON key={"map"}
                              data={this.state.polygonData}
                              style={this.geoJSONStyle}
-                             onEachFeature={this.onEachFeature}
-                             onmouseover={this.onMouseOver}
-                             onadd={this.onLayerAdd}
+                             onEachFeature={(feature, layer) => {
+                                 this.onEachFeature(feature, layer)
+                             }}
                              ref={this.geoJson}/>
                 </Map>
                 <div className={"fixed"}>
@@ -170,6 +188,15 @@ export default class Sentiment extends Component {
                         color={'#006600'}
                         loading={this.state.loading}/>
                 </div>
+                {this.state.pieChartData &&
+                <div className={"region-info"}>
+                    <strong>Positive/Negative Ratio</strong>
+                    <PieChart width={300} height={300}>
+                        <Pie dataKey="value" isAnimationActive={false} data={this.state.pieChartData} cx={150} cy={150}
+                             outerRadius={80} fill="#8884d8" label/>
+                        <Tooltip/>
+                    </PieChart>;
+                </div>}
                 {this.state.loading && <div className={'loading-layer'}/>}
             </div>
         )
