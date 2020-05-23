@@ -60,14 +60,16 @@ export default class Example extends PureComponent {
         return (
             <div className={"content"}>
                 <div className={"left-chart"}>
+                    {this.state.pieChartData &&
                     <PieChart width={600} height={600}>
                         <Pie dataKey="value" isAnimationActive={false} data={this.state.pieChartData} cx={300} cy={300}
                              outerRadius={200}
                              fill="#8884d8" label/>
                         <Tooltip/>
-                    </PieChart>
+                    </PieChart>}
                 </div>
                 <div className={"right-chart"}>
+                    {this.state.barChartData &&
                     <BarChart
                         width={600}
                         height={600}
@@ -79,7 +81,7 @@ export default class Example extends PureComponent {
                         <Legend/>
                         <Bar dataKey="basic" stackId="a" fill="#8884d8"/>
                         <Bar dataKey="covid" stackId="a" fill="#82ca9d"/>
-                    </BarChart>
+                    </BarChart>}
                 </div>
             </div>
         );

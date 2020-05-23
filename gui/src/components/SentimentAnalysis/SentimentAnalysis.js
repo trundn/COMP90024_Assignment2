@@ -12,9 +12,9 @@ const colors = scaleOrdinal(schemeCategory10).range();
 
 export default class SentimentAnalysis extends React.Component {
     state = {
-        negData: [],
-        neuData: [],
-        posData: []
+        negData: null,
+        neuData: null,
+        posData: null
     }
 
     componentDidMount() {
@@ -59,6 +59,7 @@ export default class SentimentAnalysis extends React.Component {
     render() {
         return (
             <div className={"content"}>
+                {this.state.negData &&
                 <div className={"left"}>
                     <ScatterChart
                         width={400}
@@ -69,13 +70,14 @@ export default class SentimentAnalysis extends React.Component {
                         <Tooltip cursor={{strokeDasharray: '3 3'}}/>
                         <Scatter name="A school" data={this.state.negData} fill="#8884d8">
                             {
-                                this.state.posData.map((entry, index) => <Cell key={`cell-${index}`}
+                                this.state.negData.map((entry, index) => <Cell key={`cell-${index}`}
                                                                                fill={colors[entry.colorIndex]}/>)
                             }
                         </Scatter>
                     </ScatterChart>
                     <div>Negative Emotions</div>
-                </div>
+                </div>}
+                {this.state.neuData &&
                 <div className={"middle"}>
                     <ScatterChart
                         width={400}
@@ -86,13 +88,14 @@ export default class SentimentAnalysis extends React.Component {
                         <Tooltip cursor={{strokeDasharray: '3 3'}}/>
                         <Scatter name="A school" data={this.state.neuData} fill="#8884d8">
                             {
-                                this.state.posData.map((entry, index) => <Cell key={`cell-${index}`}
+                                this.state.neuData.map((entry, index) => <Cell key={`cell-${index}`}
                                                                                fill={colors[entry.colorIndex]}/>)
                             }
                         </Scatter>
                     </ScatterChart>
                     <div>Neural Emotions</div>
-                </div>
+                </div>}
+                {this.state.posData &&
                 <div className={"right"}>
                     <ScatterChart
                         width={400}
@@ -109,7 +112,7 @@ export default class SentimentAnalysis extends React.Component {
                         </Scatter>
                     </ScatterChart>
                     <div>Positive Emotions</div>
-                </div>
+                </div>}
             </div>
         );
     }
