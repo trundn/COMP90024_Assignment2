@@ -1,8 +1,17 @@
 {
   "_id": "_design/sentiment-map",
   "views": {
-    "within-polygon": {
-      "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2 && doc.emotions) {\n    var type = \"\"\n    var emotion_value = -1\n    if (doc.emotions.neg > emotion_value) {\n      type = \"NEGATIVE\";\n      emotion_value = doc.emotions.neg;\n    }\n    if (doc.emotions.neu > emotion_value) {\n      type = \"NEUTRAL\";\n      emotion_value = doc.emotions.neu;\n    }\n    if (doc.emotions.pos > emotion_value) {\n      type = \"POSITIVE\";\n      emotion_value = doc.emotions.pos;\n    }\n    calculated_coordinates = doc.calculated_coordinates\n    emit(calculated_coordinates, type);\n  }\n}"
+    "num-positive-tweets-by-location": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2 && doc.emotions) {\n    var type = \"\"\n    var emotion_value = -1\n    if (doc.emotions.neg > emotion_value) {\n      type = \"NEGATIVE\";\n      emotion_value = doc.emotions.neg;\n    }\n    if (doc.emotions.neu > emotion_value) {\n      type = \"NEUTRAL\";\n      emotion_value = doc.emotions.neu;\n    }\n    if (doc.emotions.pos > emotion_value) {\n      type = \"POSITIVE\";\n      emotion_value = doc.emotions.pos;\n    }\n    if (type === \"POSITIVE\") {\n      calculated_coordinates = doc.calculated_coordinates\n      emit(calculated_coordinates, 1);\n    }\n  }\n}"
+    },
+    "num-negative-tweets-by-location": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2 && doc.emotions) {\n    var type = \"\"\n    var emotion_value = -1\n    if (doc.emotions.neg > emotion_value) {\n      type = \"NEGATIVE\";\n      emotion_value = doc.emotions.neg;\n    }\n    if (doc.emotions.neu > emotion_value) {\n      type = \"NEUTRAL\";\n      emotion_value = doc.emotions.neu;\n    }\n    if (doc.emotions.pos > emotion_value) {\n      type = \"POSITIVE\";\n      emotion_value = doc.emotions.pos;\n    }\n    if (type === \"NEGATIVE\") {\n      calculated_coordinates = doc.calculated_coordinates\n      emit(calculated_coordinates, 1);\n    }\n  }\n}"
+    },
+    "num-neutral-tweets-by-location": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2 && doc.emotions) {\n    var type = \"\"\n    var emotion_value = -1\n    if (doc.emotions.neg > emotion_value) {\n      type = \"NEGATIVE\";\n      emotion_value = doc.emotions.neg;\n    }\n    if (doc.emotions.neu > emotion_value) {\n      type = \"NEUTRAL\";\n      emotion_value = doc.emotions.neu;\n    }\n    if (doc.emotions.pos > emotion_value) {\n      type = \"POSITIVE\";\n      emotion_value = doc.emotions.pos;\n    }\n    if (type === \"NEUTRAL\") {\n      calculated_coordinates = doc.calculated_coordinates\n      emit(calculated_coordinates, 1);\n    }\n  }\n}"
     }
   },
   "language": "javascript"

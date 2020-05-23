@@ -102,34 +102,57 @@ class SentimentMapDAO(DAO):
     def __init__(self):
         super().__init__()
 
-    def get_tweets_in_rectangle(self, bottom_left_point, top_right_point):
+    def get_num_positive_tweets_by_location(self, bottom_left_point, top_right_point):
         params = {
             'inclusive_end': True,
             'start_key': bottom_left_point,
             'end_key': top_right_point,
+            'reduce': True,
+            'group': True,
             'update': 'lazy'
         }
         try:
-            response = self.twitter_database.list('_design/sentiment-map', '_view/within-polygon', **params)
+            response = self.twitter_database.list('_design/sentiment-map', '_view/num-positive-tweets-by-location',
+                                                  **params)
+            tweets = response[1]['rows']
+        except Exception as e:
+            tweets = []
+        return tweets
+
+    def get_num_negative_tweets_by_location(self, bottom_left_point, top_right_point):
+        params = {
+            'inclusive_end': True,
+            'start_key': bottom_left_point,
+            'end_key': top_right_point,
+            'reduce': True,
+            'group': True,
+            'update': 'lazy'
+        }
+        try:
+            response = self.twitter_database.list('_design/sentiment-map', '_view/num-negative-tweets-by-location',
+                                                  **params)
             tweets = response[1]['rows']
         except Exception as e:
             tweets = []
         return tweets
 
     def get_tweets_in_polygon(self, polygon_data):
-        tweets_in_polygon = []
+        positive_figures = []
+        negative_figures = []
 
         for polygon_data_item in polygon_data:
             polygon = Polygon(polygon_data_item[0])
             bottom_left_point = [polygon.bounds[0], polygon.bounds[1]]
             top_right_point = [polygon.bounds[2], polygon.bounds[3]]
-            tweets = self.get_tweets_in_rectangle(bottom_left_point, top_right_point)
-            tweets_in_polygon = tweets_in_polygon + tweets
+            positive_figures = positive_figures + self.get_num_positive_tweets_by_location(bottom_left_point,
+                                                                                           top_right_point)
+            negative_figures = negative_figures + self.get_num_negative_tweets_by_location(bottom_left_point,
+                                                                                           top_right_point)
             # for tweet in tweets:
             #     if polygon.contains(Point(tweet['key'])):
             #         tweets_in_polygon.append(tweet)
 
-        return tweets_in_polygon
+        return positive_figures, negative_figures
 
     def get_statistics_in_polygon(self, polygon_data):
         statistics = {
@@ -137,14 +160,10 @@ class SentimentMapDAO(DAO):
             'number_of_neural_tweets': 0,
             'number_of_negative_tweets': 0
         }
-        tweets_in_polygon = self.get_tweets_in_polygon(polygon_data)
-        for tweet in tweets_in_polygon:
-            if tweet['value'] == 'POSITIVE':
-                statistics['number_of_positive_tweets'] = statistics['number_of_positive_tweets'] + 1
-            elif tweet['value'] == 'NEUTRAL':
-                statistics['number_of_neural_tweets'] = statistics['number_of_neural_tweets'] + 1
-            elif tweet['value'] == 'NEGATIVE':
-                statistics['number_of_negative_tweets'] = statistics['number_of_negative_tweets'] + 1
+        positive_figures, negative_figures = self.get_tweets_in_polygon(polygon_data)
+        for positive_figure, negative_figure in zip(positive_figures, negative_figures):
+            statistics['number_of_positive_tweets'] = statistics['number_of_positive_tweets'] + positive_figure['value']
+            statistics['number_of_negative_tweets'] = statistics['number_of_negative_tweets'] + negative_figure['value']
 
         return statistics
 
