@@ -69,7 +69,7 @@
 - name: Copy HTTP PROXY files
   become: yes
   copy:
-    src: ../../templates/http-proxy.conf
+    src: ./roles/templates/http-proxy.conf
     dest: /etc/systemd/system/docker.service.d/
 
 - name: Create /.docker directory
@@ -82,7 +82,7 @@
 - name: Copy config.json files
   become: yes
   copy:
-    src: ../../templates/config.json
+    src: ./roles/templates/config.json
     dest: /home/ubuntu/.docker
 
 - name: Add user for docker

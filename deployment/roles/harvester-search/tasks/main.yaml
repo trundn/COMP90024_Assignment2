@@ -1,57 +1,55 @@
 ---
-# Remove harvesters in Database Instances
-- name: Remove Harvest containers
-  become: yes
-  docker_container:
-    name: "{{ harvester_instance2 }}"
-    state: absent
-
-# Copy Dockerfile to Database Instances
-- name: Copy Dockerfile.harvest.search
-  become: yes
-  copy:
-    src: ../../templates/Dockerfile.harvest.search
-    dest: /home/ubuntu
-
 # Copy Directories to Database Instances
 - name: Copy harvest and script folder
   become: yes
   synchronize:
-    src: "../../../{{ item }}"
-    dest: /home/ubuntu/app
+    src: "{{ copy_source_directory }}{{ item }}"
+    dest: "{{ copy_destination_directory }}"
     mode: push
     rsync_opts:
       - "--exclude=dataset"
+      - "--exclude={{execution_file_instance1}}"
+      - "--exclude={{execution_file_instance3}}"
   with_items:
     - harvest
     - script
   
-# Unzip data in harvest
-#- name: Unzip dataset.tar.gz
-#  become: yes
-#  unarchive:
-#    src: /home/ubuntu/harvest
-#    dest: /home/ubuntu/harvest
-#    remote_src: yes
-
-# Create search harvester 
-- name: Build search harvester image
+# Install packages
+- name: Install pip modules
   become: yes
-  docker_image:
-    name: "{{ harvester_instance2 }}"
-    build: 
-      dockerfile: "{{ dockerfile_search }}"
-      path: /home/ubuntu
-      pull: yes
+  pip:
+    requirements: "{{ pip_requirements_path }}"
     state: present
-    source: build
-
-- name: Run search harvester container
+  
+# Install openmpi packages
+- name: Install openmpi packages for mpi4py
   become: yes
-  docker_container:
-    name: "{{ harvester_instance2 }}"
-    volumes:
-      - "/data/app:/app"
-    image: "{{ harvester_instance2 }}"
-    detach: yes
-    state: started
+  apt: 
+    name: ['openmpi-bin', 'openmpi-common', 'openmpi-doc', 'libopenmpi-dev', 'dos2unix']
+    state: latest
+    install_recommends: yes
+    update_cache: yes 
+  
+# Install packages
+- name: Install mpi4py modules
+  become: yes
+  pip:
+    name: mpi4py
+    state: present
+  
+# Run search harvester
+- name: Execute harvest_instance2_two_cores.sh
+  shell: "bash {{ execution_file_instance2 }}"
+  args:
+    chdir: "{{ bash_execution_path }}"
+  async: "{{ async_time }}"
+  poll: "{{ poll_value }}"
+  register: results
+
+- name: Testing the task
+  async_status:
+    jid: "{{ results.ansible_job_id }}"
+  register: harvester_result
+  until: harvester_result is not finished
+  retries: "{{ total_retries }}"
+  delay: "{{ delay_per_try }}"

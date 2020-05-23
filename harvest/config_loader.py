@@ -156,15 +156,19 @@ class ConfigurationLoader(object):
             folders = self.tweetid[constants.JSON_FOLDERS_PROP]
             if (folders):
                 for configured_folder in folders:
+                    print(f"Extracting tweetid datasets from {configured_folder}.")
                     if os.path.isdir(configured_folder):
                         data_folder_path = Path(configured_folder)
                         all_sub_folders.append(configured_folder)
 
                         for pth, dirs, files in os.walk(configured_folder):
                             for sub_folder in sorted(dirs, reverse = True):
+                                print(f"Extracting tweetid datasets from sub folder {sub_folder}.")
                                 sub_folder_path = data_folder_path / sub_folder
                                 if os.path.isdir(sub_folder_path):
                                     all_sub_folders.append(sub_folder_path)
+                    else:
+                        print(f"{configured_folder} is not folder.")
 
                 if(all_sub_folders):
                     for i, folder in enumerate(all_sub_folders):
