@@ -24,7 +24,8 @@ export default class SentimentAnalysis extends React.Component {
     state = {
         pieChartAboutCovidData: null,
         pieChartAboutNonCovidData: null,
-        composedChartData: null
+        positiveComposedChartData: null,
+        negativeComposedChartData: null
     }
 
     componentDidMount() {
@@ -66,7 +67,21 @@ export default class SentimentAnalysis extends React.Component {
                     });
                 });
                 this.setState({
-                    composedChartData: composedChartData
+                    positiveComposedChartData: composedChartData
+                });
+            }
+        });
+        axios.get(backendUrl.most_negative_hours).then(response => {
+            let composedChartData = [];
+            if (response.status === 200) {
+                response.data.forEach(dataItem => {
+                    composedChartData.push({
+                        name: dataItem['key'] + 'h',
+                        value: dataItem['value']['sum'] / dataItem['value']['count']
+                    });
+                });
+                this.setState({
+                    negativeComposedChartData: composedChartData
                 });
             }
         });
@@ -120,11 +135,11 @@ export default class SentimentAnalysis extends React.Component {
                         <Tooltip/>
                     </PieChart>
                 </div>}
-                {this.state.composedChartData &&
+                {this.state.positiveComposedChartData &&
                 <div className={"composed-chart"}>
                     <ComposedChart width={1400}
                                    height={700}
-                                   data={this.state.composedChartData}>
+                                   data={this.state.positiveComposedChartData}>
                         <CartesianGrid stroke="#f5f5f5"/>
                         <XAxis dataKey="name"/>
                         <YAxis/>
@@ -133,7 +148,22 @@ export default class SentimentAnalysis extends React.Component {
                         <Bar dataKey="value" barSize={20} fill="#413ea0"/>
                         <Line type="monotone" dataKey="value" stroke="#ff7300"/>
                     </ComposedChart>
-                    <div className={"chart-title"}>When Australian people feel most positively</div>
+                    <div className={"chart-title"}>When Australian people feel most positive</div>
+                </div>}
+                {this.state.negativeComposedChartData &&
+                <div className={"composed-chart"}>
+                    <ComposedChart width={1400}
+                                   height={700}
+                                   data={this.state.negativeComposedChartData}>
+                        <CartesianGrid stroke="#f5f5f5"/>
+                        <XAxis dataKey="name"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Bar dataKey="value" barSize={20} fill="#413ea0"/>
+                        <Line type="monotone" dataKey="value" stroke="#ff7300"/>
+                    </ComposedChart>
+                    <div className={"chart-title"}>When Australian people feel most negative</div>
                 </div>}
             </div>
         );

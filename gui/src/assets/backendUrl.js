@@ -17,7 +17,8 @@ const backendUrl = {
     'tweets_by_political_parties': base_url + 'tweets-by-political-parties/',
     'tweets_by_politicians': base_url + 'tweets-by-politicians/',
     'feelings_about_covid': base_url + 'feelings-about-covid/?about_covid={0}',
-    'most_positive_hours': base_url + 'most-positive-hours/'
+    'most_positive_hours': base_url + 'most-positive-hours/',
+    'most_negative_hours': base_url + 'most-negative-hours/'
 }
 
 export default backendUrl

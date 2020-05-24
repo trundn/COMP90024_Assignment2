@@ -257,3 +257,13 @@ class MostPositiveHoursView(views.APIView):
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+class MostNegativeHoursView(views.APIView):
+    statistics_dao = StatisticsDAO()
+
+    def get(self, request):
+        try:
+            result = self.statistics_dao.get_most_negative_hours()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
