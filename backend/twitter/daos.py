@@ -126,6 +126,20 @@ class StatisticsDAO(DAO):
         rows = response[1]['rows']
         return rows
 
+    def get_feelings_about_covid(self, about_covid):
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group': True,
+            'update': 'lazy'
+        }
+        if about_covid == 'yes':
+            response = self.twitter_database.list('_design/statistics', '_view/feelings-about-covid', **params)
+        else:
+            response = self.twitter_database.list('_design/statistics', '_view/feelings-about-non-covid', **params)
+        rows = response[1]['rows']
+        return rows
+
 
 class SentimentMapDAO(DAO):
     def __init__(self):

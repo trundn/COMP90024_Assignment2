@@ -124,6 +124,18 @@ class StatisticsInPolygonView(views.APIView):
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
+class FeelingsAboutCovid(views.APIView):
+    statistics_dao = StatisticsDAO()
+
+    def get(self, request):
+        try:
+            about_covid = request.query_params.get('about_covid')
+            result = self.statistics_dao.get_feelings_about_covid(str(about_covid))
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
 class MovementView(views.APIView):
     movement_dao = MovementDAO()
 

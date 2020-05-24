@@ -18,7 +18,7 @@ const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, perc
     );
 };
 
-export default class Statistics extends React.Component {
+export default class Politics extends React.Component {
     state = {
         pieChartForTheRulingData: null,
         pieChartForTheOppositionData: null,

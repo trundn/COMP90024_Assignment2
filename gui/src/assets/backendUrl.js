@@ -15,7 +15,8 @@ const backendUrl = {
     'tweets_with_coordinates': base_url + 'tweets-with-coordinates/',
     'movement': base_url + 'movement/?limit={0}',
     'tweets_by_political_parties': base_url + 'tweets-by-political-parties/',
-    'tweets_by_politicians': base_url + 'tweets-by-politicians/'
+    'tweets_by_politicians': base_url + 'tweets-by-politicians/',
+    'feelings_about_covid': base_url + 'feelings-about-covid/?about_covid={0}'
 }
 
 export default backendUrl

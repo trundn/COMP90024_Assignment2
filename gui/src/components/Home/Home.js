@@ -12,6 +12,7 @@ import {
     LineChart,
     Line,
     ScatterChart,
+    ComposedChart,
     ZAxis,
     Scatter
 } from 'recharts';
@@ -23,7 +24,7 @@ export default class Example extends PureComponent {
     state = {
         pieChartData: null,
         barChartData: null,
-        lineChartData: null,
+        composedChartData: null,
         bubbleChartData: null,
         bubbleRange: null,
         domain: null
@@ -74,8 +75,9 @@ export default class Example extends PureComponent {
         axios.get(backendUrl.tweets_per_hour).then(response => {
             if (response.status === 200) {
                 this.setState({
-                    lineChartData: response.data.rows
+                    composedChartData: response.data.rows
                 });
+                console.log(response.data.rows);
             }
         }, error => {
             console.log(error);
@@ -118,7 +120,7 @@ export default class Example extends PureComponent {
                              outerRadius={200}
                              fill="#8884d8" label/>
                         <Tooltip/>
-                    </PieChart>                </div>}
+                    </PieChart></div>}
                 {this.state.barChartData &&
                 <div className={"right-chart"}>
                     <BarChart
@@ -134,19 +136,19 @@ export default class Example extends PureComponent {
                         <Bar dataKey="covid" stackId="a" fill="#82ca9d"/>
                     </BarChart>
                 </div>}
-                {this.state.lineChartData &&
-                <div className={"line-chart"}>
-                    <LineChart width={1000} height={700} data={this.state.lineChartData}
-                               margin={{
-                                   top: 5, right: 30, left: 20, bottom: 5,
-                               }}>
-                        <CartesianGrid strokeDasharray="5 5"/>
+                {this.state.composedChartData &&
+                <div className={"composed-chart"}>
+                    <ComposedChart width={1000}
+                                   height={700}
+                                   data={this.state.composedChartData}>
+                        <CartesianGrid stroke="#f5f5f5"/>
                         <XAxis dataKey="key"/>
                         <YAxis/>
                         <Tooltip/>
                         <Legend/>
-                        <Line type="monotone" dataKey="value" stroke="#82ca9d"/>
-                    </LineChart>
+                        <Bar dataKey="value" barSize={20} fill="#413ea0"/>
+                        <Line type="monotone" dataKey="value" stroke="#ff7300"/>
+                    </ComposedChart>
                     <div className={"chart-title"}>Number Of Tweets Per Hour</div>
                 </div>}
                 {this.state.bubbleChartData &&

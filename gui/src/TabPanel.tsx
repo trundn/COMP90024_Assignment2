@@ -16,7 +16,7 @@ import SentimentAnalysis from './components/SentimentAnalysis/SentimentAnalysis'
 import Sentiment from './components/Sentiment/Sentiment';
 import UserTracker from './components/UserTracker/UserTracker';
 import Movement from './components/Movement/Movement';
-import Statistics from './components/Statistics/Statistics';
+import Politics from './components/Statistics/Politics';
 import Language from './components/Language/Language';
 
 interface TabPanelProps {
@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme: Theme) => ({
 
 export default function ScrollableTabsButtonForce() {
     const classes = useStyles();
-    const [value, setValue] = React.useState(6);
+    const [value, setValue] = React.useState(2);
 
     const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
         setValue(newValue);
@@ -86,7 +86,7 @@ export default function ScrollableTabsButtonForce() {
                     <Tab label="Movement" icon={<AirplanemodeActiveIcon/>} {...a11yProps(3)} />
                     <Tab label="User Tracker" icon={<MyLocationIcon/>} {...a11yProps(4)} />
                     <Tab label="Language" icon={<LanguageIcon/>} {...a11yProps(5)} />
-                    <Tab label="Statistics" icon={<TrendingUpIcon/>} {...a11yProps(6)} />
+                    <Tab label="Politics" icon={<TrendingUpIcon/>} {...a11yProps(6)} />
                 </Tabs>
             </AppBar>
             <TabPanel value={value} index={0}>
@@ -108,7 +108,7 @@ export default function ScrollableTabsButtonForce() {
                 <Language/>
             </TabPanel>
             <TabPanel value={value} index={6}>
-                <Statistics/>
+                <Politics/>
             </TabPanel>
         </div>
     );
