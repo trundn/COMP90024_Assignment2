@@ -74,10 +74,13 @@ export default class Example extends PureComponent {
         });
         axios.get(backendUrl.tweets_per_hour).then(response => {
             if (response.status === 200) {
-                this.setState({
-                    composedChartData: response.data.rows
+                let composedChartData = response.data.rows;
+                composedChartData.forEach(dataItem => {
+                    dataItem['key'] = dataItem['key'] + 'h';
                 });
-                console.log(response.data.rows);
+                this.setState({
+                    composedChartData: composedChartData
+                });
             }
         }, error => {
             console.log(error);

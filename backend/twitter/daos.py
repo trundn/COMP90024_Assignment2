@@ -140,6 +140,17 @@ class StatisticsDAO(DAO):
         rows = response[1]['rows']
         return rows
 
+    def get_most_positive_hours(self):
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group': True,
+            'update': 'lazy'
+        }
+        response = self.twitter_database.list('_design/statistics', '_view/most-positive-hours', **params)
+        rows = response[1]['rows']
+        return rows
+
 
 class SentimentMapDAO(DAO):
     def __init__(self):

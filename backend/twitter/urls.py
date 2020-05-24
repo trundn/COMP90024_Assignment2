@@ -1,9 +1,8 @@
 from django.urls import path, include
 from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, TotalTweetsByDayAndHour, LanguageStatisticsView, \
     TweetsWithEmoValuesAndProCntView, TweetsInRectangleView, TweetsInPolygonView, StatisticsInPolygonView, \
-    FindRouteView, \
-    GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, MovementView, \
-    TweetsByPoliticalPartiesView, TweetsByPoliticiansView, FeelingsAboutCovid
+    FindRouteView, GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, \
+    MovementView, TweetsByPoliticalPartiesView, TweetsByPoliticiansView, FeelingsAboutCovid, MostPositiveHoursView
 from rest_framework.routers import DefaultRouter
 
 polygon_router = DefaultRouter()
@@ -27,6 +26,7 @@ urlpatterns = [
     # sentiment analysis
     path('tweets-with-emo-values-and-pro-cnt/', TweetsWithEmoValuesAndProCntView.as_view()),
     path('feelings-about-covid/', FeelingsAboutCovid.as_view()),
+    path('most-positive-hours/', MostPositiveHoursView.as_view()),
 
     # movement
     path('movement/', MovementView.as_view()),

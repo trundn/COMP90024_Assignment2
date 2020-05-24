@@ -1,12 +1,12 @@
 import React from 'react';
 import {
-    Tooltip, Cell, PieChart, Pie
+    Tooltip, Cell, PieChart, Pie, ComposedChart, CartesianGrid, XAxis, YAxis, Legend, Bar, Line
 } from 'recharts';
 import './style.sass'
 import axios from 'axios';
 import backendUrl from '../../assets/backendUrl';
 
-const COLORS = ['#FF8042', '#00C49F', '#66ff66'];
+const COLORS = ['#803C05', '#97BBE0', '#30582C'];
 const RADIAN = Math.PI / 180;
 const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, percent, index}) => {
     const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
@@ -23,7 +23,8 @@ const renderCustomizedLabel = ({cx, cy, midAngle, innerRadius, outerRadius, perc
 export default class SentimentAnalysis extends React.Component {
     state = {
         pieChartAboutCovidData: null,
-        pieChartAboutNonCovidData: null
+        pieChartAboutNonCovidData: null,
+        composedChartData: null
     }
 
     componentDidMount() {
@@ -42,16 +43,32 @@ export default class SentimentAnalysis extends React.Component {
             }
         });
         axios.get(backendUrl.feelings_about_covid.format('no')).then(response => {
-            let pieChartAboutNonCovidData = [];
-            response.data.forEach(dataItem => {
-                pieChartAboutNonCovidData.push({
-                    name: dataItem['key'],
-                    value: dataItem['value']
+            if (response.status === 200) {
+                let pieChartAboutNonCovidData = [];
+                response.data.forEach(dataItem => {
+                    pieChartAboutNonCovidData.push({
+                        name: dataItem['key'],
+                        value: dataItem['value']
+                    });
                 });
-            });
-            this.setState({
-                pieChartAboutNonCovidData: pieChartAboutNonCovidData
-            });
+                this.setState({
+                    pieChartAboutNonCovidData: pieChartAboutNonCovidData
+                });
+            }
+        });
+        axios.get(backendUrl.most_positive_hours).then(response => {
+            let composedChartData = [];
+            if (response.status === 200) {
+                response.data.forEach(dataItem => {
+                    composedChartData.push({
+                        name: dataItem['key'] + 'h',
+                        value: dataItem['value']['sum'] / dataItem['value']['count']
+                    });
+                });
+                this.setState({
+                    composedChartData: composedChartData
+                });
+            }
         });
     }
 
@@ -102,6 +119,21 @@ export default class SentimentAnalysis extends React.Component {
                         </Pie>
                         <Tooltip/>
                     </PieChart>
+                </div>}
+                {this.state.composedChartData &&
+                <div className={"composed-chart"}>
+                    <ComposedChart width={1400}
+                                   height={700}
+                                   data={this.state.composedChartData}>
+                        <CartesianGrid stroke="#f5f5f5"/>
+                        <XAxis dataKey="name"/>
+                        <YAxis/>
+                        <Tooltip/>
+                        <Legend/>
+                        <Bar dataKey="value" barSize={20} fill="#413ea0"/>
+                        <Line type="monotone" dataKey="value" stroke="#ff7300"/>
+                    </ComposedChart>
+                    <div className={"chart-title"}>When Australian people feel most positively</div>
                 </div>}
             </div>
         );
