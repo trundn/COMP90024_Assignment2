@@ -11,4 +11,4 @@ class PolygonSerializer(serializers.ModelSerializer):
 class PartialPolygonSerializer(serializers.ModelSerializer):
     class Meta:
         model = Polygon
-        fields = ['id', 'name']
+        fields = ['id', 'name', 'region']

@@ -97,6 +97,11 @@ export default class Sentiment extends Component {
         axios.get(backendUrl.list_polygon).then(response => {
             if (response.status === 200) {
                 let treeData = [];
+                let melbourneNode = {
+                    key: "Melbourne",
+                    label: "Melbourne",
+                    nodes: []
+                };
                 response.data.forEach(polygon => {
                     let treeDataItem = {
                         key: polygon.name,
@@ -104,8 +109,13 @@ export default class Sentiment extends Component {
                         nodes: [],
                         polygonId: polygon.id
                     }
-                    treeData.push(treeDataItem);
+                    if (polygon.region === "Australia/Melbourne") {
+                        melbourneNode.nodes.push(treeDataItem);
+                    } else {
+                        treeData.push(treeDataItem);
+                    }
                 });
+                treeData.push(melbourneNode);
 
                 let polygon_url = backendUrl.detail_polygon.format(treeData[0].polygonId);
                 let statistics_url = backendUrl.statistics_in_polygon.format(treeData[0].polygonId);
@@ -119,14 +129,16 @@ export default class Sentiment extends Component {
     }
 
     onMenuItemClick(event) {
-        if (event.polygonId !== this.state.selectedId) {
-            this.setState({
-                selectedId: event.polygonId
-            });
-            let polygon_url = backendUrl.detail_polygon.format(event.polygonId);
-            let statistics_url = backendUrl.statistics_in_polygon.format(event.polygonId);
-            this.geoJson.current.leafletElement.clearLayers();
-            this.requestDataForMap(polygon_url, statistics_url);
+        if (event.polygonId) {
+            if (event.polygonId !== this.state.selectedId) {
+                this.setState({
+                    selectedId: event.polygonId
+                });
+                let polygon_url = backendUrl.detail_polygon.format(event.polygonId);
+                let statistics_url = backendUrl.statistics_in_polygon.format(event.polygonId);
+                this.geoJson.current.leafletElement.clearLayers();
+                this.requestDataForMap(polygon_url, statistics_url);
+            }
         }
     }
 
