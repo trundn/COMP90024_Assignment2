@@ -29,7 +29,7 @@ export default class Language extends React.Component {
             <div className={"content"}>
                 {this.state.barChartData &&
                 <div className={"bar-chart"}>
-                    <BarChart width={1000}
+                    <BarChart width={1600}
                               height={600}
                               data={this.state.barChartData}
                               margin={{

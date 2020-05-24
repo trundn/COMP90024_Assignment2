@@ -83,7 +83,6 @@ export default class Example extends PureComponent {
         axios.get(backendUrl.total_tweets_by_day_and_hour).then(response => {
             if (response.status === 200) {
                 let bubbleChartData = [];
-                let maxValue = -1;
                 [0, 1, 2, 3, 4, 5, 6].forEach(index => {
                     bubbleChartData[index] = [];
                 });
@@ -97,14 +96,11 @@ export default class Example extends PureComponent {
                         hour = key[1] + "a";
                     }
                     bubbleChartData[key[0]].push({hour: hour, index: 1, value: value});
-                    if (maxValue < value) {
-                        maxValue = value;
-                    }
                 });
                 this.setState({
                     bubbleChartData: bubbleChartData,
-                    bubbleRange: [0, maxValue],
-                    domain: [0, maxValue]
+                    bubbleRange: [0, 500],
+                    domain: [0, 500]
                 });
             }
         }, error => {

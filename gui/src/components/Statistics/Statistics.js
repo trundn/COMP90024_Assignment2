@@ -168,38 +168,44 @@ export default class Statistics extends React.Component {
                     </PieChart>
                 </div>}
                 <div className={"politicians"}>
-                    <BarChart
-                        width={1600}
-                        height={400}
-                        data={this.state.barChartForTheRulingData}
-                        margin={{
-                            top: 20, right: 30, left: 20, bottom: 5,
-                        }}>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Bar dataKey="pv" name="Not about Covid19" stackId="a" fill="#8884d8"/>
-                        <Bar dataKey="uv" name="About Covid19" stackId="a" fill="#82ca9d"/>
-                    </BarChart>
-                    <div className={"chart-title"}>The ruling party</div>
-                    <BarChart
-                        width={1600}
-                        height={400}
-                        data={this.state.barChartForTheOppositionData}
-                        margin={{
-                            top: 20, right: 30, left: 20, bottom: 5,
-                        }}>
-                        <CartesianGrid strokeDasharray="3 3"/>
-                        <XAxis dataKey="name"/>
-                        <YAxis/>
-                        <Tooltip/>
-                        <Legend/>
-                        <Bar dataKey="pv" name="Not about Covid19" stackId="a" fill="#8884d8"/>
-                        <Bar dataKey="uv" name="About Covid19" stackId="a" fill="#82ca9d"/>
-                    </BarChart>
-                    <div className={"chart-title"}>The opposition</div>
+                    {this.state.barChartForTheRulingData &&
+                    <div>
+                        <BarChart
+                            width={1600}
+                            height={400}
+                            data={this.state.barChartForTheRulingData}
+                            margin={{
+                                top: 20, right: 30, left: 20, bottom: 5,
+                            }}>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="name"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend/>
+                            <Bar dataKey="pv" name="Not about Covid19" stackId="a" fill="#8884d8"/>
+                            <Bar dataKey="uv" name="About Covid19" stackId="a" fill="#82ca9d"/>
+                        </BarChart>
+                        <div className={"chart-title"}>The ruling party</div>
+                    </div>}
+                    {this.state.barChartForTheRulingData &&
+                    <div>
+                        <BarChart
+                            width={1600}
+                            height={400}
+                            data={this.state.barChartForTheOppositionData}
+                            margin={{
+                                top: 20, right: 30, left: 20, bottom: 5,
+                            }}>
+                            <CartesianGrid strokeDasharray="3 3"/>
+                            <XAxis dataKey="name"/>
+                            <YAxis/>
+                            <Tooltip/>
+                            <Legend/>
+                            <Bar dataKey="pv" name="Not about Covid19" stackId="a" fill="#8884d8"/>
+                            <Bar dataKey="uv" name="About Covid19" stackId="a" fill="#82ca9d"/>
+                        </BarChart>
+                        <div className={"chart-title"}>The opposition</div>
+                    </div>}
                 </div>
             </div>
         );
