@@ -1,4 +1,4 @@
-const base_url = 'http://localhost:8000/twitter/';
+const base_url = 'http://localhost:8000/tweets/';
 const backendUrl = {
     'list_polygon': base_url + 'polygon/',
     'detail_polygon': base_url + 'polygon/{0}/',
