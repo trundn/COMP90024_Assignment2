@@ -11,6 +11,8 @@ from auth_info import AuthenticationInfo
 # The harvest constant definitions
 import constants
 
+UTF8_ENCODING = "utf-8"
+
 class ConfigurationLoader(object):
     def __init__(self, authen_config_path, filter_config_path, database_config_path):
         self.authen_config_path = authen_config_path
@@ -26,6 +28,7 @@ class ConfigurationLoader(object):
         self.users = []
         self.ruling_politicians = []
         self.opposition_politicians = []
+        self.user_location_filters = []
         self.geometry_filters = []
         self.geometry_data = []
 
@@ -38,7 +41,7 @@ class ConfigurationLoader(object):
 
     def load_authentication_config(self):
         if os.path.exists(self.authen_config_path):
-            with open(self.authen_config_path) as fstream:
+            with open(self.authen_config_path, encoding=UTF8_ENCODING) as fstream:
                 try:
                     config_content = json.loads(fstream.read())
                     self.api_key = config_content[constants.JSON_API_KEY_PROP]
@@ -52,13 +55,14 @@ class ConfigurationLoader(object):
 
     def load_filter_config(self):
         if os.path.exists(self.filter_config_path):
-            with open(self.filter_config_path) as fstream:
+            with open(self.filter_config_path, encoding=UTF8_ENCODING) as fstream:
                 try:
                     config_content = json.loads(fstream.read())
                     self.streaming = config_content[constants.JSON_STREAMING_SECTION_PROP]
                     self.searching = config_content[constants.JSON_SEARCHING_SECTION_PROP]
                     self.tweetid = config_content[constants.JSON_TWEET_IDS_SECTION_PROP]
                     self.track = config_content[constants.JSON_TRACK_PROP]
+                    self.user_location_filters = config_content[constants.JSON_USER_LOCATION_FILTERS_PROP]
                     self.ruling_politicians = config_content[constants.JSON_RULING_POLITICIANS_PROP]
                     self.opposition_politicians = config_content[constants.JSON_OPP_POLITICIANS_PROP]
 
@@ -73,7 +77,7 @@ class ConfigurationLoader(object):
 
     def load_couchdb_config(self):
         if os.path.exists(self.database_config_path):
-            with open(self.database_config_path) as fstream:
+            with open(self.database_config_path, encoding=UTF8_ENCODING) as fstream:
                 try:
                     config_content = json.loads(fstream.read())
 
@@ -91,7 +95,7 @@ class ConfigurationLoader(object):
     
     def load_geometry_filter(self, file_path):
         if os.path.exists(file_path):
-            with open(file_path) as fstream:
+            with open(file_path, encoding=UTF8_ENCODING) as fstream:
                 try:
                     config_content = json.loads(fstream.read())
                     features = config_content[constants.JSON_FEATURES_PROP]
