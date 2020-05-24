@@ -119,7 +119,7 @@ class Helper(object):
 
         return alltweets
     
-    def filer_tweets_with_coordinates(self, all_tweets):
+    def filer_tweets_with_coordinates(self, all_tweets, recheck_with_user_location = False):
         processed_tweets = []
 
         if (all_tweets):
@@ -135,7 +135,12 @@ class Helper(object):
                 else:
                     source, coordinates = self.extract_coordinates(tweet)
                     if (coordinates):
-                        processed_tweets.append(tweet)
+                        if (recheck_with_user_location is True):
+                            location = tweet.user.location.lower()
+                            if (self.helper.is_match(location, self.config_loader.user_location_filters)):
+                                processed_tweets.append(tweet)
+                        else:
+                            processed_tweets.append(tweet)
 
         return processed_tweets
 

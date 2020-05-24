@@ -41,7 +41,7 @@ class TweetIdProcessJob(Runnable):
                 full_tweets = self.own_tweepy_api.statuses_lookup(tweet_ids[i * 100 : last_index])
 
                 # Check if tweet is in configured user filter locations
-                processed_tweets = self.helper.filer_tweets_with_coordinates(full_tweets)
+                processed_tweets = self.helper.filer_tweets_with_coordinates(full_tweets, True)
 
                 # Write all tweets to counchdb
                 if (processed_tweets):
