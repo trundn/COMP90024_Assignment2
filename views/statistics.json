@@ -24,13 +24,29 @@
       "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
       "map": "function (doc) {\n  if (doc.raw_data) {\n    var data = doc.raw_data;\n    var date = new Date(data.created_at)\n    var hour = date.getHours()\n    emit(hour, 1);\n  }\n}"
     },
-    "new-view": {
-      "map": "function (doc) {\n\n    emit(doc.politician, 1);\n\n}",
-      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}"
-    },
     "tweets-by-political-parties": {
       "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
       "map": "function (doc) {\n  if (doc.politician.length > 0) {\n    emit([doc.politician, doc.match_track_filter, doc.user], 1);  \n  }\n}"
+    },
+    "tweets-by-politicians": {
+      "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}",
+      "map": "function (doc) {\n  if (doc.politician.length > 0) {\n    emit([doc.politician, doc.match_track_filter, doc.raw_data.user.name], 1);  \n  }\n}"
+    },
+    "feelings-about-covid": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  if (doc.match_track_filter) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+    },
+    "feelings-about-non-covid": {
+      "reduce": "_sum",
+      "map": "function (doc) {\n  if (doc.match_track_filter === false) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+    },
+    "most-positive-hours": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if (doc.raw_data) {\n    var data = doc.raw_data;\n    var date = new Date(data.created_at)\n    var hour = date.getHours()\n    emit(hour, doc.emotions.pos);\n  }\n}"
+    },
+    "most-negative-hours": {
+      "reduce": "_stats",
+      "map": "function (doc) {\n  if (doc.raw_data) {\n    var data = doc.raw_data;\n    var date = new Date(data.created_at)\n    var hour = date.getHours()\n    emit(hour, doc.emotions.neg);\n  }\n}"
     }
   },
   "language": "javascript"
