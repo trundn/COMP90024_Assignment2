@@ -98,8 +98,13 @@ export default class Sentiment extends Component {
             if (response.status === 200) {
                 let treeData = [];
                 let melbourneNode = {
-                    key: "Melbourne",
-                    label: "Melbourne",
+                    key: "Victoria",
+                    label: "Victoria",
+                    nodes: []
+                };
+                let sydneyNode = {
+                    key: "New South Wales",
+                    label: "New South Wales",
                     nodes: []
                 };
                 response.data.forEach(polygon => {
@@ -109,13 +114,16 @@ export default class Sentiment extends Component {
                         nodes: [],
                         polygonId: polygon.id
                     }
-                    if (polygon.region === "Australia/Melbourne") {
+                    if (polygon.region === "Victoria") {
                         melbourneNode.nodes.push(treeDataItem);
+                    } else if (polygon.region === "New South Wales") {
+                        sydneyNode.nodes.push(treeDataItem);
                     } else {
                         treeData.push(treeDataItem);
                     }
                 });
                 treeData.push(melbourneNode);
+                treeData.push(sydneyNode);
 
                 let polygon_url = backendUrl.detail_polygon.format(treeData[0].polygonId);
                 let statistics_url = backendUrl.statistics_in_polygon.format(treeData[0].polygonId);
