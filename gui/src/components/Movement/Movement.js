@@ -28,10 +28,10 @@ export default class Movement extends React.Component {
         let limit;
         switch (selectedOption.value) {
             case 'Level 1':
-                limit = 1000;
+                limit = 500;
                 break;
             case 'Level 2':
-                limit = 2000;
+                limit = 2500;
                 break;
             case 'Level 3':
                 limit = 5000;
@@ -52,7 +52,7 @@ export default class Movement extends React.Component {
                 let borderPoints = [];
                 let movementData = response.data;
                 movementData.forEach((movementDataItem) => {
-                    if (movementDataItem.value.length >= 2) {
+                    if (Array.isArray(movementDataItem.value) && movementDataItem.value.length >= 2) {
                         polylines.push(movementDataItem.value);
                         movementDataItem.value.forEach(borderPoint => {
                             borderPoints.push(borderPoint);
