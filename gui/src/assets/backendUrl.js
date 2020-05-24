@@ -13,7 +13,8 @@ const backendUrl = {
     'get_user_info': base_url + 'get-user-info/{0}',
     'tweets_by_categories': base_url + 'tweets-by-categories/',
     'tweets_with_coordinates': base_url + 'tweets-with-coordinates/',
-    'movement': base_url + 'movement/?limit={0}'
+    'movement': base_url + 'movement/?limit={0}',
+    'tweets_by_political_parties': base_url + 'tweets-by-political-parties/'
 }
 
 export default backendUrl

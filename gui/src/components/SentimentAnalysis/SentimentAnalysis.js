@@ -42,6 +42,8 @@ export default class SentimentAnalysis extends React.Component {
                                 case 'pos':
                                     posData.push(dataItem);
                                     break;
+                                default:
+                                    break;
                             }
                         });
                     });

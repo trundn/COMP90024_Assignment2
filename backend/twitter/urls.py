@@ -1,7 +1,8 @@
 from django.urls import path, include
 from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, TotalTweetsByDayAndHour, LanguageStatisticsView, \
-    TweetsWithEmoValuesAndProCnt, TweetsInRectangleView, TweetsInPolygonView, StatisticsInPolygonView, FindRouteView, \
-    GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, MovementView
+    TweetsWithEmoValuesAndProCntView, TweetsInRectangleView, TweetsInPolygonView, StatisticsInPolygonView, FindRouteView, \
+    GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, MovementView, \
+    TweetsByPoliticalPartiesView
 from rest_framework.routers import DefaultRouter
 
 polygon_router = DefaultRouter()
@@ -23,7 +24,7 @@ urlpatterns = [
     path('statistics-in-polygon/', StatisticsInPolygonView.as_view()),
 
     # sentiment analysis
-    path('tweets-with-emo-values-and-pro-cnt/', TweetsWithEmoValuesAndProCnt.as_view()),
+    path('tweets-with-emo-values-and-pro-cnt/', TweetsWithEmoValuesAndProCntView.as_view()),
 
     # movement
     path('movement/', MovementView.as_view()),
@@ -37,6 +38,7 @@ urlpatterns = [
     path('tweets-per-hour/', TweetsPerHourView.as_view()),
     path('language-statistics/', LanguageStatisticsView.as_view()),
     path('total-tweets-by-day-and-hour/', TotalTweetsByDayAndHour.as_view()),
+    path('tweets-by-political-parties/', TweetsByPoliticalPartiesView.as_view()),
 
     path('document/', include(twitter_router.urls))
 ]

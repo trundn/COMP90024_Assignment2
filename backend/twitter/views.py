@@ -129,7 +129,10 @@ class MovementView(views.APIView):
 
     def get(self, request):
         try:
-            result = self.movement_dao.get_movement_data()
+            limit = request.query_params.get('limit')
+            if limit is not None:
+                limit = int(limit)
+            result = self.movement_dao.get_movement_data(limit)
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
@@ -186,13 +189,13 @@ class TweetsWithCoordinatesView(views.APIView):
 
     def get(self, request):
         try:
-            result = self.statistics_dao.tweets_with_coordinates()
+            result = self.statistics_dao.get_tweets_with_coordinates()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
 
 
-class TweetsWithEmoValuesAndProCnt(views.APIView):
+class TweetsWithEmoValuesAndProCntView(views.APIView):
     statistics_dao = StatisticsDAO()
 
     def get(self, request):
@@ -206,6 +209,17 @@ class TweetsWithEmoValuesAndProCnt(views.APIView):
             if limit is not None:
                 limit = int(limit)
             result = self.statistics_dao.get_tweets_with_emo_and_procnt(skip, limit)
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsByPoliticalPartiesView(views.APIView):
+    statistics_dao = StatisticsDAO()
+
+    def get(self, request):
+        try:
+            result = self.statistics_dao.get_tweets_by_political_parties()
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

@@ -5,16 +5,23 @@ from django.conf import settings
 from shapely.geometry import Point
 from shapely.geometry import Polygon, MultiPolygon
 
+import json
+
 
 class DAO:
     def __init__(self):
         server_url = settings.COUCH_SERVER_URL
         database_name = settings.COUCH_DATABASE_NAME
+        couch_views = settings.COUCH_VIEWS
         couch = Server(server_url)
         try:
             self.twitter_database = couch[database_name]
         except Exception:
             self.twitter_database = couch.create(database_name)
+        for name in couch_views:
+            document_view = self.twitter_database.get('_design/' + name)
+            if document_view is None:
+                self.twitter_database.save(couch_views[name])
 
 
 class TwitterDAO(DAO):
@@ -46,7 +53,7 @@ class StatisticsDAO(DAO):
         rows = response[1]['rows']
         return rows
 
-    def tweets_with_coordinates(self):
+    def get_tweets_with_coordinates(self):
         params = {
             'reduce': True,
             'group_level': 2,
@@ -94,6 +101,17 @@ class StatisticsDAO(DAO):
         if (limit is not None):
             params['limit'] = limit
         response = self.twitter_database.list('_design/statistics', '_view/tweets-with-emo-val-and-pro-cnt', **params)
+        rows = response[1]['rows']
+        return rows
+
+    def get_tweets_by_political_parties(self):
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group_level': 2,
+            'update': 'lazy'
+        }
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-by-political-parties', **params)
         rows = response[1]['rows']
         return rows
 
@@ -186,13 +204,15 @@ class UserDAO(DAO):
 
 
 class MovementDAO(DAO):
-    def get_movement_data(self):
+    def get_movement_data(self, limit):
         params = {
             'reduce': True,
             'group': True,
-            'update': 'lazy',
-            'limit': 1000
+            'descending': True,
+            'update': 'lazy'
         }
+        if (limit is not None):
+            params['limit'] = limit
         response = self.twitter_database.list('_design/movement', '_view/movement', **params)
         rows = response[1]["rows"]
         return rows
