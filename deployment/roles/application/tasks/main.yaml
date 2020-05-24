@@ -1,0 +1,18 @@
+---
+- name: Remove running web application
+  become: yes
+  docker_compose:
+    project_src: .
+    state: absent
+
+- name: Start web application
+  become: yes
+  docker_compose:
+    project_src: .
+    state: present
+    recreate: smart
+    remove_orphans: yes
+  register: results
+
+- debug:
+    var: results

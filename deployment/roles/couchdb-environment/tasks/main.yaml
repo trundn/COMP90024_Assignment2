@@ -22,7 +22,7 @@
     extended: yes
 
 - name: Create database cluster
-  command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/twitter?q=3&n=3"
+  command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/tweets?q=3&n=3"
 
 - name: Check all databases
   command: "curl -X GET http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/_all_dbs"

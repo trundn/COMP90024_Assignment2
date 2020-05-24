@@ -1,0 +1,32 @@
+---
+- name: Delete folders
+  become: yes
+  file:
+    path: "{{ app_destination_directory }}/{{ item }}"
+    state: absent
+  with_items:
+    - backend
+    - data
+    - gui
+
+- name: Copy folders to VMs
+  become: yes
+  synchronize:
+    src: "{{ app_source_directory }}{{ item }}"
+    dest: "{{ app_destination_directory }}"
+    mode: push
+  with_items:
+    - backend
+    - data
+    - gui
+
+- name: Copy docker and docker compose files
+  become: yes
+  copy:
+    src: "{{ docker_files_src }}{{ item }}"
+    dest: "{{ docker_files_dest }}"
+  with_items:
+    - docker-compose.yaml
+    - Dockerfile.backend
+    - Dockerfile.frontend
+
