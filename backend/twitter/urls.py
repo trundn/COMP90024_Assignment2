@@ -2,7 +2,7 @@ from django.urls import path, include
 from .views import PolygonViewSet, TwitterViewSet, TweetsPerHourView, TotalTweetsByDayAndHour, LanguageStatisticsView, \
     TweetsWithEmoValuesAndProCntView, TweetsInRectangleView, TweetsInPolygonView, StatisticsInPolygonView, FindRouteView, \
     GetMostActiveUsersView, GetUserInfoView, TweetsByCategoriesView, TweetsWithCoordinatesView, MovementView, \
-    TweetsByPoliticalPartiesView
+    TweetsByPoliticalPartiesView, TweetsByPoliticiansView
 from rest_framework.routers import DefaultRouter
 
 polygon_router = DefaultRouter()
@@ -39,6 +39,7 @@ urlpatterns = [
     path('language-statistics/', LanguageStatisticsView.as_view()),
     path('total-tweets-by-day-and-hour/', TotalTweetsByDayAndHour.as_view()),
     path('tweets-by-political-parties/', TweetsByPoliticalPartiesView.as_view()),
+    path('tweets-by-politicians/', TweetsByPoliticiansView.as_view()),
 
     path('document/', include(twitter_router.urls))
 ]

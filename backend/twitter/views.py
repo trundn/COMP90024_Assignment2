@@ -223,3 +223,14 @@ class TweetsByPoliticalPartiesView(views.APIView):
             return Response(result, status=status.HTTP_200_OK)
         except Exception as e:
             return Response(str(e), status=status.HTTP_400_BAD_REQUEST)
+
+
+class TweetsByPoliticiansView(views.APIView):
+    statistics_dao = StatisticsDAO()
+
+    def get(self, request):
+        try:
+            result = self.statistics_dao.get_tweets_by_politicians()
+            return Response(result, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response(str(e), status=status.HTTP_400_BAD_REQUEST)

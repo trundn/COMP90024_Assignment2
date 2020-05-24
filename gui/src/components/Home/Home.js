@@ -22,7 +22,11 @@ import backendUrl from '../../assets/backendUrl';
 export default class Example extends PureComponent {
     state = {
         pieChartData: null,
-        barChartData: null
+        barChartData: null,
+        lineChartData: null,
+        bubbleChartData: null,
+        bubbleRange: null,
+        domain: null
     }
 
     componentDidMount() {
@@ -111,20 +115,19 @@ export default class Example extends PureComponent {
     render() {
         return (
             <div className={"content"}>
+                {this.state.pieChartData &&
                 <div className={"left-chart"}>
-                    {this.state.pieChartData &&
-                    <PieChart width={600} height={600}>
+                    <PieChart width={600} height={810}>
                         <Pie dataKey="value" isAnimationActive={false} data={this.state.pieChartData} cx={300} cy={300}
                              outerRadius={200}
                              fill="#8884d8" label/>
                         <Tooltip/>
-                    </PieChart>}
-                </div>
+                    </PieChart>                </div>}
+                {this.state.barChartData &&
                 <div className={"right-chart"}>
-                    {this.state.barChartData &&
                     <BarChart
                         width={600}
-                        height={600}
+                        height={850}
                         data={this.state.barChartData}>
                         <CartesianGrid strokeDasharray="3 3"/>
                         <XAxis dataKey="name"/>
@@ -133,8 +136,8 @@ export default class Example extends PureComponent {
                         <Legend/>
                         <Bar dataKey="basic" stackId="a" fill="#8884d8"/>
                         <Bar dataKey="covid" stackId="a" fill="#82ca9d"/>
-                    </BarChart>}
-                </div>
+                    </BarChart>
+                </div>}
                 {this.state.lineChartData &&
                 <div className={"line-chart"}>
                     <LineChart width={1000} height={700} data={this.state.lineChartData}

@@ -115,6 +115,17 @@ class StatisticsDAO(DAO):
         rows = response[1]['rows']
         return rows
 
+    def get_tweets_by_politicians(self):
+        params = {
+            'inclusive': True,
+            'reduce': True,
+            'group_level': 3,
+            'update': 'lazy'
+        }
+        response = self.twitter_database.list('_design/statistics', '_view/tweets-by-politicians', **params)
+        rows = response[1]['rows']
+        return rows
+
 
 class SentimentMapDAO(DAO):
     def __init__(self):

@@ -121,7 +121,7 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
-COUCH_DATABASE_NAME = 'tweets'
+COUCH_DATABASE_NAME = 'twitter_database'
 COUCH_VIEWS = {
     'movement': {
         "_id": "_design/movement",
