@@ -9,7 +9,6 @@ import {
     YAxis,
     CartesianGrid,
     Legend,
-    LineChart,
     Line,
     ScatterChart,
     ComposedChart,
