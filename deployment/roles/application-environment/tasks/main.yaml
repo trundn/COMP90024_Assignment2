@@ -32,6 +32,13 @@
     - Dockerfile.backend
     - Dockerfile.frontend
 
+- name: Filtering address
+  set_fact:
+    remote_address: "{{ item }}"
+  with_items:
+    - "{{ couchdb_master_node }}"
+
+
 - name: Copy settings file to backend
   become: yes
   template:
