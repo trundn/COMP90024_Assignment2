@@ -28,13 +28,13 @@ export default class Movement extends React.Component {
         let limit;
         switch (selectedOption.value) {
             case 'Level 1':
-                limit = 500;
+                limit = 800;
                 break;
             case 'Level 2':
-                limit = 2500;
+                limit = 1700;
                 break;
             case 'Level 3':
-                limit = 5000;
+                limit = 2500;
                 break;
             default:
                 limit = 500;
