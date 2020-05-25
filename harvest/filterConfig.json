@@ -29,7 +29,7 @@
     },
     "tweetids": {
         "folders": [
-            "dataset"
+            "/data/app/harvest/dataset"
         ],
         "executors": {
             "num_thread_per_process": 3,

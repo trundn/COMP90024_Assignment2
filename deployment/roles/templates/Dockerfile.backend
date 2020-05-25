@@ -1,0 +1,17 @@
+FROM python:3.7-stretch
+
+ENV PYTHONUNBUFFERED 1
+
+RUN mkdir /app
+
+WORKDIR /app/backend
+
+COPY ./app/backend/requirements.txt /app/backend/requirements.txt
+
+RUN apt-get update
+RUN pip install --upgrade pip
+RUN pip install -r requirements.txt
+
+COPY ./app/backend /app/backend
+COPY ./app/data /app/data
+COPY ./app/views /app/views

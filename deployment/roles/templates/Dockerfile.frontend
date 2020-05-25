@@ -1,0 +1,15 @@
+FROM node:14.3-stretch
+
+RUN mkdir /app
+
+WORKDIR /app/gui
+
+COPY ./app/gui/package.json /app/gui/package.json
+
+COPY ./app/gui /app/gui
+
+COPY ./app/views /app/views
+
+RUN yarn install
+
+CMD ["yarn", "start"]

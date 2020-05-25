@@ -2,7 +2,7 @@
 # Ansible ssh     
 ansible_python_interpreter: /usr/bin/python3
 ansible_user: ubuntu
-ansible_ssh_private_key_file: ~/.ssh/mayank-sharma-key.pem
+ansible_ssh_private_key_file: ./mayank-sharma-key.pem
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no' 
 
 couchdb_name: "couchdb{{ ansible_default_ipv4.address }}"
@@ -13,6 +13,7 @@ couchdb_cookie: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_secret: '0e0cfc55cf5cde25799c547bdf001633'
 couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_nodes: "{{ groups['slaveInstances'] }}"
+couchdb_master_node: "{{ groups['masterInstance'] }}"
 
 copy_source_directory: "../"
 copy_destination_directory: "/data/app"
@@ -32,3 +33,11 @@ async_time: 10000000000
 poll_value: 0
 total_retries: 100
 delay_per_try: 30
+
+app_source_directory: "../"
+app_destination_directory: "/home/ubuntu/app"
+
+docker_files_src: "./roles/templates/"
+docker_files_dest: "/home/ubuntu"
+
+settings_file_path: "/app/backend/backend/settings.py"

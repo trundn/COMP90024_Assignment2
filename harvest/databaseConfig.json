@@ -1,6 +1,6 @@
 {
     "couchdb": {
-        "database_name": "twitter",
+        "database_name": "tweets",
         "username": "admin",
         "password": "password",
         "host": "127.0.0.1",
