@@ -14,3 +14,4 @@ RUN pip install -r requirements.txt
 
 COPY ./app/backend /app/backend
 COPY ./app/data /app/data
+COPY ./app/views /app/views

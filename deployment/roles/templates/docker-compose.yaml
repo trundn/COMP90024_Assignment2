@@ -8,11 +8,9 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.backend
-    command: python manage.py runserver 0.0.0.0:8000
-    expose: 
-      - "8000"
+    command: python manage.py runserver 0.0.0.0:5000
     ports:
-      - "8000:8000" 
+      - "5000:5000" 
 
   web-frontend:
     container_name: web-frontend
@@ -20,9 +18,13 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     stdin_open: true
-    expose: 
-      - "3000"
     ports: 
       - "3000:3000"
-    links:
+    depends_on:
       - web-backend
+    networks:
+      - lognet
+      
+networks:
+  lognet:
+    driver: bridge

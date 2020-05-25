@@ -13,6 +13,7 @@ couchdb_cookie: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_secret: '0e0cfc55cf5cde25799c547bdf001633'
 couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_nodes: "{{ groups['slaveInstances'] }}"
+couchdb_master_node: "{{ groups['masterInstance'] }}"
 
 copy_source_directory: "../"
 copy_destination_directory: "/data/app"
@@ -38,3 +39,5 @@ app_destination_directory: "/home/ubuntu/app"
 
 docker_files_src: "./roles/templates/"
 docker_files_dest: "/home/ubuntu"
+
+settings_file_path: "/app/backend/backend/settings.py"

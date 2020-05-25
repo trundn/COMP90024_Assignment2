@@ -8,6 +8,7 @@
     - backend
     - data
     - gui
+    - views
 
 - name: Copy folders to VMs
   become: yes
@@ -19,6 +20,7 @@
     - backend
     - data
     - gui
+    - views
 
 - name: Copy docker and docker compose files
   become: yes
@@ -30,3 +32,10 @@
     - Dockerfile.backend
     - Dockerfile.frontend
 
+- name: Copy settings file to backend
+  become: yes
+  template:
+    src: ./roles/templates/settings.py.j2
+    dest: "{{ docker_files_dest }}{{ settings_file_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
