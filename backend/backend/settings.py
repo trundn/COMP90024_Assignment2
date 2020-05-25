@@ -24,7 +24,7 @@ SECRET_KEY = 'mq(e+aga2zmp%w-cwtisuc+o&a2rgat+ln8zp-gk^@hl91*yco'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['172.26.132.32']
 
 # Application definition
 
@@ -123,8 +123,8 @@ STATIC_URL = '/static/'
 # COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
 # COUCH_DATABASE_NAME = 'twitter_database'
 
-COUCH_SERVER_URL = 'http://admin:password@localhost:5984'
-COUCH_DATABASE_NAME = 'twitter'
+COUCH_SERVER_URL = 'http://admin:password@172.26.134.18:5984'
+COUCH_DATABASE_NAME = 'tweets'
 
 COUCH_VIEWS = {
     'movement': {
@@ -222,4 +222,3 @@ COUCH_VIEWS = {
         "language": "javascript"
     }
 }
-
