@@ -44,6 +44,10 @@ Config the backend endpoint in file backendUrl.js (line 1)
 *  `NjljNWFmMDgwNTI5ZDc2`
 *  Enter your root password of your localhost
 
+**Please deploy this _ONLY_ if you do not have any valuable data in couchDB**  
+**Make sure to backup the data before if required**
+
+
 #### Deploying CouchDB cluster
 
 *  Type the following command to deploy the couchDB cluster
@@ -51,7 +55,10 @@ Config the backend endpoint in file backendUrl.js (line 1)
 *  You will be promoted to enter Openstack Password here you can just press enter
 *  You will be promoted to enter the root password of your localhost but you simply press enter
 
-These have been added incase future deployment through the localhost is added to this part
+These have been added incase future deployment through the localhost is added to this part  
+
+**Please deploy this _ONLY_ if you do not have any valuable data in couchDB**  
+**Make sure to backup the data before if required**
 
 #### Deploying Harvesters
 
