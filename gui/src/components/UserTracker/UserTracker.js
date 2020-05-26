@@ -97,6 +97,8 @@ export default class UserTracker extends React.Component {
                     });
                 }
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.get_user_info.format(event.user_key[0])).then(response => {
             if (response.status === 200) {
@@ -106,6 +108,8 @@ export default class UserTracker extends React.Component {
                     });
                 }
             }
+        }, error => {
+            console.log(error);
         });
     }
 

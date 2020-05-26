@@ -44,6 +44,8 @@ export default class Example extends PureComponent {
                     pieChartData: pieChartData
                 });
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.tweets_with_coordinates).then(response => {
             if (response.status === 200) {
@@ -70,6 +72,8 @@ export default class Example extends PureComponent {
                     barChartData: barChartData
                 });
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.tweets_per_hour).then(response => {
             if (response.status === 200) {

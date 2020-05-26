@@ -24,7 +24,12 @@ SECRET_KEY = 'mq(e+aga2zmp%w-cwtisuc+o&a2rgat+ln8zp-gk^@hl91*yco'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['172.26.132.32']
+# Config allowed hosts here
+ALLOWED_HOSTS = [
+    '172.26.132.32',
+    '127.0.0.1',
+    'localhost'
+]
 
 # Application definition
 
@@ -120,11 +125,12 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
-# COUCH_DATABASE_NAME = 'twitter_database'
+# Config the couchdb endpoint here
+COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
+COUCH_DATABASE_NAME = 'twitter_database'
 
-COUCH_SERVER_URL = 'http://admin:password@172.26.134.18:5984'
-COUCH_DATABASE_NAME = 'tweets'
+# COUCH_SERVER_URL = 'http://admin:password@172.26.134.18:5984'
+# COUCH_DATABASE_NAME = 'tweets'
 
 COUCH_VIEWS = {
     'movement': {
@@ -137,6 +143,9 @@ COUCH_VIEWS = {
             "find-route": {
                 "map": "function (doc) {\n  if (doc.raw_data && doc.calculated_coordinates.length === 2) {\n    var raw_data = doc.raw_data\n    emit([raw_data.user.id, raw_data.user.screen_name], [[doc.calculated_coordinates[1], doc.calculated_coordinates[0]], doc.created_at], 1);\n  }\n}",
                 "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}"
+            },
+            "noisy-data": {
+                "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2) {\n    geo = doc.calculated_coordinates;\n    if (geo[0] < 100 || geo[0] > 160) {\n      emit(geo, 1);\n    }\n    if (geo[1] < -50 || geo[1] > -10) {\n      emit(geo, 1);\n    }\n  }\n}"
             }
         },
         "language": "javascript"
@@ -195,11 +204,11 @@ COUCH_VIEWS = {
             },
             "feelings-about-covid": {
                 "reduce": "_sum",
-                "map": "function (doc) {\n  if (doc.match_track_filter) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+                "map": "function (doc) {\n  if (doc.match_track_filter) {\n    emotion = \"NEUTRAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
             },
             "feelings-about-non-covid": {
                 "reduce": "_sum",
-                "map": "function (doc) {\n  if (doc.match_track_filter === false) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+                "map": "function (doc) {\n  if (doc.match_track_filter === false) {\n    emotion = \"NEUTRAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
             },
             "most-positive-hours": {
                 "reduce": "_stats",

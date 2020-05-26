@@ -8,6 +8,9 @@
     "find-route": {
       "map": "function (doc) {\n  if (doc.raw_data && doc.calculated_coordinates.length === 2) {\n    var raw_data = doc.raw_data\n    emit([raw_data.user.id, raw_data.user.screen_name], [[doc.calculated_coordinates[1], doc.calculated_coordinates[0]], doc.created_at], 1);\n  }\n}",
       "reduce": "function (keys, values, rereduce) {\n  if (rereduce) {\n    return sum(values);\n  } else {\n    return values.length;\n  }\n}"
+    },
+    "noisy-data": {
+      "map": "function (doc) {\n  if (doc.calculated_coordinates.length == 2) {\n    geo = doc.calculated_coordinates;\n    if (geo[0] < 100 || geo[0] > 160) {\n      emit(geo, 1);\n    }\n    if (geo[1] < -50 || geo[1] > -10) {\n      emit(geo, 1);\n    }\n  }\n}"
     }
   },
   "language": "javascript"
