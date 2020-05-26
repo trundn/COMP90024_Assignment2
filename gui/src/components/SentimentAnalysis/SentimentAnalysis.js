@@ -42,6 +42,8 @@ export default class SentimentAnalysis extends React.Component {
                     pieChartAboutCovidData: pieChartAboutCovidData
                 });
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.feelings_about_covid.format('no')).then(response => {
             if (response.status === 200) {
@@ -56,6 +58,8 @@ export default class SentimentAnalysis extends React.Component {
                     pieChartAboutNonCovidData: pieChartAboutNonCovidData
                 });
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.most_positive_hours).then(response => {
             let composedChartData = [];
@@ -70,6 +74,8 @@ export default class SentimentAnalysis extends React.Component {
                     positiveComposedChartData: composedChartData
                 });
             }
+        }, error => {
+            console.log(error);
         });
         axios.get(backendUrl.most_negative_hours).then(response => {
             let composedChartData = [];
@@ -84,6 +90,8 @@ export default class SentimentAnalysis extends React.Component {
                     negativeComposedChartData: composedChartData
                 });
             }
+        }, error => {
+            console.log(error);
         });
     }
 

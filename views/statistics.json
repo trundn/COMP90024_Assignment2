@@ -34,11 +34,11 @@
     },
     "feelings-about-covid": {
       "reduce": "_sum",
-      "map": "function (doc) {\n  if (doc.match_track_filter) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+      "map": "function (doc) {\n  if (doc.match_track_filter) {\n    emotion = \"NEUTRAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
     },
     "feelings-about-non-covid": {
       "reduce": "_sum",
-      "map": "function (doc) {\n  if (doc.match_track_filter === false) {\n    emotion = \"NEURAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
+      "map": "function (doc) {\n  if (doc.match_track_filter === false) {\n    emotion = \"NEUTRAL\";\n    emotions = doc.emotions\n    if (emotions.neg >= emotions.neu && emotions.neg >= emotions.pos) {\n      emotion = \"NEGATIVE\";\n    }\n    if (emotions.pos >= emotions.neu && emotions.pos >= emotions.neg) {\n      emotion = \"POSITIVE\";\n    }\n    emit(emotion, 1);\n  }\n}"
     },
     "most-positive-hours": {
       "reduce": "_stats",
