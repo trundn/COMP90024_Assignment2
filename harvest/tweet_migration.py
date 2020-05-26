@@ -55,7 +55,7 @@ def process_twitter_data(rank, processor_size, data_path, config_loader):
     if os.path.exists(data_path):
         helper = Helper()
         lock = threading.Lock()
-        db_connection = CouchDBConnection(config_loader.couchdb_connection_string, lock)
+        db_connection = CouchDBConnection(config_loader.couchdb_database_name, config_loader.couchdb_connection_string, lock)
         db_connection.init_database()
 
         with open(data_path, encoding = constants.UTF8_ENCODING) as fstream:
@@ -105,19 +105,28 @@ def process_twitter_data(rank, processor_size, data_path, config_loader):
 
                                         coordinates = [lng, lat]
 
-                                emotions = helper.extract_emotions(tweet_text)
-                                word_count, pronoun_count = helper.extract_word_count(tweet_text)
-                                politician_type = config_loader.get_politician_type(tweet_doc['user']['screen_name'])
-                                        
-                                filter_data = {'_id' : tweet_doc['id_str'], 'created_at' : tweet_doc['created_at'],\
-                                        'text' : tweet_text, 'user' : tweet_doc['user']['screen_name'],\
-                                        'match_track_filter': match_track_filter, 'politician' : politician_type, 'calculated_coordinates' : coordinates, \
-                                        'coordinates_source' : source, 'emotions': emotions, \
-                                        'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
-                                        'raw_data' : json.dumps(tweet_doc)}
+                                inside_polygon = False
+                                if (coordinates):
+                                    inside_polygon = config_loader.within_geometry_filters(coordinates)
+                                else:
+                                    user_location = tweet_doc['user']['location']
+                                    if (user_location is not None):
+                                        inside_polygon = helper.is_match(user_location.lower(), config_loader.user_location_filters)
 
-                                print(f"{tweet_doc['id_str']}    {emotions}    {word_count}    {pronoun_count}")
-                                db_connection.write_tweet(filter_data)
+                                if (inside_polygon):
+                                    emotions = helper.extract_emotions(tweet_text)
+                                    word_count, pronoun_count = helper.extract_word_count(tweet_text)
+                                    politician_type = config_loader.get_politician_type(tweet_doc['user']['screen_name'])
+                                            
+                                    filter_data = {'_id' : tweet_doc['id_str'], 'created_at' : tweet_doc['created_at'],\
+                                            'text' : tweet_text, 'user' : tweet_doc['user']['screen_name'],\
+                                            'match_track_filter': match_track_filter, 'politician' : politician_type, 'calculated_coordinates' : coordinates, \
+                                            'coordinates_source' : source, 'emotions': emotions, \
+                                            'tweet_wordcount' : word_count, "pronoun_count" : pronoun_count,\
+                                            'raw_data' : json.dumps(tweet_doc)}
+
+                                    print(f"{tweet_doc['id_str']}    {emotions}    {word_count}    {pronoun_count}")
+                                    db_connection.write_tweet(filter_data)
 
                             except ValueError as error:
                                 print("Failed to decode JSON content from [%d] rank. Error: %s" %(rank, error))
