@@ -46,3 +46,11 @@
     dest: "{{ docker_files_dest }}{{ settings_file_path }}"
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
+
+- name: Copy backendUrl file to gui
+  become: yes
+  template:
+    src: ./roles/templates/backendUrl.js.j2
+    dest: "{{ docker_files_dest }}{{ backendUrl_file_path }}"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"

@@ -8,23 +8,22 @@ services:
     build: 
       context: .
       dockerfile: Dockerfile.backend
-    command: python manage.py runserver 0.0.0.0:5000
     ports:
-      - "5000:5000" 
+      - "8000:8000"
+    networks:
+      - app
 
   web-frontend:
     container_name: web-frontend
     build:
       context: .
       dockerfile: Dockerfile.frontend
-    stdin_open: true
+    tty: true
     ports: 
       - "3000:3000"
-    depends_on:
-      - web-backend
     networks:
-      - lognet
-      
+      - app
+  
 networks:
-  lognet:
-    driver: bridge
+  app:
+      

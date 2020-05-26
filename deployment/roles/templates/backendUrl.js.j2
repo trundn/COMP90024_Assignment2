@@ -1,0 +1,24 @@
+const base_url = 'http://{{ansible_host}}:8000/tweets/';
+const backendUrl = {
+    'list_polygon': base_url + 'polygon/',
+    'detail_polygon': base_url + 'polygon/{0}/',
+    'statistics_in_polygon': base_url + 'statistics-in-polygon/{0}/',
+    'statistics_in_particular_polygon': base_url + 'statistics-in-polygon/',
+    'tweets_per_hour': base_url + 'tweets-per-hour/',
+    'language_statistics': base_url + 'language-statistics/',
+    'total_tweets_by_day_and_hour': base_url + 'total-tweets-by-day-and-hour/',
+    'tweets_with_emotion_values_and_pro_cnt': base_url + 'tweets-with-emo-values-and-pro-cnt/?limit={0}&skip={1}',
+    'get_most_active_users': base_url + 'get-most-active-users/',
+    'find_route_url': base_url + 'find-route/?user_key={0}',
+    'get_user_info': base_url + 'get-user-info/{0}',
+    'tweets_by_categories': base_url + 'tweets-by-categories/',
+    'tweets_with_coordinates': base_url + 'tweets-with-coordinates/',
+    'movement': base_url + 'movement/?limit={0}',
+    'tweets_by_political_parties': base_url + 'tweets-by-political-parties/',
+    'tweets_by_politicians': base_url + 'tweets-by-politicians/',
+    'feelings_about_covid': base_url + 'feelings-about-covid/?about_covid={0}',
+    'most_positive_hours': base_url + 'most-positive-hours/',
+    'most_negative_hours': base_url + 'most-negative-hours/'
+}
+
+export default backendUrl

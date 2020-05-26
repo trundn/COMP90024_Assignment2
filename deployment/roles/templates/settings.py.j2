@@ -24,7 +24,7 @@ SECRET_KEY = 'mq(e+aga2zmp%w-cwtisuc+o&a2rgat+ln8zp-gk^@hl91*yco'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['{{ansible_host}}']
 
 # Application definition
 
@@ -123,7 +123,7 @@ STATIC_URL = '/static/'
 # COUCH_SERVER_URL = 'http://admin:gcsvn123@localhost:5984'
 # COUCH_DATABASE_NAME = 'twitter_database'
 
-COUCH_SERVER_URL = 'http://admin:password@{{ remote_address }}:5984'
+COUCH_SERVER_URL = 'http://admin:password@{{remote_address}}:5984'
 COUCH_DATABASE_NAME = 'twitter'
 
 COUCH_VIEWS = {
