@@ -77,7 +77,9 @@ class StreamingAPIThread(threading.Thread):
                 locations = self.config_loader.get_streaming_locations()
                 if (locations is not None):
                     stream.filter(locations = locations)
-        
+            except MemoryError as ex:
+                print("Encountered the memory exeption. Please restart harvester process.")
+                break
             except Exception as ex:
                 print(f"Exception occurred during tweet streaming. {ex}")
                 
