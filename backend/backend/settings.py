@@ -26,7 +26,7 @@ DEBUG = True
 
 # Config allowed hosts here
 ALLOWED_HOSTS = [
-    '172.26.132.32',
+    'localhost',
     '127.0.0.1',
     'localhost'
 ]

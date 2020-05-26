@@ -32,7 +32,7 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
-# Strong IP addresses that are dynamically created
+# Store IP addresses that are dynamically created
 - name: Get instances names and IPaddress
   set_fact:
     instance_facts: "{{ instance_facts|default([]) + [ {'name': item.item.name, 'address': item.openstack.public_v4} ] }}"

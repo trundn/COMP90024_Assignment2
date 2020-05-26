@@ -14,8 +14,8 @@
     - host_vars/remote.yaml
   gather_facts: true
 
-  #roles:
-  #  - role: harvester-search
+#  roles:
+#    - role: harvester-search
 
 # Deploying remote harvester to dbInstance3
 - hosts: dbInstance3
@@ -23,5 +23,5 @@
     - host_vars/remote.yaml
   gather_facts: true
 
-  #roles:
-  #  - role: harvester-tweetid
+#  roles:
+#    - role: harvester-tweetid
