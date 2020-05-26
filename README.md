@@ -24,8 +24,9 @@ Config the couchdb endpoint in file backend/settings.py (line 128, 129, 130)
 ## Installing Frontend
 
 *  Install yarn globally by `npm install yarn -g`
-*  `yarn install`
-*  `yarn start`
+* `cd gui`
+* `yarn install`
+* `yarn start`
 
 Config the backend endpoint in file backendUrl.js (line 1)
 
