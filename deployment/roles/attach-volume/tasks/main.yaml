@@ -1,4 +1,5 @@
 ---
+# Install xfsprogs to format volumes
 - name: Install xfsprogs
   become: yes
   apt:
@@ -6,6 +7,7 @@
     state: latest
     update_cache: yes
 
+# Format volumes
 - name: Format volume
   become: yes
   filesystem:
@@ -14,6 +16,7 @@
   when: item.device is defined
   loop: "{{ volumes }}"
 
+# Checking the folders
 - name: Checking and registering folders
   become: yes
   stat:
@@ -21,6 +24,7 @@
   register: directory_stats
   loop: "{{ volumes }}"
 
+# Creating the directories in VM
 - name: Create directory
   become: yes
   file:
@@ -30,6 +34,7 @@
   when: item.stat.exists == false
   loop: "{{ directory_stats.results }}"
 
+# Mounting volumes to specific file paths
 - name: Attach volume to instance
   become: yes
   mount:

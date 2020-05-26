@@ -1,4 +1,5 @@
 ---
+# Delete application folders to allow application update
 - name: Delete folders
   become: yes
   file:
@@ -10,6 +11,7 @@
     - gui
     - views
 
+# Copy application folders to VM for setup
 - name: Copy folders to VMs
   become: yes
   synchronize:
@@ -22,6 +24,7 @@
     - gui
     - views
 
+# Copy dockerfiles to deploy the application
 - name: Copy docker and docker compose files
   become: yes
   copy:
@@ -32,13 +35,14 @@
     - Dockerfile.backend
     - Dockerfile.frontend
 
+# Filter the masterInstance IP address to allow collection with application
 - name: Filtering address
   set_fact:
     remote_address: "{{ item }}"
   with_items:
     - "{{ couchdb_master_node }}"
 
-
+# Render settings.py template to update IP address of allowed hosts and masterdb node
 - name: Copy settings file to backend
   become: yes
   template:
@@ -47,6 +51,7 @@
     owner: "{{ ansible_user }}"
     group: "{{ ansible_user }}"
 
+# Render backendUrl template to update IP address of backend url
 - name: Copy backendUrl file to gui
   become: yes
   template:

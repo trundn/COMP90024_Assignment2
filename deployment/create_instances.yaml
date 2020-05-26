@@ -1,4 +1,5 @@
 ---
+# Creating instances on MRC by running roles on localhost
 - hosts: localhost
   vars_files:
     - host_vars/localhost.yaml

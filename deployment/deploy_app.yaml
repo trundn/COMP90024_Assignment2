@@ -1,4 +1,5 @@
 ---
+# Deploying Application on cloud instance
 - hosts: appInstance
   vars_files:
     - host_vars/remote.yaml

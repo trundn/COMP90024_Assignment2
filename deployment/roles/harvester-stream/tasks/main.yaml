@@ -46,6 +46,7 @@
   poll: "{{ poll_value }}"
   register: results
 
+# Test if the task is running
 - name: Testing the task
   async_status:
     jid: "{{ results.ansible_job_id }}"

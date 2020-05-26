@@ -1,4 +1,5 @@
 ---
+# Delete couchdb shards
 - name: Delete folders
   become: yes
   file:
@@ -8,6 +9,7 @@
     - .delete
     - shards
 
+# Deleting data files of couchdb
 - name: Delete files
   become: yes
   file:
@@ -17,12 +19,14 @@
     - _dbs.couch
     - _nodes.couch
 
+# Uninstalling old docker version
 - name: Uninstall old versions of docker
   become: yes
   apt:
     name: ['docker', 'docker-engine', 'docker.io']
     state: absent
 
+# Installing VM dependencies
 - name: Install dependencies
   become: yes
   apt:
@@ -31,12 +35,14 @@
     install_recommends: no
     update_cache: yes
 
+# Updating apt repository to enable docker installation
 - name: Add Docker apt repository key
   become: yes
   apt_key:
     url: https://download.docker.com/linux/ubuntu/gpg
     state: present
 
+# Adding docker repository and updating apt
 - name: Add Docker apt repository and update apt cache
   become: yes
   apt_repository:
@@ -45,6 +51,7 @@
     update_cache: yes
     state: present
 
+# Installing docker community edition
 - name: Install docker
   become: yes
   apt:
@@ -53,12 +60,14 @@
     install_recommends: no
     update_cache: yes
 
+# Installing docker-compose to the latest version
 - name: Install docker-compose
   become: yes
   pip:
     name: ['docker-compose']
     state: latest
 
+# Creating directory for proxy settings
 - name: Create directory
   become: yes
   file:
@@ -66,12 +75,14 @@
     state: directory
     mode: '0777'
 
+# Creating directory for proxy files
 - name: Copy HTTP PROXY files
   become: yes
   copy:
     src: ./roles/templates/http-proxy.conf
     dest: /etc/systemd/system/docker.service.d/
 
+# Creating .docker directory to store proxy file
 - name: Create /.docker directory
   become: yes
   file:
@@ -79,12 +90,14 @@
     state: directory
     mode: '0777'
 
+# Copy config file to directory
 - name: Copy config.json files
   become: yes
   copy:
     src: ./roles/templates/config.json
     dest: /home/ubuntu/.docker
 
+# Adding ubuntu user in docker
 - name: Add user for docker
   become: yes
   user:
@@ -92,6 +105,7 @@
     append: yes
     groups: docker
 
+# Restarting docker with new settings
 - name: Flush changes and restart Docker
   become: yes
   systemd:

@@ -5,13 +5,15 @@
   loop: "{{ couchdb_nodes }}"
   loop_control:
     extended: yes 
-    
+
+# Adding nodes in the cluster group
 - name: Adding nodes to cluster
   command: "curl -X POST http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/_cluster_setup -H \"Content-Type:application/json\" -d '{\"action\":\"add_node\", \"host\":\"{{item}}\", \"port\":\"5984\", \"username\":\"{{couchdb_user_name}}\", \"password\":\"{{couchdb_password}}\"}'"
   loop: "{{ couchdb_nodes }}"
   loop_control:
     extended: yes 
 
+# Completing setup and checking cluster members
 - name: Finishing cluster setup    
   command: "curl -X POST http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/_cluster_setup -H \"Content-Type:application/json\" -d '{\"action\":\"finish_cluster\"}'"
 
@@ -21,9 +23,11 @@
   loop_control:
     extended: yes
 
+# Updating the q and n values
 - name: Create database cluster
   command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/tweets?q=3&n=3"
 
+# Checking if databases exist
 - name: Check all databases
   command: "curl -X GET http://{{couchdb_user_name}}:{{couchdb_password}}@{{ansible_default_ipv4.address}}:5984/_all_dbs"
   loop: "{{ couchdb_nodes }}"

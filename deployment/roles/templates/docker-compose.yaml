@@ -2,7 +2,7 @@
 version: '3'
 
 services:
-  
+  # Backend Djangorestframework service
   web-backend:
     container_name: web-backend
     build: 
@@ -13,6 +13,7 @@ services:
     networks:
       - app
 
+  # Frontend React service
   web-frontend:
     container_name: web-frontend
     build:
@@ -23,7 +24,8 @@ services:
       - "3000:3000"
     networks:
       - app
-  
+
+# Network
 networks:
   app:
       

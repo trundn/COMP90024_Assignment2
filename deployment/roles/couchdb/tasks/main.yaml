@@ -38,10 +38,12 @@
     detach: yes
     state: started
 
+# Modifying vm.args to make the machine run
 - name: Modify vm.args to set cookie
   become: yes
   command: docker exec {{ couchdb_name }} bash -c "echo \"-setcookie {{ couchdb_cookie }}\" >> /opt/couchdb/etc/vm.args" 
   
+# Restarting couchDB containers with update files
 - name: Restart couchDB containers
   become: yes
   docker_container:
@@ -49,12 +51,15 @@
     state: started
     restart: yes
 
+# Binding 0.0.0.0 for each cluster node
 - name: Bind address to 0.0.0.0
   command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/chttpd/bind_address -d '\"0.0.0.0\"'"
 
+# Setting up UUID for each cluster node
 - name: Setting up UUID
   command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/couchdb/uuid -d '\"{{couchdb_uuid}}\"'"
 
+# Setting up the value for the secret
 - name: Setting up http secret
   command: "curl -X PUT http://{{couchdb_user_name}}:{{couchdb_password}}@127.0.0.1:5984/_node/_local/_config/couch_httpd_auth/secret -d '\"{{couchdb_secret}}\"'"
 

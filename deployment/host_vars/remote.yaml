@@ -1,10 +1,11 @@
 ---
-# Ansible ssh     
+# Ansible parameters to ssh into instances 
 ansible_python_interpreter: /usr/bin/python3
 ansible_user: ubuntu
 ansible_ssh_private_key_file: ./mayank-sharma-key.pem
 ansible_ssh_common_args: '-o StrictHostKeyChecking=no' 
 
+# Couchdb cluster variables
 couchdb_name: "couchdb{{ ansible_default_ipv4.address }}"
 couchdb_image: couchdb:3.0.0
 couchdb_user_name: admin
@@ -15,6 +16,7 @@ couchdb_uuid: '0e0cfc55cf5cde25799c547bdf0008ea'
 couchdb_nodes: "{{ groups['slaveInstances'] }}"
 couchdb_master_node: "{{ groups['masterInstance'] }}"
 
+# Harvester Variables
 copy_source_directory: "../"
 copy_destination_directory: "/data/app"
 
@@ -34,6 +36,7 @@ poll_value: 0
 total_retries: 100
 delay_per_try: 30
 
+# Application variables
 app_source_directory: "../"
 app_destination_directory: "/home/ubuntu/app"
 

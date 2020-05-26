@@ -39,6 +39,7 @@
   loop: '{{ os_instance.results }}'
   when: item.openstack is defined
 
+# Writing the Inventory file for other ansible plays
 - name: Writing Inventory file
   copy:
     content: |+
@@ -61,6 +62,7 @@
       
     dest: "./hosts.ini"
 
+# Updating the host files with newly created IP addresses
 - name: Add dynamically created IP addresses to inventory
   lineinfile:
     line: |

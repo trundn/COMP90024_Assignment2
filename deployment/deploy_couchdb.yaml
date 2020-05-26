@@ -1,4 +1,5 @@
 ---
+# Adding proxies and mounting volumes to all instances
 - hosts: allInstances
   vars_files:
     - host_vars/localhost.yaml
@@ -14,6 +15,7 @@
     - role: proxy
     - role: attach-volume
 
+# Installing dependencies in all instances
 - hosts: allInstances
   vars_files:
     - host_vars/remote.yaml
@@ -22,6 +24,7 @@
   roles:
     - role: instance-environment
 
+# Deploying couchdb in all db instances
 - hosts: dbInstances
   vars_files:
     - host_vars/remote.yaml
@@ -30,6 +33,7 @@
   roles: 
     - role: couchdb
 
+# Configuring couchdb cluster using the master node
 - hosts: masterInstance
   vars_files:
     - host_vars/remote.yaml

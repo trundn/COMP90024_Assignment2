@@ -1,10 +1,12 @@
 ---
+# Removes docker containers running in the VM
 - name: Remove running web application
   become: yes
   docker_compose:
     project_src: .
     state: absent
 
+# Starts the application based on the image present in the docker-compose file
 - name: Start web application
   become: yes
   docker_compose:
