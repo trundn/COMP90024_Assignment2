@@ -14,16 +14,16 @@
         ],
         "authens": {
             "account0": {
-                "api_key": "Tlq2IBLkARdXDcSQNvIJY1SBZ",
-                "api_secret_key": "snhD9YyXP3VBGmxlfSnib3VQTxODoSs5LjP7jUpfz9n9nQPXHm",
-                "access_token": "1251695031536152576-0rLYKDgrIjcTvKk4brLxfWLa9Y5xJS",
-                "access_token_secret": "wXiW68DK2mW5LQtSwi0fGDf6rKVBAxQtbVOgxaGQRg5uK"
+                "api_key": "",
+                "api_secret_key": "",
+                "access_token": "",
+                "access_token_secret": ""
             },
             "account1": {
-                "api_key": "QTG8KTq0nh1lE2Bw59yJa4Ljs",
-                "api_secret_key": "VIpZRU7IERgtr5W2FZPTSypgB936e7J3MooCGynwHy70U8y6R1",
-                "access_token": "1251428608700104704-bqVOrytxBZwlqBaXE3KAMH8nKJxi21",
-                "access_token_secret": "lgTbq57F5gCWcBsAUVFfEioVWeVVeASgXVa6iybENRQhq"
+                "api_key": "",
+                "api_secret_key": "",
+                "access_token": "",
+                "access_token_secret": ""
             }
         }
     },
@@ -48,47 +48,47 @@
             "rank_0": {
                 "account0": {
                     "thread_owner": "tweetid_thread_1_rank_0",
-                    "api_key": "Ukm0uKHhYzhOeH6R7VFCPFOmL",
-                    "api_secret_key": "rJGKgxEN7kwsI4CwllOCC2Urzt2HoPeQbUo5At1FA66p2pZAM6",
-                    "access_token": "289723494-MqUy2zEFqONg267Ofr6nJOK3PvjCMt2POhZkWru9",
-                    "access_token_secret": "XwdvbGTSSKd3nFo2uCi0fUA5EzGKo4cQopCiG1APTlwy1"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 },
                 "account1": {
                     "thread_owner": "tweetid_thread_2_rank_0",
-                    "api_key": "uPki0iVAfizNaHoL0r9qRX1X0",
-                    "api_secret_key": "AV0tKMgvqyYx8kghElpb35bWhYKkKhK7OsPcRbiKf3qF7l6vPo",
-                    "access_token": "1252656509516832768-raeSbyRDI4f2cXW9q2pJqdouGk4DpI",
-                    "access_token_secret": "TDT9KyMHdLgASbYE18qSGq8qlwYqVd1kAbVUrjdP2PJhI"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 },
                 "account2": {
                     "thread_owner": "tweetid_thread_3_rank_0",
-                    "api_key": "cTNcLv7wmvNDkAp0VCEN7177o",
-                    "api_secret_key": "WL8e84hiPOhnaHtyfo9ODV6tG7ItMTBDgLCK8xiQW3Zgtos8wT",
-                    "access_token": "1261471242629963777-nksuJzppGGl9jjPG2ahmxAB6WXcAO5",
-                    "access_token_secret": "QLO8yW2uCih4jGZwbEegRS2xN4yACpLU2jbCQIlG5mAAP"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 }
             },
             "rank_1": {
                 "account0": {
                     "thread_owner": "tweetid_thread_1_rank_1",
-                    "api_key": "3K2tan8WcJMhJUESICpHvFtpT",
-                    "api_secret_key": "v2Iyd8YPjnROoBCJYEUiEcCplqLvt8tYlEJgi9bsNdevHfsXDK",
-                    "access_token": "1251428608700104704-VqExqisPWTN4faHRW4Rt7o1bgDmlwt",
-                    "access_token_secret": "psQOr9dTIevpUjnl8JSFyVeMvbnpLuFY6LoYaFP6E8sLR"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 },
                 "account1": {
                     "thread_owner": "tweetid_thread_2_rank_1",
-                    "api_key": "xfiIX9J2bgyIChKoRa3ukvM3Q",
-                    "api_secret_key": "t4vcm7djf15LG3woJCW6xvpxylExUUBkF6D27PwLtSdjIsdUo1",
-                    "access_token": "1173767648544342016-xq1lnIeRiplnKxeCtwDarGN1kGT7ne",
-                    "access_token_secret": "geURA59KOr4kBfhEx53ZDA1T1yCLRkJahE3f6qLFMy7hj"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 },
                 "account2": {
                     "thread_owner": "tweetid_thread_3_rank_1",
-                    "api_key": "mcHIZ9L4CyN1FFKeFOIYeVVPJ",
-                    "api_secret_key": "4yj2mYNFZYqcEh7M2XATzPq6NNpB35LyR9yPU9D84F9qyZsglX",
-                    "access_token": "1262514721405591552-XxuDU9KaEKB59S57WLlWl0ErcpjNNK",
-                    "access_token_secret": "QDYOEtGuBPJkYqyZmsCGBbOTJXQHVnts83u51XiUJha9l"
+                    "api_key": "",
+                    "api_secret_key": "",
+                    "access_token": "",
+                    "access_token_secret": ""
                 }
             }
         }
